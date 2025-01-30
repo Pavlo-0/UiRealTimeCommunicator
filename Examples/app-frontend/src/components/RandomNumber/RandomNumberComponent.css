@@ -1,0 +1,39 @@
+.random-number-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+  }
+  
+  .random-number-card {
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #ffffff;
+  }
+  
+  .random-number-card .card-title {
+    font-size: 1.5rem;
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  .random-number-card .card-text {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  
+  .random-number-card .form-control {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  
+  .random-number-card .btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+  }
+  

@@ -1,0 +1,48 @@
+using UiRtc.Public;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
+// Get the SignalR host URL from environment variables or default to localhost
+var hostUrl = builder.Configuration["ASPNETCORE_URLS"] ?? "http://localhost:5064";
+
+builder.Services.AddUiRealTimeCommunicator(config =>
+{
+    config.HostUrl = hostUrl;
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials()
+              .SetIsOriginAllowed(origin => true); // Allow all origins
+    });
+});
+
+var app = builder.Build();
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.UseCors();
+
+app.UseUiRealTimeCommunicator();
+
+app.Run();
