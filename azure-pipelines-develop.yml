@@ -21,7 +21,7 @@ variables:
   #nugetApiKey: $(NuGetApiKey)  # Ensure this secret is defined in Azure DevOps
   majorVersion: "1"
   minorVersion: "0"
-  patchVersion: $(Build.BuildId) # Use the build number as the patch version
+  patchVersion: $(Build.BuildNumber) # Use the build number as the patch version
   packageVersion: $(majorVersion).$(minorVersion).$(patchVersion)
   prPackageVersion: "$(majorVersion).$(minorVersion).$(Build.BuildId)-pr"
   readmePath: "README.md" # Path to README.md (you can adjust this if it's located elsewhere)
