@@ -59,7 +59,7 @@ jobs:
           Copy-Item "$(Build.SourcesDirectory)\$(readmePath)" "$(projectName)\$(readmePath)"
         displayName: "Copy README.md to Solution UiRtc"
 
-        - powershell: |
+      - powershell: |
           Copy-Item "$(Build.SourcesDirectory)\$(readmePath)" "$(projectGeneratorName)\$(readmePath)"
         displayName: "Copy README.md to Solution UiRtc.TypeScriptGenerator"
 
@@ -71,7 +71,7 @@ jobs:
       - script: dotnet test $(projectUnitTestName)/$(projectUnitTestName).csproj --configuration $(buildConfiguration) --no-build --logger trx
         displayName: "Run Unit Tests UiRtc"
 
-        - script: dotnet test $(projectGeneratorUnitTestName)/$(projectGeneratorUnitTestName).csproj --configuration $(buildConfiguration) --no-build --logger trx
+      - script: dotnet test $(projectGeneratorUnitTestName)/$(projectGeneratorUnitTestName).csproj --configuration $(buildConfiguration) --no-build --logger trx
         displayName: "Run Unit Tests for UiRtc.TypeScriptGenerator"
 
       # Step 8: Pack the NuGet Package
