@@ -1,12 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Configurations>Debug;Release</Configurations>
 
-  <ItemGroup>
+		<Authors>Pavlo S.</Authors>
+		<Description>Ui Real Time Communicator. The .NET Core 8 library for seamless two-way communication between a C# ASP.NET app and a TypeScript client using SignalR.</Description>
+		<PackageTags>SignalR; ASP.NET; TypeScript; WebSockets; Realtime; Messaging; Communication; PubSub; RPC; Duplex</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryUrl>https://github.com/Pavlo-0/UiRealTimeCommunicator</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Pavlo-0/UiRealTimeCommunicator</PackageProjectUrl>
+		<Copyright>© 2025 Pavlo S.</Copyright>
+	</PropertyGroup>
+
+	<ItemGroup>
     <PackageReference Include="Microsoft.AspNet.SignalR.Core" Version="2.4.3" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.0" />
@@ -20,6 +30,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UiRtc.Typing\UiRtc.Typing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

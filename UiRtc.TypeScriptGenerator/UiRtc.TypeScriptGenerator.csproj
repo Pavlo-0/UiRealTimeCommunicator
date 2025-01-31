@@ -1,34 +1,45 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-	  <RootNamespace>UiRtc.TypeScriptGenerator</RootNamespace>
-	  <PackAsTool>true</PackAsTool>
-	  <ToolCommandName>dotnet-uirtc</ToolCommandName>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<RootNamespace>UiRtc.TypeScriptGenerator</RootNamespace>
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>dotnet-uirtc</ToolCommandName>
 
-  <ItemGroup>
-    <PackageReference Include="Cocona" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Build.Locator" Version="1.7.8" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.12.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.12.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.12.0" />
-    <PackageReference Include="Tapper" Version="1.13.1" />
-    <PackageReference Include="Tapper.Attributes" Version="1.13.1" />
-  </ItemGroup>
+		<Authors>Pavlo S.</Authors>
+		<Description>Ui Real Time Communicator. The .NET Core 8 library/CLI tool for generates TypeScript source code to provide strongly typed clients for UiRealTimeCommunicator library.</Description>
+		<PackageTags>SignalR; ASP.NET; TypeScript; WebSockets; Realtime; Messaging; Communication; PubSub; RPC; Duplex</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryUrl>https://github.com/Pavlo-0/UiRealTimeCommunicator</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Pavlo-0/UiRealTimeCommunicator</PackageProjectUrl>
+		<Copyright>© 2025 Pavlo S.</Copyright>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\UiRtc.Typing\UiRtc.Typing.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Cocona" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Build.Locator" Version="1.7.8" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.12.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.12.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.12.0" />
+		<PackageReference Include="Tapper" Version="1.13.1" />
+		<PackageReference Include="Tapper.Attributes" Version="1.13.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="Templates\TsTemplate.v1.0.ts">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\UiRtc.Typing\UiRtc.Typing.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="README.md">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Templates\TsTemplate.v1.0.ts">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>
