@@ -44,7 +44,7 @@ jobs:
       - task: NuGetToolInstaller@1
 
       # Step 3: Restore Dependencies
-      - script: dotnet restore $(projectName).sln
+      - script: dotnet restore $(solutionName).sln
         displayName: "Restore NuGet Packages"
 
       # Step 4: Determine Package Version
