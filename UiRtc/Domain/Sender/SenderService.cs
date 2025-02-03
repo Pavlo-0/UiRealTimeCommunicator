@@ -8,19 +8,17 @@ namespace UiRtc.Domain.Sender
     {
         private readonly IInvokeSenderService invokeSenderService;
         private readonly IServiceProvider service;
-        private readonly INameGenerator hubNameGenerator;
 
-        public SenderService(IInvokeSenderService invokeSenderService, IServiceProvider service, INameGenerator hubNameGenerator)
+        public SenderService(IInvokeSenderService invokeSenderService, IServiceProvider service)
         {
             this.invokeSenderService = invokeSenderService;
             this.service = service;
-            this.hubNameGenerator = hubNameGenerator;
         }
 
         public TContract Send<TContract>() where TContract : IUiRtcSenderContract<IUiRtcHub>
         {
             var serviceInstance = service.GetService(typeof(IInvokeSenderService));
-            invokeSenderService.ResolveHub(hubNameGenerator.GetHubNameByContract(typeof(TContract)));
+            invokeSenderService.ResolveHub(NameHelper.GetHubNameByContract(typeof(TContract)));
             return SendMethodBuilder<TContract>.Build(invokeSenderService);
         }
     }

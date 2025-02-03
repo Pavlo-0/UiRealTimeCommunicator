@@ -1,11 +1,10 @@
-﻿using UiRtc.Domain.HubMap.Interface;
-using UiRtc.Typing.PublicInterface.Attributes;
+﻿using UiRtc.Typing.PublicInterface.Attributes;
 
-namespace UiRtc.Domain.HubMap
+namespace UiRtc.Domain
 {
-    internal class NameGenerator : INameGenerator
+    internal static class NameHelper
     {
-        public string GetHubName(Type type)
+        public static string GetHubName(Type type)
         {
             var attribute = Attribute.GetCustomAttribute(type, typeof(UiRtcHubAttribute)) as UiRtcHubAttribute;
 
@@ -17,13 +16,13 @@ namespace UiRtc.Domain.HubMap
             return attribute.HubName;
         }
 
-        public string GetHubNameByContract(Type type)
+        public static string GetHubNameByContract(Type type)
         {
             var hubType = type.GetInterfaces().First().GenericTypeArguments[0];
             return GetHubName(hubType);
         }
 
-        public string GetMethodName(Type type)
+        public static string GetMethodName(Type type)
         {
             var attribute = Attribute.GetCustomAttribute(type, typeof(UiRtcMethodAttribute)) as UiRtcMethodAttribute;
 

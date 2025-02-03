@@ -36,12 +36,8 @@ namespace UiRtc.Public
             var repository = new ConsumerRepository();
             services.AddSingleton<IConsumerRepository>(repository);
 
-            var hubNameGenerator = new NameGenerator();
-            services.AddSingleton<INameGenerator>(hubNameGenerator);
-
-
             var autoRegisterHandlers = new AutoRegistrationHandlers();
-            autoRegisterHandlers.RegisterHandlers(services, repository, hubNameGenerator);
+            autoRegisterHandlers.RegisterHandlers(services, repository);
 
             return services;
         }

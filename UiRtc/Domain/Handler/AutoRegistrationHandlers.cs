@@ -10,7 +10,7 @@ namespace UiRtc.Domain.Handler
 
     internal class AutoRegistrationHandlers()
     {
-        public void RegisterHandlers(IServiceCollection services, IConsumerRepository consumerRepository, INameGenerator hubNameGenerator)
+        public void RegisterHandlers(IServiceCollection services, IConsumerRepository consumerRepository)
         {
             //Registering consumers
             var assembly = Assembly.GetEntryAssembly()!;
@@ -22,8 +22,8 @@ namespace UiRtc.Domain.Handler
 
             foreach (var consumerImplmentationType in allConsumerImplmentationTypes)
             {
-                var hubName = hubNameGenerator.GetHubName(consumerImplmentationType.GetInterfaces().First().GenericTypeArguments[0]);
-                var methodName = hubNameGenerator.GetMethodName(consumerImplmentationType);
+                var hubName = NameHelper.GetHubNameByContract(consumerImplmentationType);
+                var methodName = NameHelper.GetMethodName(consumerImplmentationType);
                 var record = new ConsumerRecord(
                     hubName,
                     methodName,

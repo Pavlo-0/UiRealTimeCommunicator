@@ -6,8 +6,7 @@ using UiRtc.Typing.PublicInterface;
 
 namespace UiRtc.Domain.HubMap
 {
-    internal class AutoRegistrationHubs(INameGenerator hubNameGenerator,
-                                        IHubService hubService,
+    internal class AutoRegistrationHubs(IHubService hubService,
                                         IHubRepository hubRepository,
                                         IConsumerRepository consumerRepository) : IAutoRegistrationHubs
     {
@@ -23,7 +22,7 @@ namespace UiRtc.Domain.HubMap
                     throw new Exception("Hub can be abstract class");
                 }
 
-                var hubName = hubNameGenerator.GetHubName(hub);
+                var hubName = NameHelper.GetHubName(hub);
 
                 var methods = consumerRepository.GetList(hubName);
                 var signalRHubType = hubService.GenerateNewSignalRHub(hubName, methods);
