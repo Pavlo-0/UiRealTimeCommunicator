@@ -10,7 +10,7 @@ namespace UiRtc.Domain.Handler
 
     internal class AutoRegistrationHandlers()
     {
-        public void RegisterHandlers(IServiceCollection services, IConsumerRepository consumerRepository, IHubNameGenerator hubNameGenerator)
+        public void RegisterHandlers(IServiceCollection services, IConsumerRepository consumerRepository, INameGenerator hubNameGenerator)
         {
             //Registering consumers
             var assembly = Assembly.GetEntryAssembly()!;
@@ -20,23 +20,23 @@ namespace UiRtc.Domain.Handler
 
             var allConsumerImplmentationTypes = GetClassesImplementing([typeModelConsumer, typeConsumer], assembly);
 
-            foreach (var allConsumerImplmentationType in allConsumerImplmentationTypes)
+            foreach (var consumerImplmentationType in allConsumerImplmentationTypes)
             {
-                var hubName = hubNameGenerator.GetHubName(allConsumerImplmentationType.GetInterfaces().First().GenericTypeArguments[0]);
-                var methodName = allConsumerImplmentationType.Name;
+                var hubName = hubNameGenerator.GetHubName(consumerImplmentationType.GetInterfaces().First().GenericTypeArguments[0]);
+                var methodName = hubNameGenerator.GetMethodName(consumerImplmentationType);
                 var record = new ConsumerRecord(
                     hubName,
                     methodName,
-                    allConsumerImplmentationType.GetInterfaces().First().GetGenericTypeDefinition(),
-                    allConsumerImplmentationType.GetInterfaces().First(),
-                    allConsumerImplmentationType,
-                    allConsumerImplmentationType.GetInterfaces().First().GenericTypeArguments.Count() > 1 ?
-                    allConsumerImplmentationType.GetInterfaces().First().GenericTypeArguments[1] : null
+                    consumerImplmentationType.GetInterfaces().First().GetGenericTypeDefinition(),
+                    consumerImplmentationType.GetInterfaces().First(),
+                    consumerImplmentationType,
+                    consumerImplmentationType.GetInterfaces().First().GenericTypeArguments.Count() > 1 ?
+                    consumerImplmentationType.GetInterfaces().First().GenericTypeArguments[1] : null
                     );
 
                 consumerRepository.Add(record);
 
-                services.AddTransient(record.ConsumerInterface, allConsumerImplmentationType);
+                services.AddTransient(record.ConsumerInterface, consumerImplmentationType);
             }
         }
 

@@ -54,7 +54,8 @@ namespace UiRtc.TypeScriptGenerator
 
             var compilation = await CreateCompilationAsync(projectPath, cancelationToken);
 
-            var senderContractSymbol = compilation.GetTypeByMetadataName(typeof(IUiRtcHub).FullName!);
+            var hubSymbol = compilation.GetTypeByMetadataName(typeof(IUiRtcHub).FullName!);
+            var senderSymbol = compilation.GetTypeByMetadataName($"{typeof(IUiRtcSenderContract<DummyHub>).GetGenericTypeDefinition().FullName}");
             var handler1Symbol = compilation.GetTypeByMetadataName($"{typeof(IUiRtcHandler<DummyHub>).GetGenericTypeDefinition().FullName}");
             var handler2Symbol = compilation.GetTypeByMetadataName($"{typeof(IUiRtcHandler<DummyHub, object>).GetGenericTypeDefinition().FullName}");
 
@@ -72,7 +73,7 @@ namespace UiRtc.TypeScriptGenerator
             _logger.Log(LogLevel.Information, "Finding senders contract");
             var senderRecords = compilation.SyntaxTrees.SelectMany(tree =>
             {
-                return GetSenderData(tree, compilation.GetSemanticModel(tree), senderContractSymbol);
+                return GetSenderData(tree, compilation.GetSemanticModel(tree), senderSymbol);
             });
 
             var senderRecordsByHub = senderRecords.GroupBy(g => g.hubName).ToDictionary(k => k.Key, g => g.AsEnumerable());
@@ -104,8 +105,7 @@ namespace UiRtc.TypeScriptGenerator
                 var classNamedTypeSymbol = semanticModel.GetDeclaredSymbol(classDeclaration) as INamedTypeSymbol;
 
                 if (classNamedTypeSymbol != null &&
-                    classNamedTypeSymbol.AllInterfaces.Select(i => i.ConstructedFrom)
-                                                      .Contains(handlerSymbol, SymbolEqualityComparer.Default))
+                    classNamedTypeSymbol.AllInterfaces.Select(i => i.ConstructedFrom).Contains(handlerSymbol, SymbolEqualityComparer.Default))
                 {
                     //Here if class which determinated as handler implementation
 
@@ -118,7 +118,7 @@ namespace UiRtc.TypeScriptGenerator
                         throw new Exception("Interface should have first generic parameter to determinate the Hub");
                     }
 
-                    var handlerMethodName = classNamedTypeSymbol.Name;
+                    var handlerMethodName = GetMethodName(classNamedTypeSymbol);
 
                     var hubName = GetHubNameFromAttributes(concreateInterface.TypeArguments.First().GetAttributes(), handlerMethodName);
 
@@ -137,6 +137,19 @@ namespace UiRtc.TypeScriptGenerator
             return handlersCollection;
         }
 
+        private string GetMethodName(INamedTypeSymbol type)
+        {
+            var attribute = type.GetAttributes().FirstOrDefault(a=> a.AttributeClass.ToString() ==typeof(UiRtcMethodAttribute).FullName);
+            var methodName = attribute?.ConstructorArguments.FirstOrDefault().Value?.ToString();
+
+            if (string.IsNullOrEmpty(methodName))
+            {
+                return type.Name;
+            }
+
+            return methodName;
+        }
+
         private IEnumerable<SenderDataRecord> GetSenderData(SyntaxTree syntaxTree, SemanticModel semanticModel, INamedTypeSymbol? senderContractSymbol)
         {
             var senderDataRecords = new List<SenderDataRecord>();
@@ -153,19 +166,19 @@ namespace UiRtc.TypeScriptGenerator
             {
                 var interfaceSymbol = semanticModel.GetDeclaredSymbol(interfaceDeclaration) as INamedTypeSymbol;
 
-                if (interfaceSymbol != null && interfaceSymbol.AllInterfaces.Contains(senderContractSymbol))
+                if (interfaceSymbol != null && interfaceSymbol.AllInterfaces.Select(i => i.ConstructedFrom).Contains(senderContractSymbol, SymbolEqualityComparer.Default))
                 {
                     //This interfaceSymbol is a contract for sender. Contains list of methods 
 
                     var sendorMethods = interfaceSymbol.GetMembers().OfType<IMethodSymbol>().ToList();
-                    var hubName = GetHubNameFromAttributes(interfaceSymbol.GetAttributes(), interfaceSymbol.Name);
+                    var hubName = GetHubNameFromAttributes(interfaceSymbol.AllInterfaces.First(i => i.ConstructedFrom == senderContractSymbol).TypeArguments[0].GetAttributes(), interfaceSymbol.Name);
 
-                    foreach (var sendorMethod in sendorMethods)
+                    foreach (IMethodSymbol? sendorMethod in sendorMethods)
                     {
                         //TODO: Implement attribute to ignore method
                         var modelTypeName = sendorMethod.Parameters.FirstOrDefault()?.Type.Name;
 
-                        var senderMethodName = sendorMethod.Name;
+                        var senderMethodName = GetMethodName(sendorMethod); //.Name;
 
                         _logger.Log(LogLevel.Information, $"For sender {hubName} has been found sendor methods: {senderMethodName}");
                         senderDataRecords.Add(new SenderDataRecord(hubName, senderMethodName, modelTypeName));
@@ -173,6 +186,19 @@ namespace UiRtc.TypeScriptGenerator
                 }
             }
             return senderDataRecords;
+        }
+
+        private string GetMethodName(IMethodSymbol type)
+        {
+            var attribute = type.GetAttributes().FirstOrDefault(a => a.AttributeClass.ToString() == typeof(UiRtcMethodAttribute).FullName);
+            var methodName = attribute?.ConstructorArguments.FirstOrDefault().Value?.ToString();
+
+            if (string.IsNullOrEmpty(methodName))
+            {
+                return type.Name;
+            }
+
+            return methodName;
         }
 
         private async Task<Compilation> CreateCompilationAsync(string projectPath, CancellationToken cancelationToken, bool IsDiagnosticOn = false)

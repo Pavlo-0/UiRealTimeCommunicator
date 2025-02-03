@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Reflection.Emit;
 using UiRtc.Domain.Sender.Interface;
+using UiRtc.Typing.PublicInterface.Attributes;
 
 namespace UiRtc.Domain.Sender
 {
@@ -81,10 +82,22 @@ namespace UiRtc.Domain.Sender
             generator.Emit(OpCodes.Ldarg_0);
 
             generator.Emit(OpCodes.Ldfld, invokeServiceField);
-            generator.Emit(OpCodes.Ldstr, interfaceMethodInfo.Name);
+            generator.Emit(OpCodes.Ldstr, GetMethodName(interfaceMethodInfo));
             generator.Emit(OpCodes.Ldarg_1);
             generator.Emit(OpCodes.Callvirt, invokeMethod);
             generator.Emit(OpCodes.Ret);
+        }
+
+        private static string GetMethodName(MethodInfo methodInfo)
+        {
+            var attribute = methodInfo.GetCustomAttribute(typeof(UiRtcMethodAttribute)) as UiRtcMethodAttribute;
+
+            if (attribute == null || string.IsNullOrEmpty(attribute.MethodName))
+            {
+                return methodInfo.Name;
+            }
+
+            return attribute.MethodName;
         }
     }
 }

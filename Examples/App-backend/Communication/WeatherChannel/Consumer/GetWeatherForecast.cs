@@ -1,10 +1,12 @@
 ﻿using App_backend.Communication.WeatherChannel.Models;
 using UiRtc.Domain.Sender.Interface;
 using UiRtc.Typing.PublicInterface;
+using UiRtc.Typing.PublicInterface.Attributes;
 
 namespace App_backend.Communication.WeatherChannel.Consumer
 {
-    public class GetWeatherForecast(ILogger<GetWeatherForecast> logger, ISenderService senderService) : IUiRtcHandler<WeatherChannelContract, WeatherForecastRequestModel>
+    [UiRtcMethod("GetWeatherForecast")]
+    public class GetWeatherForecastHandler(ILogger<GetWeatherForecastHandler> logger, ISenderService senderService) : IUiRtcHandler<WeatherHub, WeatherForecastRequestModel>
     {
         private static readonly string[] Summaries = new[]
                {
@@ -14,7 +16,7 @@ namespace App_backend.Communication.WeatherChannel.Consumer
         public async Task ConsumeAsync(WeatherForecastRequestModel model)
         {
             logger.LogInformation($"Get Weather request for city: {model.City}");
-            await senderService.Send<WeatherChannelContract>().SendWeatherForecast(new WeatherForecastResponseModel
+            await senderService.Send<WeatherChannelContract>().SendWeatherForecastSender(new WeatherForecastResponseModel
             {
                 WeatherForecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
                 {

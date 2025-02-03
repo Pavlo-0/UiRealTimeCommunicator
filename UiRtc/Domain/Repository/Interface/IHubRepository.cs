@@ -1,8 +1,11 @@
-﻿namespace UiRtc.Domain.Repository.Interface
+﻿using UiRtc.Domain.Repository.Records;
+
+namespace UiRtc.Domain.Repository.Interface
 {
     internal interface IHubRepository
     {
-        void AddHub(string hubName, Type HubType);
+        void AddHub(HubRecord record);
+        Type GetSignalRHubType(string hubName);
         Type GetHubType(string hubName);
     }
 }

@@ -13,7 +13,7 @@ namespace UiRtc.Domain.Repository
             _consumers.Add(record);
         }
 
-        public IEnumerable<ConsumerRecord> Get(string hubName)
+        public IEnumerable<ConsumerRecord> GetList(string hubName)
         {
             return _consumers.Where(r => r.HubName == hubName);
         }

@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2025-01-30 00:25:12 UTC 
+ * Generated on: 2025-02-03 01:17:56 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -18,7 +18,7 @@ const allHubs: uiRtcHubs[] = ['RandomHub', 'Weather'];
 
 type hubMethods = RandomHubMethod | WeatherMethod;
 
-type RandomHubMethod = 'GenerateNewNumber' | 'GenerateNewRangeNumber';
+type RandomHubMethod = 'GenerateNewNumberHandler' | 'GenerateNewRangeNumberHandler';
 type WeatherMethod = 'GetWeatherForecast';
 
 type hubSubscriptions = RandomHubSubscription | WeatherSubscription;
@@ -43,8 +43,8 @@ export const uiRtcSubscription = {
 
 export const uiRtcCommunication = {
     RandomHub: {
-    GenerateNewNumber: () => send("RandomHub", "GenerateNewNumber"),
-    GenerateNewRangeNumber: (request: RandomRangeRequestModel) => send("RandomHub", "GenerateNewRangeNumber", request),
+    GenerateNewNumberHandler: () => send("RandomHub", "GenerateNewNumberHandler"),
+    GenerateNewRangeNumberHandler: (request: RandomRangeRequestModel) => send("RandomHub", "GenerateNewRangeNumberHandler", request),
   },
   Weather: {
     GetWeatherForecast: (request: WeatherForecastRequestModel) => send("Weather", "GetWeatherForecast", request),

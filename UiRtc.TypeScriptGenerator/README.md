@@ -33,3 +33,6 @@ $ dotnet tsrts help
 
 # update
 $ dotnet tool update --global UiRtc.TypeScriptGenerator
+
+
+dotnet-uirtc

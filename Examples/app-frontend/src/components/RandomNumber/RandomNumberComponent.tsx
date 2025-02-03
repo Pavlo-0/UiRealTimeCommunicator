@@ -18,13 +18,13 @@ const RandomNumberComponent = () => {
   }, []);
 
   const generateNewNumber = () => {
-    uiRtcCommunication.RandomHub.GenerateNewNumber();
+    uiRtcCommunication.RandomHub.GenerateNewNumberHandler();
     //serverConnection.current?.send("GenerateNewNumber");
   };
 
   const generateNewRangeNumber = () => {
     if (minValue < maxValue) {
-      uiRtcCommunication.RandomHub.GenerateNewRangeNumber({
+      uiRtcCommunication.RandomHub.GenerateNewRangeNumberHandler({
         minValue,
         maxValue,
       });

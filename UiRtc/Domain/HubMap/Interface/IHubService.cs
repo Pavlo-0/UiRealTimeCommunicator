@@ -4,6 +4,6 @@ namespace UiRtc.Domain.HubMap.Interface
 {
     internal interface IHubService
     {
-        Type GenerateNewHub(string hubName, IEnumerable<ConsumerRecord> methods);
+        Type GenerateNewSignalRHub(string hubName, IEnumerable<ConsumerRecord> methods);
     }
 }

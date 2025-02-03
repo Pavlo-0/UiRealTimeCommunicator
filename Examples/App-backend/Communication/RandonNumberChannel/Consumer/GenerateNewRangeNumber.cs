@@ -4,7 +4,7 @@ using UiRtc.Typing.PublicInterface;
 
 namespace App_backend.Communication.RandonNumberChannel.Consumer
 {
-    public class GenerateNewRangeNumber(ISenderService senderService) : IUiRtcHandler<IRandomNumberContract, RandomRangeRequestModel>
+    public class GenerateNewRangeNumberHandler(ISenderService senderService) : IUiRtcHandler<RandomHub, RandomRangeRequestModel>
     {
         public Task ConsumeAsync(RandomRangeRequestModel rangeModel)
         {
@@ -19,5 +19,4 @@ namespace App_backend.Communication.RandonNumberChannel.Consumer
             return Task.CompletedTask;
         }
     }
-
 }

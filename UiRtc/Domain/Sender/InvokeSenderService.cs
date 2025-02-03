@@ -20,7 +20,7 @@ namespace UiRtc.Domain.Sender
 
         public async Task Invoke(string method, object model)
         {
-            var hubType = hubRepository.GetHubType(HubName);
+            var hubType = hubRepository.GetSignalRHubType(HubName);
 
             // Get the generic IHubContext<> type for the given hubType
             Type hubContextType = typeof(IHubContext<>).MakeGenericType(hubType);

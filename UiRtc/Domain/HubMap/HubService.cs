@@ -13,7 +13,7 @@ namespace UiRtc.Domain.HubMap
 
         private const string namespaceName = "UiRtc";
 
-        public Type GenerateNewHub(string hubName, IEnumerable<ConsumerRecord> methods)
+        public Type GenerateNewSignalRHub(string hubName, IEnumerable<ConsumerRecord> methods)
         {
             // Define a dynamic assembly and module
             AssemblyName assemblyName = new AssemblyName(namespaceName);

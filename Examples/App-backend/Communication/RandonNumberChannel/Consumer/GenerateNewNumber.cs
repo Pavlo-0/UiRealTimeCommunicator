@@ -4,7 +4,7 @@ using UiRtc.Typing.PublicInterface;
 
 namespace App_backend.Communication.RandonNumberChannel.Consumer
 {
-    public class GenerateNewNumber(ISenderService senderService) : IUiRtcHandler<IRandomNumberContract>
+    public class GenerateNewNumberHandler(ISenderService senderService) : IUiRtcHandler<RandomHub>
     {
         public Task ConsumeAsync()
         {
