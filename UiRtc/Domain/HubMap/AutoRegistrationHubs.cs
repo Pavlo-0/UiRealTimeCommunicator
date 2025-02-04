@@ -6,26 +6,25 @@ using UiRtc.Typing.PublicInterface;
 
 namespace UiRtc.Domain.HubMap
 {
-    internal class AutoRegistrationHubs(IHubService hubService,
-                                        IHubRepository hubRepository,
-                                        IConsumerRepository consumerRepository) : IAutoRegistrationHubs
+    internal class AutoRegistrationHubs(IHubRepository hubRepository,
+                                        IHandlerRepository consumerRepository) : IAutoRegistrationHubs
     {
         public void RegisterHub(Assembly assembly, WebApplication app)
         {
-            var hubs = GetDeclarationsByInterface<IUiRtcHub>(assembly);
+            var hubs = GetDeclarationsByInterface(typeof(IUiRtcHub), assembly);
 
             foreach (var hub in hubs)
             {
                 var isInterface = hub.IsInterface;
                 if (!isInterface && hub.IsAbstract)
                 {
-                    throw new Exception("Hub can be abstract class");
+                    throw new Exception("Hub can not be abstract class");
                 }
 
                 var hubName = NameHelper.GetHubName(hub);
 
                 var methods = consumerRepository.GetList(hubName);
-                var signalRHubType = hubService.GenerateNewSignalRHub(hubName, methods);
+                var signalRHubType = SignalRHubBuilder.GenerateNewSignalRHub(hubName, methods);
 
                 var method = typeof(HubEndpointRouteBuilderExtensions)
                     .GetMethods()
@@ -41,29 +40,12 @@ namespace UiRtc.Domain.HubMap
             }
         }
 
-        static IEnumerable<Type> GetDeclarationsByInterface<TContract>(Assembly assembly)
-        {
-            // Get the target type (interface)
-            var targetType = typeof(TContract);
-
-            // Return all interfaces in the assembly that implement the target type
-            return GetDeclarationsByInterface(targetType, assembly);
-        }
-
-        static IEnumerable<Type> GetDeclarationsByInterface(Type targetType, Assembly assembly)
+        private static IEnumerable<Type> GetDeclarationsByInterface(Type targetType, Assembly assembly)
         {
             // Get the target type (interface)
             // Return all interfaces in the assembly that implement the target type
             return assembly.GetTypes()
                            .Where(targetType.IsAssignableFrom);
-        }
-
-        static IEnumerable<Type> GetDeclarationsByInterfaceForHandler(Type targetType, Assembly assembly)
-        {
-            // Get the target type (interface)
-            // Return all interfaces in the assembly that implement the target type
-            return assembly.GetTypes()
-                           .Where(t=> t.GetInterfaces().Select(i=> i.Name).Contains(targetType.Name));
         }
 
         private class DummyHub:IUiRtcHub { }

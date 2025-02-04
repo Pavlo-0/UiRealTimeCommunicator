@@ -26,15 +26,14 @@ namespace UiRtc.Public
             services.AddTransient<IInvokeSenderService, InvokeSenderService>(); //Should be Transient
             services.AddTransient<ISenderService, SenderService>();
 
-            services.AddTransient<IHubService, HubService>();
             services.AddTransient<IHubRepository, HubRepository>();
 
             services.AddTransient<IReceiverService, ReceiverService>();
             services.AddTransient<IAutoRegistrationHubs, AutoRegistrationHubs>();
 
             //Registering Handlers
-            var repository = new ConsumerRepository();
-            services.AddSingleton<IConsumerRepository>(repository);
+            var repository = new HandlerRepository();
+            services.AddSingleton<IHandlerRepository>(repository);
 
             var autoRegisterHandlers = new AutoRegistrationHandlers();
             autoRegisterHandlers.RegisterHandlers(services, repository);

@@ -4,26 +4,30 @@ using UiRtc.Domain.Repository.Interface;
 
 namespace UiRtc.Domain.Handler
 {
-
-    internal class ReceiverService(IServiceProvider services, IConsumerRepository consumerRepository) : IReceiverService
+    internal class ReceiverService(IServiceProvider services, IHandlerRepository consumerRepository) : IReceiverService
     {
         public async Task Invoke(string hubName, string methodName, dynamic param)
         {
             var consumers = consumerRepository.Get(hubName, methodName);
 
-            var serviceInstances = services.GetServices(consumers.ConsumerInterface);
+            foreach (var consumer in consumers) {
 
-            foreach (var serviceInstance in serviceInstances)
-            {
-                dynamic dynamicConsumer = serviceInstance;
+                var serviceInstances = services.GetServices(consumer.ConsumerInterface);
+                foreach (var serviceInstance in serviceInstances)
+                {
+                    if (serviceInstance != null)
+                    {
+                        dynamic dynamicConsumer = serviceInstance;
 
-                if (param != null)
-                {
-                    await dynamicConsumer.ConsumeAsync(param);
-                }
-                else
-                {
-                    await dynamicConsumer.ConsumeAsync();
+                        if (param != null)
+                        {
+                            await dynamicConsumer.ConsumeAsync(param);
+                        }
+                        else
+                        {
+                            await dynamicConsumer.ConsumeAsync();
+                        }
+                    }
                 }
             }
         }

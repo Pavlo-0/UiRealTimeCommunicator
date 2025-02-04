@@ -1,6 +1,6 @@
 ﻿namespace UiRtc.Domain.Repository.Records
 {
-    internal record ConsumerRecord(string HubName,
+    internal record HandlerRecord(string HubName,
                                    string MethodName,
                                    Type ConsumerInterfaceDefenition,
                                    Type ConsumerInterface,
