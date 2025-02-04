@@ -1,5 +1,5 @@
 ﻿using App_backend.Communication.WeatherChannel.Models;
-using UiRtc.Domain.Sender.Interface;
+using UiRtc.Public;
 using UiRtc.Typing.PublicInterface;
 using UiRtc.Typing.PublicInterface.Attributes;
 

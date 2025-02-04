@@ -1,5 +1,5 @@
-﻿using UiRtc.Domain.HubMap.Interface;
-using UiRtc.Domain.Sender.Interface;
+﻿using UiRtc.Domain.Sender.Interface;
+using UiRtc.Public;
 using UiRtc.Typing.PublicInterface;
 
 namespace UiRtc.Domain.Sender

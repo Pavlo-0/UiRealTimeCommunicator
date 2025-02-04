@@ -2,7 +2,7 @@
 
 using UiRtc.Typing.PublicInterface;
 
-namespace UiRtc.Domain.Sender.Interface
+namespace UiRtc.Public
 {
     public interface ISenderService
     {

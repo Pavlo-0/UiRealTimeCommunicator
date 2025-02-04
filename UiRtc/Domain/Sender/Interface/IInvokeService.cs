@@ -1,6 +1,6 @@
 ﻿namespace UiRtc.Domain.Sender.Interface
 {
-    public interface IInvokeService
+    internal interface IInvokeService
     {
         Task Invoke(string method, object model);
     }

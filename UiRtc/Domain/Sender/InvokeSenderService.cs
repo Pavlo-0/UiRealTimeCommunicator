@@ -10,8 +10,7 @@ namespace UiRtc.Domain.Sender
 {
     internal class InvokeSenderService(IServiceProvider services, IHubRepository hubRepository) : IInvokeSenderService
     {
-
-        private string HubName { get; set; }
+        private string? HubName { get; set; }
 
         public void ResolveHub(string hubName)
         {
@@ -20,6 +19,10 @@ namespace UiRtc.Domain.Sender
 
         public async Task Invoke(string method, object model)
         {
+            if (string.IsNullOrWhiteSpace(HubName)) {
+                throw new Exception("SignalR Hub name has not been set up");
+            }
+
             var hubType = hubRepository.GetSignalRHubType(HubName);
 
             // Get the generic IHubContext<> type for the given hubType
@@ -27,6 +30,11 @@ namespace UiRtc.Domain.Sender
 
             // Resolve the service dynamically
             var context = services.GetRequiredService(hubContextType) as IHubContext;
+
+            if (context == null)
+            {
+                throw new Exception("SignalR Hub Context can't be obtained");
+            }
 
             string jsonModel = GetJSONModel(model);
             await context.Clients.All.SendAsync(method, model);

@@ -1,5 +1,5 @@
 ﻿using App_backend.Communication.RandonNumberChannel.Models;
-using UiRtc.Domain.Sender.Interface;
+using UiRtc.Public;
 using UiRtc.Typing.PublicInterface;
 
 namespace App_backend.Communication.RandonNumberChannel.Consumer

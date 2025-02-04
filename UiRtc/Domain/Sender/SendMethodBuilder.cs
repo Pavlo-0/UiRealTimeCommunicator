@@ -5,11 +5,11 @@ using UiRtc.Typing.PublicInterface.Attributes;
 
 namespace UiRtc.Domain.Sender
 {
-    public static class SendMethodBuilder<TContract>
+    internal static class SendMethodBuilder<TContract>
     {
-        private const string _assemblyName = "UiRtc.ContractBuilder";
+        private const string namespaceName = "UiRtc";
 
-        private static Lazy<Func<IInvokeService, TContract>> _builder = new Lazy<Func<IInvokeService, TContract>>(() => GetBuilder());
+        private static Lazy<Func<IInvokeService, TContract>> _builder = new Lazy<Func<IInvokeService, TContract>>(GetBuilder);
 
         public static TContract Build(IInvokeService invokeService)
         {
@@ -18,17 +18,27 @@ namespace UiRtc.Domain.Sender
 
         private static Func<IInvokeService, TContract> GetBuilder()
         {
-            var assemblyName = new AssemblyName(_assemblyName);
-            var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+            var moduleBuilder = AssemblyBuilder.DefineDynamicAssembly(
+                new AssemblyName(namespaceName),
+                AssemblyBuilderAccess.Run).DefineDynamicModule(namespaceName);
 
-            var moduleBuilder = assemblyBuilder.DefineDynamicModule(_assemblyName);
             var clientType = GenerateInterfaceImplementation(moduleBuilder);
-            return invokeService => (TContract)Activator.CreateInstance(clientType, invokeService);
+            return invokeService =>
+            {
+                try
+                {
+                    return (TContract)Activator.CreateInstance(clientType, invokeService)!;
+                }
+                catch
+                {
+                    throw new Exception("Can't create instance for sender");
+                }
+            };
         }
 
         private static Type GenerateInterfaceImplementation(ModuleBuilder moduleBuilder)
         {
-            var type = moduleBuilder.DefineType(_assemblyName + "." + typeof(TContract).Name + "Impl",
+            var type = moduleBuilder.DefineType(namespaceName + "." + typeof(TContract).Name + "Impl",
                 TypeAttributes.Public,
                 typeof(object),
                 new[] { typeof(TContract) });
@@ -43,7 +53,6 @@ namespace UiRtc.Domain.Sender
             }
 
             return type.CreateType();
-
         }
 
         private static void BuildConstructor(TypeBuilder typeBuilder, FieldInfo invokeServiceField)
@@ -56,7 +65,7 @@ namespace UiRtc.Domain.Sender
             //Make constructor body
             var constructorIL = constructorBuilder.GetILGenerator();
             constructorIL.Emit(OpCodes.Ldarg_0); //Load "this"
-            constructorIL.Emit(OpCodes.Call, typeof(object).GetConstructor(Type.EmptyTypes)); //call base constructor
+            constructorIL.Emit(OpCodes.Call, typeof(object).GetConstructor(Type.EmptyTypes)!); //call base constructor
             constructorIL.Emit(OpCodes.Ldarg_0);
             constructorIL.Emit(OpCodes.Ldarg_1);
             constructorIL.Emit(OpCodes.Stfld, invokeServiceField);
@@ -71,7 +80,7 @@ namespace UiRtc.Domain.Sender
             var methodBuilder = type.DefineMethod(interfaceMethodInfo.Name, MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig);
 
             var invokeMethod = typeof(IInvokeService).GetMethod(
-                "Invoke",
+                nameof(IInvokeService.Invoke),
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[] { typeof(string), typeof(object) }, null);
 
             methodBuilder.SetReturnType(interfaceMethodInfo.ReturnType);
@@ -84,7 +93,7 @@ namespace UiRtc.Domain.Sender
             generator.Emit(OpCodes.Ldfld, invokeServiceField);
             generator.Emit(OpCodes.Ldstr, GetMethodName(interfaceMethodInfo));
             generator.Emit(OpCodes.Ldarg_1);
-            generator.Emit(OpCodes.Callvirt, invokeMethod);
+            generator.Emit(OpCodes.Callvirt, invokeMethod!);
             generator.Emit(OpCodes.Ret);
         }
 
