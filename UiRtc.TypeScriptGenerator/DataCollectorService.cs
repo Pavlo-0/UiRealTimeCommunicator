@@ -48,26 +48,25 @@ namespace UiRtc.TypeScriptGenerator
 
         public async Task<(IDictionary<string, IEnumerable<SenderDataRecord>> senders, IDictionary<string, IEnumerable<HandlerDataRecord>> handlers)> ExtractHubsContracts(
             string projectPath,
-            CancellationToken cancelationToken)
+            CancellationToken cancellationToken)
         {
             _logger.Log(LogLevel.Information, "Transpiling projects contracts {path}...", Path.GetFullPath(projectPath));
 
-            var compilation = await CreateCompilationAsync(projectPath, cancelationToken);
+            var compilation = await CreateCompilationAsync(projectPath, cancellationToken);
 
-            var hubSymbol = compilation.GetTypeByMetadataName(typeof(IUiRtcHub).FullName!);
             var senderSymbol = compilation.GetTypeByMetadataName($"{typeof(IUiRtcSenderContract<DummyHub>).GetGenericTypeDefinition().FullName}");
             var handler1Symbol = compilation.GetTypeByMetadataName($"{typeof(IUiRtcHandler<DummyHub>).GetGenericTypeDefinition().FullName}");
             var handler2Symbol = compilation.GetTypeByMetadataName($"{typeof(IUiRtcHandler<DummyHub, object>).GetGenericTypeDefinition().FullName}");
 
             _logger.Log(LogLevel.Information, "Finding handlers implementation");
 
-            var handlerRecords = compilation.SyntaxTrees.SelectMany(tree =>
-            {
-                var semanticModel = compilation.GetSemanticModel(tree);
-                return GetHandlerData(tree, semanticModel, handler1Symbol)
-                    .Concat(GetHandlerData(tree, semanticModel, handler2Symbol));
-            });
-
+            var handlerRecords = compilation.SyntaxTrees
+                .SelectMany(tree =>
+                {
+                    var semanticModel = compilation.GetSemanticModel(tree);
+                    return GetHandlerData(tree, semanticModel, handler1Symbol).Union(
+                        GetHandlerData(tree, semanticModel, handler2Symbol));
+                });
             var handlerRecordsByHub = handlerRecords.GroupBy(g => g.hubName).ToDictionary(k => k.Key, g => g.AsEnumerable());
 
             _logger.Log(LogLevel.Information, "Finding senders contract");
@@ -107,27 +106,17 @@ namespace UiRtc.TypeScriptGenerator
                 if (classNamedTypeSymbol != null &&
                     classNamedTypeSymbol.AllInterfaces.Select(i => i.ConstructedFrom).Contains(handlerSymbol, SymbolEqualityComparer.Default))
                 {
-                    //Here if class which determinated as handler implementation
+                    //Here if class which determinate as handler implementation
 
-                    //Concreate Interface which determinate that it's handler
-                    var concreateInterface = classNamedTypeSymbol.AllInterfaces.Where(i => i.ConstructedFrom.Equals(handlerSymbol, SymbolEqualityComparer.Default))
-                                                                           .First();
-
-                    if (concreateInterface.TypeArguments == null || concreateInterface.TypeArguments.Length == 0)
-                    {
-                        throw new Exception("Interface should have first generic parameter to determinate the Hub");
-                    }
+                    //Concrete Interface which determinate that it's handler
+                    var concreateInterface = classNamedTypeSymbol.AllInterfaces.FirstOrDefault(i => i.ConstructedFrom.Equals(handlerSymbol, SymbolEqualityComparer.Default));
+                    if (concreateInterface == null) continue; // Skip if not found
 
                     var handlerMethodName = GetMethodName(classNamedTypeSymbol);
-
                     var hubName = GetHubNameFromAttributes(concreateInterface.TypeArguments.First().GetAttributes(), handlerMethodName);
-
-                    //TODO: Add naming hub by interface naming as well
-                    //TODO: Add naming handler by attribute as well
 
                     //If this is handler with parameter
                     var modelType = concreateInterface.TypeArguments.Length > 1 ? concreateInterface.TypeArguments.Skip(1).First().Name : null;
-
 
                     var record = new HandlerDataRecord(hubName, handlerMethodName, modelType);
                     _logger.Log(LogLevel.Information, $"For hub {hubName} has been found handler: {handlerMethodName}");
@@ -137,23 +126,9 @@ namespace UiRtc.TypeScriptGenerator
             return handlersCollection;
         }
 
-        private string GetMethodName(INamedTypeSymbol type)
-        {
-            var attribute = type.GetAttributes().FirstOrDefault(a=> a.AttributeClass.ToString() ==typeof(UiRtcMethodAttribute).FullName);
-            var methodName = attribute?.ConstructorArguments.FirstOrDefault().Value?.ToString();
-
-            if (string.IsNullOrEmpty(methodName))
-            {
-                return type.Name;
-            }
-
-            return methodName;
-        }
-
         private IEnumerable<SenderDataRecord> GetSenderData(SyntaxTree syntaxTree, SemanticModel semanticModel, INamedTypeSymbol? senderContractSymbol)
         {
             var senderDataRecords = new List<SenderDataRecord>();
-
 
             if (senderContractSymbol == null)
             {
@@ -170,35 +145,28 @@ namespace UiRtc.TypeScriptGenerator
                 {
                     //This interfaceSymbol is a contract for sender. Contains list of methods 
 
-                    var sendorMethods = interfaceSymbol.GetMembers().OfType<IMethodSymbol>().ToList();
-                    var hubName = GetHubNameFromAttributes(interfaceSymbol.AllInterfaces.First(i => i.ConstructedFrom == senderContractSymbol).TypeArguments[0].GetAttributes(), interfaceSymbol.Name);
+                    var hubName = GetHubNameFromAttributes(
+                        interfaceSymbol
+                            .AllInterfaces
+                            .First(i => i.ConstructedFrom.Equals(senderContractSymbol, SymbolEqualityComparer.Default))
+                            .TypeArguments[0]
+                            .GetAttributes(),
+                        interfaceSymbol.Name);
 
+                    var sendorMethods = interfaceSymbol.GetMembers().OfType<IMethodSymbol>().ToList();
                     foreach (IMethodSymbol? sendorMethod in sendorMethods)
                     {
-                        //TODO: Implement attribute to ignore method
                         var modelTypeName = sendorMethod.Parameters.FirstOrDefault()?.Type.Name;
 
-                        var senderMethodName = GetMethodName(sendorMethod); //.Name;
+                        var senderMethodName = GetMethodName(sendorMethod);
 
+                        var record = new SenderDataRecord(hubName, senderMethodName, modelTypeName);
                         _logger.Log(LogLevel.Information, $"For sender {hubName} has been found sendor methods: {senderMethodName}");
-                        senderDataRecords.Add(new SenderDataRecord(hubName, senderMethodName, modelTypeName));
+                        senderDataRecords.Add(record);
                     }
                 }
             }
             return senderDataRecords;
-        }
-
-        private string GetMethodName(IMethodSymbol type)
-        {
-            var attribute = type.GetAttributes().FirstOrDefault(a => a.AttributeClass.ToString() == typeof(UiRtcMethodAttribute).FullName);
-            var methodName = attribute?.ConstructorArguments.FirstOrDefault().Value?.ToString();
-
-            if (string.IsNullOrEmpty(methodName))
-            {
-                return type.Name;
-            }
-
-            return methodName;
         }
 
         private async Task<Compilation> CreateCompilationAsync(string projectPath, CancellationToken cancelationToken, bool IsDiagnosticOn = false)
@@ -239,6 +207,18 @@ namespace UiRtc.TypeScriptGenerator
 
             _compilation = compilation;
             return compilation;
+        }
+
+        private string GetMethodName(ISymbol symbol)
+        {
+            if (symbol == null) throw new ArgumentNullException(nameof(symbol));
+
+            var attribute = symbol.GetAttributes()
+                .FirstOrDefault(a => a.AttributeClass?.ToString() == typeof(UiRtcMethodAttribute).FullName);
+
+            var methodName = attribute?.ConstructorArguments.Any() == true ? attribute.ConstructorArguments[0].Value?.ToString() : null;
+
+            return string.IsNullOrEmpty(methodName) ? symbol.Name : methodName;
         }
 
         private string GetHubNameFromAttributes(IEnumerable<AttributeData> attributes, string blameName)
