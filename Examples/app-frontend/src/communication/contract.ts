@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2025-02-03 01:17:56 UTC 
+ * Generated on: 2025-02-07 20:21:00 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -13,38 +13,38 @@ import {
   HubConnectionState
 } from "@microsoft/signalr";
 
-type uiRtcHubs = 'RandomHub' | 'Weather';
-const allHubs: uiRtcHubs[] = ['RandomHub', 'Weather'];
+type uiRtcHubs = 'RandomNumberHub' | 'Weather';
+const allHubs: uiRtcHubs[] = ['RandomNumberHub', 'Weather'];
 
-type hubMethods = RandomHubMethod | WeatherMethod;
+type hubMethods = RandomNumberHubMethod | WeatherMethod;
 
-type RandomHubMethod = 'GenerateNewNumberHandler' | 'GenerateNewRangeNumberHandler';
+type RandomNumberHubMethod = 'RequestNewNumber' | 'RequestNewRangeNumber';
 type WeatherMethod = 'GetWeatherForecast';
 
-type hubSubscriptions = RandomHubSubscription | WeatherSubscription;
+type hubSubscriptions = RandomNumberHubSubscription | WeatherSubscription;
 
-type RandomHubSubscription = 'SendRandomNumberMessage';
-type WeatherSubscription = 'SendWeatherForecast';
+type RandomNumberHubSubscription = 'RandomNumber';
+type WeatherSubscription = 'WeatherForecast';
 
 const connections: RConnections = {
-    RandomHub: {},
+    RandomNumberHub: {},
   Weather: {},
 };
 
 export const uiRtcSubscription = {
-    RandomHub: {
-    SendRandomNumberMessage: (callBack: (data: RandomValueResponseModel) => void) => subscribe("RandomHub", "SendRandomNumberMessage", callBack),
+    RandomNumberHub: {
+    RandomNumber: (callBack: (data: RandomValueResponseModel) => void) => subscribe("RandomNumberHub", "RandomNumber", callBack),
   },
   Weather: {
-    SendWeatherForecast: (callBack: (data: WeatherForecastResponseModel) => void) => subscribe("Weather", "SendWeatherForecast", callBack),
+    WeatherForecast: (callBack: (data: WeatherForecastResponseModel) => void) => subscribe("Weather", "WeatherForecast", callBack),
   },
 
 };
 
 export const uiRtcCommunication = {
-    RandomHub: {
-    GenerateNewNumberHandler: () => send("RandomHub", "GenerateNewNumberHandler"),
-    GenerateNewRangeNumberHandler: (request: RandomRangeRequestModel) => send("RandomHub", "GenerateNewRangeNumberHandler", request),
+    RandomNumberHub: {
+    RequestNewNumber: () => send("RandomNumberHub", "RequestNewNumber"),
+    RequestNewRangeNumber: (request: RandomRangeRequestModel) => send("RandomNumberHub", "RequestNewRangeNumber", request),
   },
   Weather: {
     GetWeatherForecast: (request: WeatherForecastRequestModel) => send("Weather", "GetWeatherForecast", request),
@@ -56,7 +56,7 @@ export const uiRtcCommunication = {
 /* eslint-disable */
 /* tslint:disable */
 
-/** Transpiled from App_backend.Communication.RandonNumberChannel.Models.RandomRangeRequestModel */
+/** Transpiled from App_backend.Communication.RandomNumber.Models.RandomRangeRequestModel */
 export type RandomRangeRequestModel = {
     /** Transpiled from int */
     minValue: number;
@@ -64,7 +64,7 @@ export type RandomRangeRequestModel = {
     maxValue: number;
 }
 
-/** Transpiled from App_backend.Communication.RandonNumberChannel.Models.RandomValueResponseModel */
+/** Transpiled from App_backend.Communication.RandomNumber.Models.RandomValueResponseModel */
 export type RandomValueResponseModel = {
     /** Transpiled from int */
     value: number;
@@ -76,20 +76,8 @@ export type RandomValueResponseModel = {
 /* eslint-disable */
 /* tslint:disable */
 
-/** Transpiled from App_backend.Communication.WeatherChannel.Models.WeatherForecastRequestModel */
-export type WeatherForecastRequestModel = {
-    /** Transpiled from string */
-    city: string;
-}
-
-/** Transpiled from App_backend.Communication.WeatherChannel.Models.WeatherForecastResponseModel */
-export type WeatherForecastResponseModel = {
-    /** Transpiled from System.Collections.Generic.IEnumerable<App_backend.Communication.WeatherChannel.Models.WeatherForecast> */
-    weatherForecasts: WeatherForecast[];
-}
-
-/** Transpiled from App_backend.Communication.WeatherChannel.Models.WeatherForecast */
-export type WeatherForecast = {
+/** Transpiled from App_backend.Communication.WeatherChannel.Models.WeatherForecastDetail */
+export type WeatherForecastDetail = {
     /** Transpiled from System.DateTime */
     date: (Date | string);
     /** Transpiled from int */
@@ -98,6 +86,20 @@ export type WeatherForecast = {
     temperatureF: number;
     /** Transpiled from string? */
     summary?: string;
+}
+
+/** Transpiled from App_backend.Communication.WeatherChannel.Models.WeatherForecastRequestModel */
+export type WeatherForecastRequestModel = {
+    /** Transpiled from string */
+    city: string;
+}
+
+/** Transpiled from App_backend.Communication.WeatherChannel.Models.WeatherForecastResponseModel */
+export type WeatherForecastResponseModel = {
+    /** Transpiled from System.Collections.Generic.IEnumerable<App_backend.Communication.WeatherChannel.Models.WeatherForecastDetail> */
+    weatherForecast: WeatherForecastDetail[];
+    /** Transpiled from string */
+    city: string;
 }
 
 

@@ -4,17 +4,17 @@ import { useEffect, useState } from "react";
 import {
   uiRtcCommunication,
   uiRtcSubscription,
-  WeatherForecast,
+  WeatherForecastDetail,
   WeatherForecastResponseModel,
 } from "../../communication/contract";
 
 export const WeatherComponent = () => {
-  const [weather, setWeather] = useState<WeatherForecast[]>([]);
+  const [weather, setWeather] = useState<WeatherForecastDetail[]>([]);
 
   useEffect(() => {
-    uiRtcSubscription.Weather.SendWeatherForecast(
+    uiRtcSubscription.Weather.WeatherForecast(
       (data: WeatherForecastResponseModel) => {
-        setWeather(data.weatherForecasts);
+        setWeather(data.weatherForecast);
       }
     );
   }, []);

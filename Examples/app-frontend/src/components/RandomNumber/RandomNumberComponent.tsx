@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  RandomValueResponseModel,
   uiRtcCommunication,
   uiRtcSubscription,
 } from "../../communication/contract";
@@ -8,23 +9,24 @@ import "./RandomNumberComponent.css"; // Create a custom CSS file for styles
 
 const RandomNumberComponent = () => {
   const [customNumber, setCustomNumber] = useState(0);
-  const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(100);
+  const [minValue, setMinValue] = useState(150);
+  const [maxValue, setMaxValue] = useState(200);
 
   useEffect(() => {
-    uiRtcSubscription.RandomHub.SendRandomNumberMessage((data) => {
-      setCustomNumber(data.value);
-    });
+    uiRtcSubscription.RandomNumberHub.RandomNumber(
+      (data: RandomValueResponseModel) => {
+        setCustomNumber(data.value);
+      }
+    );
   }, []);
 
   const generateNewNumber = () => {
-    uiRtcCommunication.RandomHub.GenerateNewNumberHandler();
-    //serverConnection.current?.send("GenerateNewNumber");
+    uiRtcCommunication.RandomNumberHub.RequestNewNumber();
   };
 
   const generateNewRangeNumber = () => {
     if (minValue < maxValue) {
-      uiRtcCommunication.RandomHub.GenerateNewRangeNumberHandler({
+      uiRtcCommunication.RandomNumberHub.RequestNewRangeNumber({
         minValue,
         maxValue,
       });

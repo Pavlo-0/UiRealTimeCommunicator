@@ -5,9 +5,9 @@ using UiRtc.Typing.PublicInterface.Attributes;
 namespace App_backend.Communication.WeatherChannel
 {
 
-    public interface WeatherChannelContract: IUiRtcSenderContract<WeatherHub>
+    public interface WeatherChannelSenderContract: IUiRtcSenderContract<WeatherHub>
     {
-        [UiRtcMethod("SendWeatherForecast")]
-        Task SendWeatherForecastSender(WeatherForecastResponseModel forecast);
+        [UiRtcMethod("WeatherForecast")]
+        Task SendWeatherForecast(WeatherForecastResponseModel forecast);
     }
 }

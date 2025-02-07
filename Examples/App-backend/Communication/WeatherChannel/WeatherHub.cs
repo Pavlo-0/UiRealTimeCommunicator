@@ -6,6 +6,5 @@ namespace App_backend.Communication.WeatherChannel
     [UiRtcHub("Weather")]
     public class WeatherHub : IUiRtcHub
     {
-
     }
 }

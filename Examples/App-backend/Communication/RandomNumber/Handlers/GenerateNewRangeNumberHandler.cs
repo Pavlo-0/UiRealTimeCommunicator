@@ -1,9 +1,12 @@
-﻿using App_backend.Communication.RandonNumberChannel.Models;
+﻿using App_backend.Communication.RandomNumber.Models;
+using App_backend.Communication.RandomNumberChannel;
 using UiRtc.Public;
 using UiRtc.Typing.PublicInterface;
+using UiRtc.Typing.PublicInterface.Attributes;
 
-namespace App_backend.Communication.RandonNumberChannel.Consumer
+namespace App_backend.Communication.RandomNumber.Handlers
 {
+    [UiRtcMethod("RequestNewRangeNumber")]
     public class GenerateNewRangeNumberHandler(ISenderService senderService) : IUiRtcHandler<RandomHub, RandomRangeRequestModel>
     {
         public Task ConsumeAsync(RandomRangeRequestModel rangeModel)
@@ -14,7 +17,7 @@ namespace App_backend.Communication.RandonNumberChannel.Consumer
                 Value = rangeModel.MinValue + _random.Next(rangeModel.MaxValue - rangeModel.MinValue),
             };
 
-            senderService.Send<IRandomNumberContract>().SendRandomNumberMessage(model);
+            senderService.Send<IRandomNumberSenderContract>().SendRandomNumber(model);
 
             return Task.CompletedTask;
         }

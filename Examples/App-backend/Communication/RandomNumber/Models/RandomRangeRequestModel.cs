@@ -1,6 +1,6 @@
 ﻿using Tapper;
 
-namespace App_backend.Communication.RandonNumberChannel.Models
+namespace App_backend.Communication.RandomNumber.Models
 {
     [TranspilationSource]
     public class RandomRangeRequestModel
