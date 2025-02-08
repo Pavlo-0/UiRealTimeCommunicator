@@ -38,9 +38,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="README.md">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
+		<None Include="README.md" Pack="true" PackagePath="README.md" />
 		<None Update="Templates\TsTemplate.v1.0.ts">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
