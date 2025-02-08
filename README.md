@@ -190,7 +190,3 @@ uiRtcSubscription.Weather.WeatherForecast(
 - **✅ Reduces boilerplate code**: The framework abstracts away many manual tasks like serialization, deserialization, and message routing, allowing developers to focus on core functionality.
 
 ⚡ **Start building real-time applications today!** The library ensures a seamless and type-safe communication layer for your .NET and TypeScript applications.
-
----
-
-Эта версия более подробно объясняет функциональность библиотеки, добавляет примеры использования, а также уточняет, как генерировать TypeScript код и подписываться на сообщения.
