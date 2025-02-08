@@ -27,12 +27,11 @@ dotnet run -- Generator -p  ..\Examples\BroadcastStream\BroadcastStream.csproj  
 
 
 # install
-# TypedSignalR.Client.TypeScript CLI (dotnet tool) requires .NET 7, but your app TFM can use .NET 6, etc.
-$ dotnet tool install --global UiRealTimeCommunicator-develop
+$ dotnet tool install --global UiRealTimeCommunicator.TypeScriptGenerator
 $ dotnet tsrts help
 
 # update
-$ dotnet tool update --global UiRtc.TypeScriptGenerator
+$ dotnet tool update --global UiRealTimeCommunicator.TypeScriptGenerator
 
 
-dotnet-uirtc
+dotnet-uirtc -p ".\App-backend\App-backend.csproj" -o ".\app-frontend\src\communication\contract.ts"
