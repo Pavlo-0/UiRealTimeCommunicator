@@ -8,7 +8,8 @@
 		<Configurations>Debug;Release</Configurations>
 
 		<Authors>Pavlo S.</Authors>
-		<Description>Ui Real Time Communicator. The .NET Core 8 library for seamless two-way communication between a C# ASP.NET app and a TypeScript client using SignalR.</Description>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<Description>Ui Real Time Communicator is a .NET Core 8 library that enables seamless two-way communication with strong compile-time typing between a C# ASP.NET app and a TypeScript client using SignalR.</Description>
 		<PackageTags>SignalR; ASP.NET; TypeScript; WebSockets; Realtime; Messaging; Communication; PubSub; RPC; Duplex</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/Pavlo-0/UiRealTimeCommunicator</RepositoryUrl>
