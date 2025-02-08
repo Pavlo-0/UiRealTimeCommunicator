@@ -1,0 +1,81 @@
+pool:
+  name: "Default"
+
+variables:
+  projectName: "UiRtc"
+  projectUnitTestName: "UiRtc.UnitTests"
+  packageName: "UiRealTimeCommunicator"
+
+  projectGeneratorName: "UiRtc.TypeScriptGenerator"
+  projectGeneratorUnitTestName: "UiRtc.TypeScriptGenerator.UnitTests"
+  packageGeneratorName: "UiRealTimeCommunicator.TypeScriptGenerator"
+
+  solutionName: "UiRealTimeCommunicator"
+  buildConfiguration: "Release"
+  nugetSource: "https://api.nuget.org/v3/index.json" # NuGet.org Feed
+  #nugetApiKey: $(NuGetApiKey)  # Ensure this secret is defined in Azure DevOps
+  majorVersion: "1"
+  minorVersion: "0"
+  patchVersion: $(Build.BuildNumber) # Use the build number as the patch version
+  packageVersion: $(majorVersion).$(minorVersion).$(patchVersion)
+  prPackageVersion: "$(majorVersion).$(minorVersion).$(Build.BuildId)"
+  readmePath: "README.md" # Path to README.md (you can adjust this if it's located elsewhere)
+
+jobs:
+  - job: BuildAndPublish
+    displayName: "Build, Test, and Publish"
+    pool:
+      name: "Default"
+
+    steps:
+      # Step 1: Use .NET Core SDK
+      - task: UseDotNet@2
+        inputs:
+          packageType: "sdk"
+          version: "8.x"
+          installationPath: $(Agent.ToolsDirectory)/dotnet
+
+      # Step 2: Install NuGet Tool
+      - task: NuGetToolInstaller@1
+
+      # Step 3: Restore Dependencies
+      - script: dotnet restore $(solutionName).sln
+        displayName: "Restore NuGet Packages"
+
+      # Step 4: Determine Package Version
+      - powershell: |
+          if ("$(Build.Reason)" -eq "PullRequest") {
+              Write-Output "##vso[task.setvariable variable=packageVersion]$(prPackageVersion)"
+          }
+        displayName: "Set Version for Build"
+
+      # Step 5: Copy README.md to the Artifact Staging Directory
+      - powershell: |
+          Copy-Item "$(Build.SourcesDirectory)\$(readmePath)" "$(projectName)\$(readmePath)"
+        displayName: "Copy README.md to Solution UiRtc"
+
+      - powershell: |
+          Copy-Item "$(Build.SourcesDirectory)\$(readmePath)" "$(projectGeneratorName)\$(readmePath)"
+        displayName: "Copy README.md to Solution UiRtc.TypeScriptGenerator"
+
+      # Step 6: Build the Project
+      - script: dotnet build $(solutionName).sln --configuration $(buildConfiguration) --no-restore
+        displayName: "Build Project"
+
+      # Step 7: Run Unit Tests (Optional)
+      - script: dotnet test $(projectUnitTestName)/$(projectUnitTestName).csproj --configuration $(buildConfiguration) --no-build --logger trx
+        displayName: "Run Unit Tests UiRtc"
+
+      - script: dotnet test $(projectGeneratorUnitTestName)/$(projectGeneratorUnitTestName).csproj --configuration $(buildConfiguration) --no-build --logger trx
+        displayName: "Run Unit Tests for UiRtc.TypeScriptGenerator"
+
+      # Step 8: Pack the NuGet Package
+      - script: dotnet pack $(projectName)/$(projectName).csproj --configuration $(buildConfiguration) --no-build -o $(Build.ArtifactStagingDirectory) /p:PackageId=$(packageName) /p:PackageVersion=$(packageVersion)
+        displayName: "Create NuGet Package UiRtc"
+
+      - script: dotnet pack $(projectGeneratorName)/$(projectGeneratorName).csproj --configuration $(buildConfiguration) --no-build -o $(Build.ArtifactStagingDirectory) /p:PackageId=$(packageGeneratorName) /p:PackageVersion=$(packageVersion)
+        displayName: "Create NuGet Package for UiRtc.TypeScriptGenerator"
+
+      # Step 9: Push pack
+      - script: dotnet nuget push $(Build.ArtifactStagingDirectory)\*.nupkg --api-key $(NuGetApiKey3) --source https://api.nuget.org/v3/index.json
+        displayName: "Push NuGet Package"
