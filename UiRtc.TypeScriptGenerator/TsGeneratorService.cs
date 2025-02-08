@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using UiRtc.TypeScriptGenerator.DataModels;
@@ -16,8 +17,10 @@ namespace UiRtc.TypeScriptGenerator
 
         public string GenerateService(IDictionary<string, IEnumerable<SenderDataRecord>> senders, IDictionary<string, IEnumerable<HandlerDataRecord>> consumers, string[] modelsContent)
         {
+            string assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
             string templateName = "TsTemplate.v1.0.ts";
-            string template = File.ReadAllText(".\\Templates\\" + templateName);
+            string filePath = Path.Combine(assemblyPath, templateName);
+            string template = File.ReadAllText(filePath);
 
             var hubNames = senders.Keys.Union(consumers.Keys).ToArray();
             string timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + " UTC";

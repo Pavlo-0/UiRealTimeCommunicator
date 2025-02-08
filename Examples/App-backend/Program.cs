@@ -13,10 +13,7 @@ builder.Services.AddSwaggerGen();
 // Get the SignalR host URL from environment variables or default to localhost
 var hostUrl = builder.Configuration["ASPNETCORE_URLS"] ?? "http://localhost:5064";
 
-builder.Services.AddUiRealTimeCommunicator(config =>
-{
-    config.HostUrl = hostUrl;
-});
+builder.Services.AddUiRealTimeCommunicator();
 
 builder.Services.AddCors(options =>
 {

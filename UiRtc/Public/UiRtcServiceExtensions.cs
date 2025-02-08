@@ -15,10 +15,10 @@ namespace UiRtc.Public
 {
     public static class UiRtcServiceExtensions
     {
-        public static IServiceCollection AddUiRealTimeCommunicator(this IServiceCollection services, Action<IUiRtcConfiguration> options)
+        public static IServiceCollection AddUiRealTimeCommunicator(this IServiceCollection services, Action<IUiRtcConfiguration>? options = null)
         {
             var configuration = new Configuration();
-            options(configuration);
+            options?.Invoke(configuration); // Apply options if provided
 
             services.AddSignalR();
 

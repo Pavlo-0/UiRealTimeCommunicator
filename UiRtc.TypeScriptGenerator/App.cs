@@ -15,7 +15,7 @@ public class App : CoconaConsoleAppBase
     [Command(Description = "Transpile a C# project to the specified output directory.")]
     public async Task Generator(
         [Option('p', Description = "Path to the project file (Xxx.csproj)")] string project,
-        [Option('o', Description = "Output directory")] string output)
+        [Option('o', Description = "Output directory and file")] string output)
     {
         _logger.Log(LogLevel.Information, "Generating...");
         try
