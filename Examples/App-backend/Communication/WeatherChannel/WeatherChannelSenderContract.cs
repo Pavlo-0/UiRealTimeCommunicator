@@ -8,6 +8,6 @@ namespace App_backend.Communication.WeatherChannel
     public interface WeatherChannelSenderContract: IUiRtcSenderContract<WeatherHub>
     {
         [UiRtcMethod("WeatherForecast")]
-        Task SendWeatherForecast(WeatherForecastModel forecast);
+        Task SendWeatherForecast(WeatherForecastResponseModel forecast);
     }
 }

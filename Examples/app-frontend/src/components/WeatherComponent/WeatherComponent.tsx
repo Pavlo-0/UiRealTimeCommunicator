@@ -3,6 +3,7 @@ import "./WeatherComponent.css"; // Create a custom CSS file for styles
 import { useEffect, useState } from "react";
 import {
   uiRtcCommunication,
+  WeatherForecastRequestModel,
   uiRtcSubscription,
   WeatherForecastDetail,
   WeatherForecastResponseModel,
@@ -20,7 +21,9 @@ export const WeatherComponent = () => {
   }, []);
 
   const getForecast = () => {
-    uiRtcCommunication.Weather.GetWeatherForecast({ city: "Kharkiv" });
+    uiRtcCommunication.Weather.GetWeatherForecast({
+      city: "Kharkiv",
+    } as WeatherForecastRequestModel); //Strong typed!!!
   };
 
   return (

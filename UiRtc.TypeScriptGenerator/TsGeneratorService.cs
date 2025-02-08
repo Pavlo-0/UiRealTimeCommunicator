@@ -18,7 +18,7 @@ namespace UiRtc.TypeScriptGenerator
         public string GenerateService(IDictionary<string, IEnumerable<SenderDataRecord>> senders, IDictionary<string, IEnumerable<HandlerDataRecord>> consumers, string[] modelsContent)
         {
             string assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
-            string templateName = "TsTemplate.v1.0.ts";
+            string templateName = "Templates\\TsTemplate.v1.0.ts";
             string filePath = Path.Combine(assemblyPath, templateName);
             string template = File.ReadAllText(filePath);
 
