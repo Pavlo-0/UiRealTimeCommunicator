@@ -1,7 +1,3 @@
-Конечно, вот расширенная версия README с дополнительными деталями:
-
----
-
 ## UiRealTimeCommunicator
 
 **UiRealTimeCommunicator** is a NuGet library designed to enable seamless **strongly-typed message exchange** between a **C# .NET 8 server-side application** and a **TypeScript client-side application** using **SignalR**. This library simplifies WebSocket-based communication by providing strict type safety and an intuitive API, making it easy to implement real-time features like live updates, notifications, and interactive communication.
