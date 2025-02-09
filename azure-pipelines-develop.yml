@@ -61,6 +61,13 @@ jobs:
           }
         displayName: "Set Version for PR Build"
 
+      # Step 6: Build the Projects
+      - script: dotnet build $(solutionName).sln --configuration $(buildConfiguration) --no-restore -o $(uiRtcFolder)/bin
+        displayName: "Build UiRtc Project"
+
+      - script: dotnet build $(generatorSolutionName).sln --configuration $(buildConfiguration) --no-restore -o $(uiRtcGeneratorFolder)/bin
+        displayName: "Build UiRtc.TypeScriptGenerator Project"
+
       # Step 5: Copy README.md to the Artifact Staging Directory
       - powershell: |
           Copy-Item "$(Build.SourcesDirectory)\$(readmePath)" "$(uiRtcFolder)\$(readmePath)"
@@ -69,13 +76,6 @@ jobs:
       - powershell: |
           Copy-Item "$(Build.SourcesDirectory)\$(readmePath)" "$(uiRtcGeneratorFolder)\$(readmePath)"
         displayName: "Copy README.md to Solution UiRtc.TypeScriptGenerator"
-
-      # Step 6: Build the Projects
-      - script: dotnet build $(solutionName).sln --configuration $(buildConfiguration) --no-restore -o $(uiRtcFolder)/bin
-        displayName: "Build UiRtc Project"
-
-      - script: dotnet build $(generatorSolutionName).sln --configuration $(buildConfiguration) --no-restore -o $(uiRtcGeneratorFolder)/bin
-        displayName: "Build UiRtc.TypeScriptGenerator Project"
 
       # Step 7: Run Unit Tests (Optional)
       - script: dotnet test $(projectUnitTestName)/$(projectUnitTestName).csproj --configuration $(buildConfiguration) --no-build --logger trx
