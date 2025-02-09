@@ -78,17 +78,17 @@ jobs:
         displayName: "Copy README.md to Solution UiRtc.TypeScriptGenerator"
 
       # Step 7: Run Unit Tests (Optional)
-      - script: dotnet test $(projectUnitTestName)/$(projectUnitTestName).csproj --configuration $(buildConfiguration) --no-build --logger trx
+      - script: dotnet test $(uiRtcFolder)/$(projectUnitTestName)/$(projectUnitTestName).csproj --configuration $(buildConfiguration) --no-build --logger trx
         displayName: "Run Unit Tests UiRtc"
 
-      - script: dotnet test $(projectGeneratorUnitTestName)/$(projectGeneratorUnitTestName).csproj --configuration $(buildConfiguration) --no-build --logger trx
+      - script: dotnet test $(uiRtcGeneratorFolder)/$(projectGeneratorUnitTestName)/$(projectGeneratorUnitTestName).csproj --configuration $(buildConfiguration) --no-build --logger trx
         displayName: "Run Unit Tests for UiRtc.TypeScriptGenerator"
 
       # Step 8: Pack the NuGet Packages
-      - script: dotnet pack $(projectName)/$(projectName).csproj --configuration $(buildConfiguration) --no-build --no-restore -o $(uiRtcFolder)/nupkgs /p:PackageId=$(packageName) /p:PackageVersion=$(packageVersion)
+      - script: dotnet pack $(uiRtcFolder)/$(projectName)/$(projectName).csproj --configuration $(buildConfiguration) --no-build --no-restore -o $(uiRtcFolder)/nupkgs /p:PackageId=$(packageName) /p:PackageVersion=$(packageVersion)
         displayName: "Create NuGet Package UiRtc"
 
-      - script: dotnet pack $(projectGeneratorName)/$(projectGeneratorName).csproj --configuration $(buildConfiguration) --no-build -o $(uiRtcGeneratorFolder)/nupkgs /p:PackageId=$(packageGeneratorName) /p:PackageVersion=$(packageVersion)
+      - script: dotnet pack $(uiRtcGeneratorFolder)/$(projectGeneratorName)/$(projectGeneratorName).csproj --configuration $(buildConfiguration) --no-build -o $(uiRtcGeneratorFolder)/nupkgs /p:PackageId=$(packageGeneratorName) /p:PackageVersion=$(packageVersion)
         displayName: "Create NuGet Package for UiRtc.TypeScriptGenerator"
 
       # Step 9: Push NuGet Packages
