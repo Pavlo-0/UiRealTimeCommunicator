@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UiRtc.Typing\UiRtc.Typing.csproj" />
+    <ProjectReference Include="..\UiRtc.Typing\UiRtc.Typing.csproj" Pack="false" />
   </ItemGroup>
 
   <ItemGroup>
