@@ -69,7 +69,7 @@ jobs:
         displayName: "Run Unit Tests UiRtc"
 
       # Step 8: Pack the NuGet Packages
-      - script: dotnet pack $(projectName)/$(projectName).csproj --configuration $(buildConfiguration) --no-build --no-restore -o $(Build.ArtifactStagingDirectory) /p:PackageId=$(packageName) /p:PackageVersion=$(packageVersion)
+      - script: dotnet pack $(projectName)/$(projectName).csproj --configuration $(buildConfiguration) --no-build --no-restore -o $(Build.ArtifactStagingDirectory) /p:PackageId=$(packageName) /p:PackageVersion=$(packageVersion) /p:IncludeReferencedProjects=true
         displayName: "Create NuGet Package UiRtc"
 
       # Step 3: Restore Dependencies
