@@ -6,7 +6,7 @@ using UiRtc.Typing.PublicInterface.Attributes;
 namespace App_backend.Communication.WeatherChannel.Consumer
 {
     [UiRtcMethod("GetWeatherForecast")]
-    public class GetWeatherForecastHandler(ILogger<GetWeatherForecastHandler> logger, ISenderService senderService) : IUiRtcHandler<WeatherHub, WeatherForecastRequestModel>
+    public class GetWeatherForecastHandler(ILogger<GetWeatherForecastHandler> logger, IUiRtcSenderService senderService) : IUiRtcHandler<WeatherHub, WeatherForecastRequestModel>
     {
         private static readonly string[] Summaries = new[]
                {

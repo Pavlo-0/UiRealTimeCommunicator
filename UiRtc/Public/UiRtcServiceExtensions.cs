@@ -24,7 +24,7 @@ namespace UiRtc.Public
 
             services.AddSingleton<IUiRtcConfiguration>(configuration);
             services.AddTransient<IInvokeSenderService, InvokeSenderService>(); //Should be Transient
-            services.AddTransient<ISenderService, SenderService>();
+            services.AddTransient<IUiRtcSenderService, SenderService>();
 
             services.AddTransient<IHubRepository, HubRepository>();
 

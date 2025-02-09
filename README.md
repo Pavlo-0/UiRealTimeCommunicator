@@ -68,7 +68,7 @@ public interface WeatherChannelSenderContract: IUiRtcSenderContract<WeatherHub>
 In your service, use the **sender contract** to send messages:
 
 ```csharp
-public class WeatherService(ISenderService senderService)
+public class WeatherService(IUiRtcSenderService senderService)
 {
     public async Task WeatherServiceMethod(WeatherForecastModel model)
     {
