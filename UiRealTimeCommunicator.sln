@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiRtc.UnitTests", "UiRtc.Un
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiRtc.TypeScriptGenerator.UnitTests", "UiRtc.TypeScriptGenerator.UnitTests\UiRtc.TypeScriptGenerator.UnitTests.csproj", "{E5F97DBB-BC55-462B-86EC-0427EBBE9657}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTest", "IntegrationTest", "{5FFFABD9-A5B2-44E3-890A-A34C1F68E4A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BE01.IntegrationTest", "IntegrationTest\BE01.IntegrationTest\BE01.IntegrationTest.csproj", "{D4F7C5F7-E128-4567-8211-CC13DA819575}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,10 @@ Global
 		{E5F97DBB-BC55-462B-86EC-0427EBBE9657}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5F97DBB-BC55-462B-86EC-0427EBBE9657}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5F97DBB-BC55-462B-86EC-0427EBBE9657}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4F7C5F7-E128-4567-8211-CC13DA819575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4F7C5F7-E128-4567-8211-CC13DA819575}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4F7C5F7-E128-4567-8211-CC13DA819575}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4F7C5F7-E128-4567-8211-CC13DA819575}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +64,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{42C7AAEA-F158-420E-B02B-09C8D37C6A3B} = {6D9E63D3-2C32-499D-97B5-342333EFD7B1}
 		{6D9E63D3-2C32-499D-97B5-342333EFD7B1} = {CE91B3A1-1FB2-4B5A-B89C-7E4B005B26BF}
+		{D4F7C5F7-E128-4567-8211-CC13DA819575} = {5FFFABD9-A5B2-44E3-890A-A34C1F68E4A6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {58FE2E81-06A7-4D02-9CBA-E8CC331893D0}

@@ -10,3 +10,7 @@ var app = builder.Build();
 app.AddCommands<App>();
 
 await app.RunAsync();
+
+#if DEBUG
+await Task.Delay(5000);
+#endif

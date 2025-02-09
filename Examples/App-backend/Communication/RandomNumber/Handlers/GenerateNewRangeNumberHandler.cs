@@ -7,7 +7,7 @@ using UiRtc.Typing.PublicInterface.Attributes;
 namespace App_backend.Communication.RandomNumber.Handlers
 {
     [UiRtcMethod("RequestNewRangeNumber")]
-    public class GenerateNewRangeNumberHandler(ISenderService senderService) : IUiRtcHandler<RandomHub, RandomRangeRequestModel>
+    public class GenerateNewRangeNumberHandler(IUiRtcSenderService senderService) : IUiRtcHandler<RandomHub, RandomRangeRequestModel>
     {
         public Task ConsumeAsync(RandomRangeRequestModel rangeModel)
         {

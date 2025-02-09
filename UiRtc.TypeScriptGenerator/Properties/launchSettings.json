@@ -2,7 +2,7 @@
   "profiles": {
     "UiRtc.TypeScriptGenerator": {
       "commandName": "Project",
-      "commandLineArgs": "-p ..\\Examples\\App-backend\\App-backend.csproj -o ..\\Examples\\app-frontend\\src\\communication\\contract.ts",
+      "commandLineArgs": "-p ..\\IntegrationTest\\BE01.IntegrationTest\\BE01.IntegrationTest.csproj -o ..\\IntegrationTest\\FE01.IntegrationTest\\src\\communication\\contract.ts",
       "workingDirectory": "D:\\Projects\\UiRealTimeCommunicator\\UiRtc.TypeScriptGenerator"
     }
   }

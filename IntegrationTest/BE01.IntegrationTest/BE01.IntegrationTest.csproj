@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\UiRtc.Typing\UiRtc.Typing.csproj" />
+    <ProjectReference Include="..\..\UiRtc\UiRtc.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="dotnet build &quot;$(SolutionDir)\UiRtc.TypeScriptGenerator\UiRtc.TypeScriptGenerator.csproj&quot; --configuration $(Configuration)&#xA;&#xD;&#xA;&#xD;&#xA;start /D &quot;$(SolutionDir)UiRtc.TypeScriptGenerator\bin\$(Configuration)\net8.0&quot; UiRtc.TypeScriptGenerator.exe -p &quot;..\..\..\..\IntegrationTest\BE01.IntegrationTest\BE01.IntegrationTest.csproj&quot; -o &quot;..\..\..\..\IntegrationTest\FE01.IntegrationTest\src\communication\contract.ts&quot;" />
+  </Target>
+
+</Project>

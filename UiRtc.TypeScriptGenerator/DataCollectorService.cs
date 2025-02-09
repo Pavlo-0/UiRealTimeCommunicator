@@ -113,7 +113,7 @@ namespace UiRtc.TypeScriptGenerator
                     if (concreateInterface == null) continue; // Skip if not found
 
                     var handlerMethodName = GetMethodName(classNamedTypeSymbol);
-                    var hubName = GetHubNameFromAttributes(concreateInterface.TypeArguments.First().GetAttributes(), handlerMethodName);
+                    var hubName = GetHubNameFromAttributes(concreateInterface.TypeArguments.First());
 
                     //If this is handler with parameter
                     var modelType = concreateInterface.TypeArguments.Length > 1 ? concreateInterface.TypeArguments.Skip(1).First().Name : null;
@@ -149,9 +149,7 @@ namespace UiRtc.TypeScriptGenerator
                         interfaceSymbol
                             .AllInterfaces
                             .First(i => i.ConstructedFrom.Equals(senderContractSymbol, SymbolEqualityComparer.Default))
-                            .TypeArguments[0]
-                            .GetAttributes(),
-                        interfaceSymbol.Name);
+                            .TypeArguments[0]);
 
                     var sendorMethods = interfaceSymbol.GetMembers().OfType<IMethodSymbol>().ToList();
                     foreach (IMethodSymbol? sendorMethod in sendorMethods)
@@ -221,21 +219,16 @@ namespace UiRtc.TypeScriptGenerator
             return string.IsNullOrEmpty(methodName) ? symbol.Name : methodName;
         }
 
-        private string GetHubNameFromAttributes(IEnumerable<AttributeData> attributes, string blameName)
+        private string GetHubNameFromAttributes(ITypeSymbol typedSymbol)
         {
+            var attributes = typedSymbol.GetAttributes();
             var hubAttribute = attributes
                 .FirstOrDefault(attr => attr.AttributeClass != null && attr.AttributeClass.Name == nameof(UiRtcHubAttribute));
-            if (hubAttribute == null)
-            {
-                _logger.Log(LogLevel.Error, $"Attribute {nameof(UiRtcHubAttribute)} not found at {blameName}");
-                throw new UiRtcHubAttributeNotFound($"Attribute {nameof(UiRtcHubAttribute)} not found at {blameName}");
-            }
 
-            var hubName = hubAttribute.ConstructorArguments.FirstOrDefault().Value?.ToString();
+            var hubName = hubAttribute?.ConstructorArguments.FirstOrDefault().Value?.ToString();
             if (string.IsNullOrEmpty(hubName))
             {
-                _logger.Log(LogLevel.Error, $"Name for {nameof(UiRtcHubAttribute)} should not be empty at {blameName}");
-                throw new UiRtcHubAttributeNotFound($"Name for {nameof(UiRtcHubAttribute)} should not be empty at {blameName}");
+                return typedSymbol.Name;
             }
 
             return hubName;

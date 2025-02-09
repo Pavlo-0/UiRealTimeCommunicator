@@ -30,11 +30,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UiRtc.Typing\UiRtc.Typing.csproj" />
+    <ProjectReference Include="..\UiRtc.Typing\UiRtc.Typing.csproj" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
 	  <None Include="README.md" Pack="true" PackagePath="README.md" />
+	  <None Include="$(OutputPath)UiRtc.Typing.dll" Pack="true" PackagePath="lib/net8.0/" />
+	  <None Include="$(OutputPath)UiRtc.Typing.pdb" Pack="true" PackagePath="lib/net8.0/" />
   </ItemGroup>
+
+	<!-- This Target is just to log the OutputPath for debugging purposes -->
+	<Target Name="LogOutputPath" AfterTargets="Build">
+		<Message Text="Output Path: $(OutputPath)" Importance="high" />
+	</Target>
+
 
 </Project>

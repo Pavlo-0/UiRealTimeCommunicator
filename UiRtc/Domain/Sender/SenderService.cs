@@ -4,7 +4,7 @@ using UiRtc.Typing.PublicInterface;
 
 namespace UiRtc.Domain.Sender
 {
-    internal class SenderService : ISenderService
+    internal class SenderService : IUiRtcSenderService
     {
         private readonly IInvokeSenderService invokeSenderService;
         private readonly IServiceProvider service;

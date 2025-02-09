@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2025-02-08 02:58:11 UTC 
+ * Generated on: 2025-02-08 03:06:18 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */

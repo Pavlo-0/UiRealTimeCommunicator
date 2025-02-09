@@ -4,7 +4,7 @@ using UiRtc.Typing.PublicInterface;
 
 namespace UiRtc.Public
 {
-    public interface ISenderService
+    public interface IUiRtcSenderService
     {
         TContract Send<TContract>() where TContract : IUiRtcSenderContract<IUiRtcHub>;
     }
