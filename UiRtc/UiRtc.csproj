@@ -39,4 +39,10 @@
 	  <None Include="$(OutputPath)UiRtc.Typing.pdb" Pack="true" PackagePath="lib/net8.0/" />
   </ItemGroup>
 
+	<!-- This Target is just to log the OutputPath for debugging purposes -->
+	<Target Name="LogOutputPath" AfterTargets="Build">
+		<Message Text="Output Path: $(OutputPath)" Importance="high" />
+	</Target>
+
+
 </Project>
