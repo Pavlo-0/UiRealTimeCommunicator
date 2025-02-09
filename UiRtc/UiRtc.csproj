@@ -35,7 +35,8 @@
 
   <ItemGroup>
 	  <None Include="README.md" Pack="true" PackagePath="README.md" />
-	  <None Include="$(OutputPath)UiRtc.Typing" Pack="true" PackagePath="lib/net8.0/" />
+	  <None Include="$(OutputPath)UiRtc.Typing.dll" Pack="true" PackagePath="lib/net8.0/" />
+	  <None Include="$(OutputPath)UiRtc.Typing.pdb" Pack="true" PackagePath="lib/net8.0/" />
   </ItemGroup>
 
 </Project>
