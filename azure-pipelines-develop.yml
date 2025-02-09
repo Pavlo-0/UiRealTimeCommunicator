@@ -62,10 +62,10 @@ jobs:
         displayName: "Set Version for PR Build"
 
       # Step 6: Build the Projects
-      - script: dotnet build $(solutionName).sln --configuration $(buildConfiguration) --no-restore -o $(uiRtcFolder)/bin
+      - script: dotnet build $(solutionName).sln --configuration $(buildConfiguration) --no-restore -o $(uiRtcFolder)
         displayName: "Build UiRtc Project"
 
-      - script: dotnet build $(generatorSolutionName).sln --configuration $(buildConfiguration) --no-restore -o $(uiRtcGeneratorFolder)/bin
+      - script: dotnet build $(generatorSolutionName).sln --configuration $(buildConfiguration) --no-restore -o $(uiRtcGeneratorFolder)
         displayName: "Build UiRtc.TypeScriptGenerator Project"
 
       # Step 5: Copy README.md to the Artifact Staging Directory
@@ -78,10 +78,10 @@ jobs:
         displayName: "Copy README.md to Solution UiRtc.TypeScriptGenerator"
 
       # Step 7: Run Unit Tests (Optional)
-      - script: dotnet test $(uiRtcFolder)/$(projectUnitTestName)/$(projectUnitTestName).csproj --configuration $(buildConfiguration) --no-build --logger trx
+      - script: dotnet test $(uiRtcFolder)\$(projectUnitTestName)\$(projectUnitTestName).csproj --configuration $(buildConfiguration) --no-build --logger trx
         displayName: "Run Unit Tests UiRtc"
 
-      - script: dotnet test $(uiRtcGeneratorFolder)/$(projectGeneratorUnitTestName)/$(projectGeneratorUnitTestName).csproj --configuration $(buildConfiguration) --no-build --logger trx
+      - script: dotnet test $(uiRtcGeneratorFolder)\$(projectGeneratorUnitTestName)\$(projectGeneratorUnitTestName).csproj --configuration $(buildConfiguration) --no-build --logger trx
         displayName: "Run Unit Tests for UiRtc.TypeScriptGenerator"
 
       # Step 8: Pack the NuGet Packages
