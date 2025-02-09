@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UiRtc.Typing\UiRtc.Typing.csproj" PrivateAssets="All"  />
+    <ProjectReference Include="..\UiRtc.Typing\UiRtc.Typing.csproj" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
