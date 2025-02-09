@@ -75,11 +75,11 @@ jobs:
         displayName: "Run Unit Tests for UiRtc.TypeScriptGenerator"
 
       # Step 8: Pack the NuGet Package
-      - script: dotnet pack $(projectName)/$(projectName).csproj --configuration $(buildConfiguration) --no-build -o $(Build.ArtifactStagingDirectory) /p:PackageId=$(packageName) /p:PackageVersion=$(packageVersion)
+      - script: dotnet pack $(projectName)/$(projectName).csproj --configuration $(buildConfiguration) --no-build --no-restore -o $(Build.ArtifactStagingDirectory) /p:PackageId=$(packageName) /p:PackageVersion=$(packageVersion)
         displayName: "Create NuGet Package UiRtc"
 
       - script: dotnet pack $(projectGeneratorName)/$(projectGeneratorName).csproj --configuration $(buildConfiguration) --no-build -o $(Build.ArtifactStagingDirectory) /p:PackageId=$(packageGeneratorName) /p:PackageVersion=$(packageVersion)
-        displayName: "Create NuGet Package for UiRtc.TypeScriptGenerator"        
+        displayName: "Create NuGet Package for UiRtc.TypeScriptGenerator"
 
       # Step 9: Push pack
       - script: dotnet nuget push $(Build.ArtifactStagingDirectory)\*.nupkg --api-key $(NuGetApiKey3) --source https://api.nuget.org/v3/index.json
