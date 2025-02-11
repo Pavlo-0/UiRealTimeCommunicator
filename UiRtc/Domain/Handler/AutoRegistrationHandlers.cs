@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using UiRtc.Domain.HubMap.Interface;
 using UiRtc.Domain.Repository.Interface;
 using UiRtc.Domain.Repository.Records;
 using UiRtc.Typing.PublicInterface;
@@ -10,6 +9,26 @@ namespace UiRtc.Domain.Handler
 
     internal class AutoRegistrationHandlers()
     {
+        public void RegisterConnections(IServiceCollection services,
+                                        IConnectionRepository connectionRepository)
+        {
+            var assembly = Assembly.GetEntryAssembly()!;
+            var typeConnection = typeof(IUiRtcConnection<>);
+            var allConnectionImplmentationTypes = GetClassesImplementing([typeConnection], assembly);
+
+            foreach (var connectionImplmentationTypes in allConnectionImplmentationTypes)
+            {
+                var hubName = connectionImplmentationTypes.GetGenericArguments()[0].Name;
+                var interfaceImplementation = connectionImplmentationTypes.GetInterfaces()
+                    .First(i => i.ReflectedType == typeConnection);
+
+                var record = new ConnectionRecord(hubName, interfaceImplementation, connectionImplmentationTypes);
+
+                connectionRepository.Add(record);
+                services.AddTransient(record.ConInterfaceImplementation, record.ConImplementation);
+            }
+        }
+
         public void RegisterHandlers(IServiceCollection services, IHandlerRepository consumerRepository)
         {
             //Registering consumers

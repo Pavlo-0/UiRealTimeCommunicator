@@ -24,6 +24,7 @@ namespace UiRtc.Public
 
             services.AddSingleton<IUiRtcConfiguration>(configuration);
             services.AddTransient<IInvokeSenderService, InvokeSenderService>(); //Should be Transient
+            services.AddTransient<IConnectionInvokeService, ConnectionInvokeService>(); //Should be Transient
             services.AddTransient<IUiRtcSenderService, SenderService>();
 
             services.AddTransient<IHubRepository, HubRepository>();
@@ -32,11 +33,15 @@ namespace UiRtc.Public
             services.AddTransient<IAutoRegistrationHubs, AutoRegistrationHubs>();
 
             //Registering Handlers
-            var repository = new HandlerRepository();
-            services.AddSingleton<IHandlerRepository>(repository);
+            var handlerRepository = new HandlerRepository();
+            services.AddSingleton<IHandlerRepository>(handlerRepository);
+
+            var connectionRepository = new ConnectionRepository();
+            services.AddSingleton<IConnectionRepository>(connectionRepository);
 
             var autoRegisterHandlers = new AutoRegistrationHandlers();
-            autoRegisterHandlers.RegisterHandlers(services, repository);
+            autoRegisterHandlers.RegisterHandlers(services, handlerRepository);
+            autoRegisterHandlers.RegisterConnections(services, connectionRepository);
 
             return services;
         }

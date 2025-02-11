@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="UiRealTimeCommunicator" Version="1.0.193" />
     <PackageReference Include="UiRealTimeCommunicator-develop" Version="1.0.20250209.21" />
   </ItemGroup>
 
