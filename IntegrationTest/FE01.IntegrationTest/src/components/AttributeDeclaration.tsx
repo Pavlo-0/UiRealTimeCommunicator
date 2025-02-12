@@ -19,11 +19,9 @@ const AttributeDeclarationComponent = () => {
       }
     );
 
-    setTimeout(() => {
-      uiRtcCommunication.AttributeDeclaration.AttributeDeclarationAttributeHandler(
-        { correlationId: correlationId }
-      );
-    }, 1000);
+    uiRtcCommunication.AttributeDeclaration.AttributeDeclarationAttributeHandler(
+      { correlationId: correlationId }
+    );
   }, []);
 
   return (

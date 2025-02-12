@@ -19,11 +19,9 @@ const SimpleContextComponent = () => {
       }
     );
 
-    setTimeout(() => {
-      uiRtcCommunication.SimpleContextHub.SimpleContextHandler({
-        correlationId: correlationId,
-      });
-    }, 1000);
+    uiRtcCommunication.SimpleContextHub.SimpleContextHandler({
+      correlationId: correlationId,
+    });
   }, []);
 
   return (

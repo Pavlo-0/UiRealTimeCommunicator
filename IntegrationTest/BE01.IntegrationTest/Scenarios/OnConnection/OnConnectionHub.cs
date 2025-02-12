@@ -8,31 +8,21 @@ namespace BE01.IntegrationTest.Scenarios.OnConnection
     {
     }
 
-    public interface OnConnectionSender : IUiRtcSenderContract<OnConnectionHub>
+    public interface OnConnectionDummyContract: IUiRtcSenderContract<OnConnectionHub>
     {
-        Task OnConnectionInit();
-        Task OnConnectionAnswer();
-        Task OnDisconnectedAnswer();
+        Task DummyMethod();
     }
 
-    public class OnConnectionStart(IUiRtcSenderService senderService) : IUiRtcConnection<OnConnectionHub>
+    public class OnConnectionStart(IUiRtcSenderService sender) : IUiRtcConnection<OnConnectionHub>
     {
         public async Task OnConnectedAsync(IUiRtcProxyContext context)
         {
-            await senderService.Send<OnConnectionSender>().OnConnectionAnswer();
+            await sender.Send<OnConnectionManagerSender>().UpdateStatus(new OnConnectionStatusModel() { IsConnected = true });
         }
 
         public async Task OnDisconnectedAsync(IUiRtcProxyContext context, Exception? exception)
         {
-            await senderService.Send<OnConnectionSender>().OnDisconnectedAnswer();
-        }
-    }
-
-    public class OnConnectionHandler(IUiRtcSenderService senderService) : IUiRtcHandler<OnConnectionHub>
-    {
-        public async Task ConsumeAsync()
-        {
-            await senderService.Send<OnConnectionSender>().OnConnectionInit();
+            await sender.Send<OnConnectionManagerSender>().UpdateStatus(new OnConnectionStatusModel() { IsConnected = false });
         }
     }
 }

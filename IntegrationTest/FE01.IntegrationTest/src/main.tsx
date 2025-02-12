@@ -3,9 +3,10 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { uiRtc } from "./communication/contract.ts";
+import { SERVER_URL } from "./consts.tsx";
 
 await uiRtc.initAsync({
-  serverUrl: "http://localhost:5065/",
+  serverUrl: SERVER_URL,
   activeHubs: "All",
 });
 

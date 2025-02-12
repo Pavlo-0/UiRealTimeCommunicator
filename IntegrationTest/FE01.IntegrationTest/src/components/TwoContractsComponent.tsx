@@ -28,11 +28,9 @@ const TwoContractsComponent = () => {
       }
     );
 
-    setTimeout(() => {
-      uiRtcCommunication.TwoContractsHub.TwoContracts({
-        correlationId: correlationId,
-      });
-    }, 1000);
+    uiRtcCommunication.TwoContractsHub.TwoContracts({
+      correlationId: correlationId,
+    });
   }, []);
 
   return (

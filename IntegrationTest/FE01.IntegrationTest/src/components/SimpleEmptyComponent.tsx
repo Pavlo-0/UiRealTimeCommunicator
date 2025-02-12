@@ -10,13 +10,10 @@ const SimpleEmptyComponent = () => {
 
   useEffect(() => {
     uiRtcSubscription.SimpleEmptyHub.SimpleEmptyAnswer(() => {
-      console.log("aaa");
       setStatus(true);
     });
 
-    setTimeout(() => {
-      uiRtcCommunication.SimpleEmptyHub.SimpleEmptyHandler();
-    }, 1000);
+    uiRtcCommunication.SimpleEmptyHub.SimpleEmptyHandler();
   }, []);
 
   return (
