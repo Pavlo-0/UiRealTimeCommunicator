@@ -4,7 +4,7 @@ namespace UiRtc.Typing.PublicInterface
 {
     public interface IUiRtcConnection<THub> where THub : IUiRtcHub
     {
-        Task OnConnectedAsync(string ConnectinId, HubCallerContext Context);
-        Task OnDisconnectedAsync(string ConnectinId, Exception? exception, HubCallerContext Context);
+        Task OnConnectedAsync(IUiRtcProxyContext context);
+        Task OnDisconnectedAsync(IUiRtcProxyContext context, Exception? exception);
     }
 }

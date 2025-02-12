@@ -6,6 +6,7 @@ import AttributeDeclarationComponent from "./components/AttributeDeclaration";
 import TwoContractsComponent from "./components/TwoContractsComponent";
 import SimpleContextComponent from "./components/SimpleContextComponent";
 import SimpleEmptyComponent from "./components/SimpleEmptyComponent";
+import OnConnectionComponent from "./components/OnConnectionComponent";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <SimpleContextComponent></SimpleContextComponent>
             <AttributeDeclarationComponent></AttributeDeclarationComponent>
             <TwoContractsComponent></TwoContractsComponent>
+            <OnConnectionComponent></OnConnectionComponent>
           </tbody>
         </Table>
       </Container>

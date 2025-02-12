@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2025-02-12 02:46:25 UTC 
+ * Generated on: 2025-02-12 03:40:55 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -13,20 +13,22 @@ import {
   HubConnectionState
 } from "@microsoft/signalr";
 
-type uiRtcHubs = 'AttributeDeclaration' | 'SimpleContextHub' | 'SimpleEmptyHub' | 'SimpleHub' | 'TwoContractsHub';
-const allHubs: uiRtcHubs[] = ['AttributeDeclaration', 'SimpleContextHub', 'SimpleEmptyHub', 'SimpleHub', 'TwoContractsHub'];
+type uiRtcHubs = 'AttributeDeclaration' | 'OnConnectionHub' | 'SimpleContextHub' | 'SimpleEmptyHub' | 'SimpleHub' | 'TwoContractsHub';
+const allHubs: uiRtcHubs[] = ['AttributeDeclaration', 'OnConnectionHub', 'SimpleContextHub', 'SimpleEmptyHub', 'SimpleHub', 'TwoContractsHub'];
 
-type hubMethods = AttributeDeclarationMethod | SimpleContextHubMethod | SimpleEmptyHubMethod | SimpleHubMethod | TwoContractsHubMethod;
+type hubMethods = AttributeDeclarationMethod | OnConnectionHubMethod | SimpleContextHubMethod | SimpleEmptyHubMethod | SimpleHubMethod | TwoContractsHubMethod;
 
 type AttributeDeclarationMethod = 'AttributeDeclarationAttributeHandler';
+type OnConnectionHubMethod = 'OnConnectionHandler';
 type SimpleContextHubMethod = 'SimpleContextHandler';
 type SimpleEmptyHubMethod = 'SimpleEmptyHandler';
 type SimpleHubMethod = 'SimpleHandler';
 type TwoContractsHubMethod = 'TwoContracts';
 
-type hubSubscriptions = AttributeDeclarationSubscription | SimpleContextHubSubscription | SimpleEmptyHubSubscription | SimpleHubSubscription | TwoContractsHubSubscription;
+type hubSubscriptions = AttributeDeclarationSubscription | OnConnectionHubSubscription | SimpleContextHubSubscription | SimpleEmptyHubSubscription | SimpleHubSubscription | TwoContractsHubSubscription;
 
 type AttributeDeclarationSubscription = 'AttributeDeclarationAttributeAnswer';
+type OnConnectionHubSubscription = 'OnConnectionInit' | 'OnConnectionAnswer' | 'OnDisconnectedAnswer';
 type SimpleContextHubSubscription = 'SimpleContextAnswer';
 type SimpleEmptyHubSubscription = 'SimpleEmptyAnswer';
 type SimpleHubSubscription = 'SimpleAnswer';
@@ -34,6 +36,7 @@ type TwoContractsHubSubscription = 'TwoContractsAnswer1' | 'TwoContractsAnswer2'
 
 const connections: RConnections = {
     AttributeDeclaration: {},
+  OnConnectionHub: {},
   SimpleContextHub: {},
   SimpleEmptyHub: {},
   SimpleHub: {},
@@ -43,6 +46,11 @@ const connections: RConnections = {
 export const uiRtcSubscription = {
     AttributeDeclaration: {
     AttributeDeclarationAttributeAnswer: (callBack: (data: AttributeDeclarationResponseMessage) => void) => subscribe("AttributeDeclaration", "AttributeDeclarationAttributeAnswer", callBack),
+  },
+  OnConnectionHub: {
+    OnConnectionInit: (callBack: () => void) => subscribe("OnConnectionHub", "OnConnectionInit", callBack),
+    OnConnectionAnswer: (callBack: () => void) => subscribe("OnConnectionHub", "OnConnectionAnswer", callBack),
+    OnDisconnectedAnswer: (callBack: () => void) => subscribe("OnConnectionHub", "OnDisconnectedAnswer", callBack),
   },
   SimpleContextHub: {
     SimpleContextAnswer: (callBack: (data: SimpleContexResponseMessage) => void) => subscribe("SimpleContextHub", "SimpleContextAnswer", callBack),
@@ -63,6 +71,9 @@ export const uiRtcSubscription = {
 export const uiRtcCommunication = {
     AttributeDeclaration: {
     AttributeDeclarationAttributeHandler: (request: AttributeDeclarationRequestMessage) => send("AttributeDeclaration", "AttributeDeclarationAttributeHandler", request),
+  },
+  OnConnectionHub: {
+    OnConnectionHandler: () => send("OnConnectionHub", "OnConnectionHandler"),
   },
   SimpleContextHub: {
     SimpleContextHandler: (request: SimpleContexRequestMessage) => send("SimpleContextHub", "SimpleContextHandler", request),

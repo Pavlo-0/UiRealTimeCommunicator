@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using UiRtc.Domain.HubMap.Interface;
+﻿using UiRtc.Domain.HubMap.Interface;
 using UiRtc.Domain.Repository.Interface;
 using UiRtc.Typing.PublicInterface;
 
@@ -18,9 +17,18 @@ namespace UiRtc.Domain.HubMap
                 if (serviceInstance != null)
                 {
                     dynamic dynamicInstance = serviceInstance;
-                    await dynamicInstance.OnConnectedAsync(connectionId, context);
+                    try
+                    {
+                        await dynamicInstance.OnConnectedAsync(context);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Problem with calling handler for OnConnection", e);
+                    }
                 }
-
+                {
+                    throw new Exception("Connection handler has been registered in library however can't be found in DI");
+                }
             }
         }
 
@@ -34,7 +42,7 @@ namespace UiRtc.Domain.HubMap
                 if (serviceInstance != null)
                 {
                     dynamic dynamicInstance = serviceInstance;
-                    await dynamicInstance.OnDisconnectedAsync(connectionId, context, exception);
+                    await dynamicInstance.OnDisconnectedAsync(context, exception);
                 }
             }
         }

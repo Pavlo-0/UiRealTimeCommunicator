@@ -18,9 +18,8 @@ namespace UiRtc.Domain.Handler
 
             foreach (var connectionImplmentationTypes in allConnectionImplmentationTypes)
             {
-                var hubName = connectionImplmentationTypes.GetGenericArguments()[0].Name;
-                var interfaceImplementation = connectionImplmentationTypes.GetInterfaces()
-                    .First(i => i.ReflectedType == typeConnection);
+                var hubName = NameHelper.GetHubNameByContract(connectionImplmentationTypes);
+                var interfaceImplementation = connectionImplmentationTypes.FindInterfaces((type, criteria) => type.GetGenericTypeDefinition() == typeConnection, null).First();
 
                 var record = new ConnectionRecord(hubName, interfaceImplementation, connectionImplmentationTypes);
 
