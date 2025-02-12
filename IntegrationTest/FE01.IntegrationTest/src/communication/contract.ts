@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2025-02-12 03:40:55 UTC 
+ * Generated on: 2025-02-12 20:11:29 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -166,86 +166,103 @@ export type TwoContractsResponseMessage = {
 
 /* Hard code */
 export interface IUiRtcConfiguration {
-  serverUrl: string;
-  activeHubs: uiRtcHubs[] | "All";
+    serverUrl: string;
+    activeHubs: uiRtcHubs[] | "All";
 }
 
 interface IHub {
-  connection?: HubConnection;
+    connection?: HubConnection;
+    config?: IUiRtcConfiguration;
 }
 
 type RConnections = Record<uiRtcHubs, IHub>;
 
 export const uiRtc = {
-  init: async (config: IUiRtcConfiguration) => {
-    const hubsToInitialize =
-      config.activeHubs === "All" ? allHubs : config.activeHubs;
-    hubsToInitialize.forEach((hub) => initHub(config.serverUrl, hub));
-  },
-  dispose: (hubs: uiRtcHubs[] | "All" | undefined) => {
-    const hubsToInitialize =
-      hubs === "All" || hubs === undefined ? allHubs : hubs;
-    hubsToInitialize.forEach((hub) => disposeHub(hub));
-  },
+    initAsync: async (config: IUiRtcConfiguration) => {
+        const hubsToInitialize =
+            config.activeHubs === "All" ? allHubs : config.activeHubs;
+        await Promise.all(hubsToInitialize.map((hub) => initHubAsync(config, hub)));
+    },
+    disposeAsync: async (hubs: uiRtcHubs[] | "All" | undefined) => {
+        const hubsToInitialize =
+            hubs === "All" || hubs === undefined ? allHubs : hubs;
+        await Promise.all(hubsToInitialize.map((hub) => disposeHubAsync(hub)));
+    },
 };
 
-const initHub = async (serverUrl: string, hubName: uiRtcHubs) => {
-  if (!!connections[hubName].connection) {
-    console.warn(hubName + " hub has been initialized already");
-    return;
-  }
+const initHubAsync = async (
+    config: IUiRtcConfiguration,
+    hubName: uiRtcHubs
+) => {
+    if (!!connections[hubName].connection) {
+        console.warn(hubName + " hub has been initialized already");
+        return;
+    }
 
-  try {
-    connections[hubName].connection = buildConnection(serverUrl + hubName);
-    await connections[hubName].connection.start();
-  } catch (err) {
-    console.error(
-      "Error while establishing connection '" + hubName + "': ",
-      err
-    );
-  }
+    connections[hubName].config = config;
+
+    try {
+        connections[hubName].connection = buildConnection(
+            config.serverUrl + hubName
+        );
+        await connections[hubName].connection.start();
+    } catch (err) {
+        console.error(
+            "Error while establishing connection '" + hubName + "': ",
+            err
+        );
+    }
 };
 
 const buildConnection = (url: string) => {
-  let builder = new HubConnectionBuilder();
-  builder.withUrl(url);
-  builder.withAutomaticReconnect();
+    let builder = new HubConnectionBuilder();
+    builder.withUrl(url);
+    builder.withAutomaticReconnect();
 
-  return builder.build();
+    return builder.build();
 };
 
-const disposeHub = (hubName: uiRtcHubs) => {
-  if (
-    !!connections[hubName].connection &&
-    (connections[hubName].connection.state === HubConnectionState.Connected ||
-      connections[hubName].connection.state === HubConnectionState.Connecting ||
-      connections[hubName].connection.state === HubConnectionState.Reconnecting)
-  ) {
-    try {
-      connections[hubName].connection.stop();
-    } catch (err) {
-      console.error(
-        "Error while establishing connection '" + hubName + "': ",
-        err
-      );
+const disposeHubAsync = async (hubName: uiRtcHubs) => {
+    if (isConnected(hubName)) {
+        try {
+            await connections[hubName].connection!.stop();
+            connections[hubName] = {};
+        } catch (err) {
+            console.error(
+                "Error while establishing connection '" + hubName + "': ",
+                err
+            );
+        }
+    } else {
+        console.warn(hubName + " hub has not been initialized");
     }
-  } else {
-    console.warn(hubName + " hub has not been initialized");
-  }
+};
+
+const isConnected = (hubName: uiRtcHubs) => {
+    if (
+        !!connections &&
+        !!connections[hubName] &&
+        !!connections[hubName].connection &&
+        (connections[hubName].connection.state === HubConnectionState.Connected ||
+            connections[hubName].connection.state === HubConnectionState.Connecting ||
+            connections[hubName].connection.state === HubConnectionState.Reconnecting)
+    )
+        return true;
+    return false;
 };
 
 const subscribe = (
-  hub: uiRtcHubs,
-  sub: hubSubscriptions,
-  callBack: (data: any) => void
+    hub: uiRtcHubs,
+    sub: hubSubscriptions,
+    callBack: (data: any) => void
 ) => {
-  connections[hub].connection?.on(sub, callBack);
+    connections[hub].connection?.on(sub, callBack);
 };
 
 const send = (hub: uiRtcHubs, method: hubMethods, request?: any) => {
-  if (!!request) {
-    connections[hub].connection?.send(method, request);
-  } else {
-    connections[hub].connection?.send(method);
-  }
+    if (!!request) {
+        connections[hub].connection?.send(method, request);
+    } else {
+        connections[hub].connection?.send(method);
+    }
 };
