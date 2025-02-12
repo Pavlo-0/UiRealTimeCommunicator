@@ -11,7 +11,7 @@ namespace UiRtc.Domain.HubMap
     {
         private const string namespaceName = "UiRtc";
 
-        public static Type GenerateNewSignalRHub(string hubName, IEnumerable<HandlerRecord> methods)
+        public static Type GenerateNewSignalRHub(string hubName, IEnumerable<HandlerBuilderModel> methods)
         {
             // Define a dynamic builder
             var moduleBuilder = AssemblyBuilder.DefineDynamicAssembly(
@@ -69,7 +69,7 @@ namespace UiRtc.Domain.HubMap
             ilGenerator.Emit(OpCodes.Ret); // Return
         }
 
-        private static void MethodBuild(string hubName, TypeBuilder typeBuilder, FieldBuilder serviceField, HandlerRecord method)
+        private static void MethodBuild(string hubName, TypeBuilder typeBuilder, FieldBuilder serviceField, HandlerBuilderModel method)
         {
 
             // Define parameter types array (empty if ParameterType is null)

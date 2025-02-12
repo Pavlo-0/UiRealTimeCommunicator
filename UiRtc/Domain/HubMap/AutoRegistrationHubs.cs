@@ -23,7 +23,8 @@ namespace UiRtc.Domain.HubMap
 
                 var hubName = NameHelper.GetHubName(hub);
 
-                var methods = consumerRepository.GetList(hubName);
+                var methods = consumerRepository.GetBuilderList(hubName);
+
                 var signalRHubType = SignalRHubBuilder.GenerateNewSignalRHub(hubName, methods);
 
                 var method = typeof(HubEndpointRouteBuilderExtensions)

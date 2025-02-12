@@ -3,10 +3,11 @@ import "./App.css";
 import { Col, Container, Row, Tab, Table, Tabs } from "react-bootstrap";
 import SimpleComponent from "./components/SimpleComponent";
 import AttributeDeclarationComponent from "./components/AttributeDeclaration";
-import TwoContractsComponent from "./components/TwoContractsComponent";
+import TwoContractsComponent from "./components/TwoContractMethodsComponent";
 import SimpleContextComponent from "./components/SimpleContextComponent";
 import SimpleEmptyComponent from "./components/SimpleEmptyComponent";
 import OnConnectionComponent from "./components/OnConnectionComponent";
+import TwoHandlersComponent from "./components/TwoHandlersComponent";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <AttributeDeclarationComponent></AttributeDeclarationComponent>
             <TwoContractsComponent></TwoContractsComponent>
             <OnConnectionComponent></OnConnectionComponent>
+            <TwoHandlersComponent></TwoHandlersComponent>
           </tbody>
         </Table>
       </Container>

@@ -6,13 +6,13 @@ import {
 } from "../communication/contract";
 import { Badge } from "react-bootstrap";
 
-const TwoContractsComponent = () => {
+const TwoContractMethodsComponent = () => {
   const [status1, setStatus1] = useState(false); // Change to true/false to test
   const [status2, setStatus2] = useState(false);
 
   useEffect(() => {
     var correlationId = "SimpleId";
-    uiRtcSubscription.TwoContractsHub.TwoContractsAnswer1(
+    uiRtcSubscription.TwoContractMethodsHub.TwoContractMethodsAnswer1(
       (model: SimpleResponseMessage) => {
         if (model.correlationId == correlationId) {
           setStatus1(true);
@@ -20,7 +20,7 @@ const TwoContractsComponent = () => {
       }
     );
 
-    uiRtcSubscription.TwoContractsHub.TwoContractsAnswer2(
+    uiRtcSubscription.TwoContractMethodsHub.TwoContractMethodsAnswer2(
       (model: SimpleResponseMessage) => {
         if (model.correlationId == correlationId) {
           setStatus2(true);
@@ -28,14 +28,14 @@ const TwoContractsComponent = () => {
       }
     );
 
-    uiRtcCommunication.TwoContractsHub.TwoContracts({
+    uiRtcCommunication.TwoContractMethodsHub.TwoContractMethods({
       correlationId: correlationId,
     });
   }, []);
 
   return (
     <tr>
-      <td>Two contract Hub Test</td>
+      <td>Two contract method hub Test</td>
       <td className="text-center">
         <Badge bg={status1 && status2 ? "success" : "danger"}>
           {status1 && status2 ? "Success" : "Fail"}
@@ -45,4 +45,4 @@ const TwoContractsComponent = () => {
   );
 };
 
-export default TwoContractsComponent;
+export default TwoContractMethodsComponent;

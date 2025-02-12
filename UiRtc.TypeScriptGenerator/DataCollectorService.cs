@@ -123,7 +123,8 @@ namespace UiRtc.TypeScriptGenerator
 
                     var record = new HandlerDataRecord(hubName, handlerMethodName, modelType);
                     _logger.Log(LogLevel.Information, $"For hub {hubName} has been found handler: {handlerMethodName}");
-                    handlersCollection.Add(record);
+
+                    AddToHandlerDataRecords(handlersCollection, record);
                 }
             }
             return handlersCollection;
@@ -163,11 +164,54 @@ namespace UiRtc.TypeScriptGenerator
 
                         var record = new SenderDataRecord(hubName, senderMethodName, modelTypeName);
                         _logger.Log(LogLevel.Information, $"For sender {hubName} has been found sendor methods: {senderMethodName}");
-                        senderDataRecords.Add(record);
+
+                        AddToSenderDataRecords(senderDataRecords, record);
                     }
                 }
             }
             return senderDataRecords;
+        }
+
+        private void AddToHandlerDataRecords(List<HandlerDataRecord> records, HandlerDataRecord record)
+        {
+            if (records.Where(r => r.hubName == record.hubName
+                && r.methodName == record.methodName
+                && r.modelType == record.modelType).Any())
+            {
+                return;
+            }
+
+            if (records.Where(r => r.hubName == record.hubName
+                && r.methodName == record.methodName).Any())
+            {
+                _logger.LogError("Hub {Hub} allowed to has the same sender {Handler} name only if this handlers has identical parameters.",
+                                 record.hubName,
+                                 record.methodName);
+                throw new Exception("\"Hub allowed to has the same handler name only if this handlers has identical parameters.\"");
+            }
+
+            records.Add(record);
+        }
+
+        private void AddToSenderDataRecords(List<SenderDataRecord> records, SenderDataRecord record)
+        {
+            if (records.Where(r=> r.hubName == record.hubName
+                && r.methodName == record.methodName
+                && r.modelType == record.modelType).Any())
+            {
+                return;
+            }
+
+            if (records.Where(r => r.hubName == record.hubName
+                && r.methodName == record.methodName).Any())
+            {
+                _logger.LogError("Hub {Hub} allowed to has the same sender {Handler} name only if this sender has identical parameters.",
+                                 record.hubName,
+                                 record.methodName);
+                throw new Exception("\"Hub allowed to has the same sender name only if this sender has identical parameters.\"");
+            }
+
+            records.Add(record);
         }
 
         private async Task<Compilation> CreateCompilationAsync(string projectPath, CancellationToken cancelationToken, bool IsDiagnosticOn = false)
