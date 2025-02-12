@@ -4,6 +4,8 @@ import { Col, Container, Row, Tab, Table, Tabs } from "react-bootstrap";
 import SimpleComponent from "./components/SimpleComponent";
 import AttributeDeclarationComponent from "./components/AttributeDeclaration";
 import TwoContractsComponent from "./components/TwoContractsComponent";
+import SimpleContextComponent from "./components/SimpleContextComponent";
+import SimpleEmptyComponent from "./components/SimpleEmptyComponent";
 
 function App() {
   return (
@@ -17,7 +19,9 @@ function App() {
             </tr>
           </thead>
           <tbody>
+            <SimpleEmptyComponent></SimpleEmptyComponent>
             <SimpleComponent></SimpleComponent>
+            <SimpleContextComponent></SimpleContextComponent>
             <AttributeDeclarationComponent></AttributeDeclarationComponent>
             <TwoContractsComponent></TwoContractsComponent>
           </tbody>

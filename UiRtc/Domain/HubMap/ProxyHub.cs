@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using UiRtc.Domain.HubMap.Interface;
+using UiRtc.Public;
 
 namespace UiRtc.Domain.HubMap
 {
@@ -17,13 +18,13 @@ namespace UiRtc.Domain.HubMap
 
         public async override Task OnConnectedAsync()
         {
-            await connectionInvokeService.OnConnectedAsync(HubName, Context);
+            await connectionInvokeService.OnConnectedAsync(HubName, new ProxyContext(Context));
             await base.OnConnectedAsync();
         }
 
         public async override Task OnDisconnectedAsync(Exception? exception)
         {
-            await connectionInvokeService.OnDisconnectedAsync(HubName, Context, exception);
+            await connectionInvokeService.OnDisconnectedAsync(HubName, new ProxyContext(Context), exception);
             await base.OnDisconnectedAsync(exception);
         }
     }

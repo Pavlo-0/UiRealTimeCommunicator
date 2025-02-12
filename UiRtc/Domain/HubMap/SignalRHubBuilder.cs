@@ -91,6 +91,11 @@ namespace UiRtc.Domain.HubMap
             ilGen.Emit(OpCodes.Ldstr, hubName); // Load the hub name as a string
             ilGen.Emit(OpCodes.Ldstr, method.MethodName); // Load the method name as a string
 
+            // Load Context property from the base class
+            ilGen.Emit(OpCodes.Ldarg_0); // Load "this"
+            ilGen.Emit(OpCodes.Call, typeof(ProxyHub).GetProperty(nameof(ProxyHub.Context))!.GetGetMethod()!);
+
+
             if (method.GenericModel != null)
             {
                 ilGen.Emit(OpCodes.Ldarg_1); // Load the method parameter

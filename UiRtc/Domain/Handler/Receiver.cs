@@ -1,12 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using UiRtc.Domain.Handler.Interface;
 using UiRtc.Domain.Repository.Interface;
+using UiRtc.Public;
 
 namespace UiRtc.Domain.Handler
 {
     internal class ReceiverService(IServiceProvider services, IHandlerRepository consumerRepository) : IReceiverService
     {
-        public async Task Invoke(string hubName, string methodName, dynamic param)
+        public async Task Invoke(string hubName, string methodName, HubCallerContext context, dynamic param)
         {
             var consumers = consumerRepository.Get(hubName, methodName);
 
@@ -21,11 +23,26 @@ namespace UiRtc.Domain.Handler
 
                         if (param != null)
                         {
-                            await dynamicConsumer.ConsumeAsync(param);
+                            if (!consumer.IsContextHandler) {
+                                await dynamicConsumer.ConsumeAsync(param);
+                            }
+
+                            if (consumer.IsContextHandler)
+                            {
+                                await dynamicConsumer.ConsumeAsync(param, new ProxyContext(context));
+                            }
                         }
                         else
                         {
-                            await dynamicConsumer.ConsumeAsync();
+                            if (!consumer.IsContextHandler)
+                            {
+                                await dynamicConsumer.ConsumeAsync();
+                            }
+
+                            if (consumer.IsContextHandler)
+                            {
+                                await dynamicConsumer.ConsumeAsync(new ProxyContext(context));
+                            }
                         }
                     }
                 }

@@ -55,19 +55,22 @@ namespace UiRtc.TypeScriptGenerator
             var compilation = await CreateCompilationAsync(projectPath, cancellationToken);
 
             var senderSymbol = compilation.GetTypeByMetadataName($"{typeof(IUiRtcSenderContract<DummyHub>).GetGenericTypeDefinition().FullName}");
-            var handler1Symbol = compilation.GetTypeByMetadataName($"{typeof(IUiRtcHandler<DummyHub>).GetGenericTypeDefinition().FullName}");
-            var handler2Symbol = compilation.GetTypeByMetadataName($"{typeof(IUiRtcHandler<DummyHub, object>).GetGenericTypeDefinition().FullName}");
+
+            var handlerSymbols = new[]
+            {
+                compilation.GetTypeByMetadataName(typeof(IUiRtcHandler<DummyHub>).GetGenericTypeDefinition().FullName!),
+                compilation.GetTypeByMetadataName(typeof(IUiRtcHandler<DummyHub, object>).GetGenericTypeDefinition().FullName!),
+                compilation.GetTypeByMetadataName(typeof(IUiRtcContextHandler<DummyHub>).GetGenericTypeDefinition().FullName!),
+                compilation.GetTypeByMetadataName(typeof(IUiRtcContextHandler<DummyHub, object >).GetGenericTypeDefinition().FullName!)
+            }.Where(symbol => symbol != null).ToArray(); // Filter out nulls
 
             _logger.Log(LogLevel.Information, "Finding handlers implementation");
 
-            var handlerRecords = compilation.SyntaxTrees
-                .SelectMany(tree =>
-                {
-                    var semanticModel = compilation.GetSemanticModel(tree);
-                    return GetHandlerData(tree, semanticModel, handler1Symbol).Union(
-                        GetHandlerData(tree, semanticModel, handler2Symbol));
-                });
-            var handlerRecordsByHub = handlerRecords.GroupBy(g => g.hubName).ToDictionary(k => k.Key, g => g.AsEnumerable());
+            var handlerRecords = compilation.SyntaxTrees.SelectMany(tree =>
+            {
+                var semanticModel = compilation.GetSemanticModel(tree);
+                return handlerSymbols.SelectMany(symbol => GetHandlerData(tree, semanticModel, symbol));
+            }); var handlerRecordsByHub = handlerRecords.GroupBy(g => g.hubName).ToDictionary(k => k.Key, g => g.AsEnumerable());
 
             _logger.Log(LogLevel.Information, "Finding senders contract");
             var senderRecords = compilation.SyntaxTrees.SelectMany(tree =>

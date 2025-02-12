@@ -5,5 +5,6 @@
                                    Type ConsumerInterfaceDefenition,
                                    Type ConsumerInterface,
                                    Type ConsumerImplementation,
+                                   bool IsContextHandler,
                                    Type? GenericModel);
 }
