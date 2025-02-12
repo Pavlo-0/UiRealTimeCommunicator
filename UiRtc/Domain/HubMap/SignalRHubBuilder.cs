@@ -1,8 +1,8 @@
 ﻿using System.Reflection.Emit;
 using System.Reflection;
-using Microsoft.AspNetCore.SignalR;
 using UiRtc.Domain.Repository.Records;
 using UiRtc.Domain.Handler.Interface;
+using UiRtc.Domain.HubMap.Interface;
 
 namespace UiRtc.Domain.HubMap
 {
@@ -22,7 +22,7 @@ namespace UiRtc.Domain.HubMap
             var typeBuilder = moduleBuilder.DefineType(
               $"{namespaceName}.{hubName}",
                 TypeAttributes.NotPublic | TypeAttributes.Class,
-                typeof(Hub));
+                typeof(ProxyHub));
 
             // Define a private field to store the IReceiverService instance
             FieldBuilder serviceField = typeBuilder.DefineField(
@@ -30,7 +30,7 @@ namespace UiRtc.Domain.HubMap
                 typeof(IReceiverService),
                 FieldAttributes.Private);
 
-            ConstructorBuild(typeBuilder, serviceField);
+            ConstructorBuild(hubName, typeBuilder, serviceField);
 
             // Iterate through the list and add methods to the type
             foreach (var method in methods)
@@ -39,20 +39,33 @@ namespace UiRtc.Domain.HubMap
             return typeBuilder.CreateType();
         }
 
-        private static void ConstructorBuild(TypeBuilder typeBuilder, FieldBuilder serviceField)
+        private static void ConstructorBuild(string hubName, TypeBuilder typeBuilder, FieldBuilder serviceField)
         {
             // Define a constructor with the required parameters
             ConstructorBuilder constructorBuilder = typeBuilder.DefineConstructor(
                 MethodAttributes.Public,
                 CallingConventions.Standard,
-                new Type[] { typeof(IReceiverService) });
+                new Type[] { typeof(IReceiverService), typeof(IConnectionInvokeService) });
+            ILGenerator ilGenerator = constructorBuilder.GetILGenerator();
 
             // Generate constructor code to call the base constructor
+            ilGenerator.Emit(OpCodes.Ldarg_0); // Load "this"
+            ilGenerator.Emit(OpCodes.Ldarg_2); // Load the second argument (IConnectionInvokeService)
+            ilGenerator.Emit(OpCodes.Call, typeof(ProxyHub).GetConstructor(new[] { typeof(IConnectionInvokeService) }));
+
             // Generate constructor IL to store the service in the private field
-            ILGenerator ilGenerator = constructorBuilder.GetILGenerator();
             ilGenerator.Emit(OpCodes.Ldarg_0); // Load "this"
             ilGenerator.Emit(OpCodes.Ldarg_1); // Load the service argument
             ilGenerator.Emit(OpCodes.Stfld, serviceField); // Store it in the private field
+
+            // Assign hubName to the HubName property
+            var hubNameProperty = typeof(ProxyHub).GetProperty(nameof(ProxyHub.HubName));
+            var hubNameSetter = hubNameProperty.SetMethod; // Get the init setter method
+
+            ilGenerator.Emit(OpCodes.Ldarg_0); // Load "this"
+            ilGenerator.Emit(OpCodes.Ldstr, hubName); // Load hubName directly as a string constant
+            ilGenerator.Emit(OpCodes.Call, hubNameSetter); // Call the setter
+
             ilGenerator.Emit(OpCodes.Ret); // Return
         }
 
@@ -77,6 +90,11 @@ namespace UiRtc.Domain.HubMap
             ilGen.Emit(OpCodes.Ldfld, serviceField); // Load the _receiverService field
             ilGen.Emit(OpCodes.Ldstr, hubName); // Load the hub name as a string
             ilGen.Emit(OpCodes.Ldstr, method.MethodName); // Load the method name as a string
+
+            // Load Context property from the base class
+            ilGen.Emit(OpCodes.Ldarg_0); // Load "this"
+            ilGen.Emit(OpCodes.Call, typeof(ProxyHub).GetProperty(nameof(ProxyHub.Context))!.GetGetMethod()!);
+
 
             if (method.GenericModel != null)
             {

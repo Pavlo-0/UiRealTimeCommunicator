@@ -92,7 +92,17 @@ namespace UiRtc.Domain.Sender
 
             generator.Emit(OpCodes.Ldfld, invokeServiceField);
             generator.Emit(OpCodes.Ldstr, GetMethodName(interfaceMethodInfo));
-            generator.Emit(OpCodes.Ldarg_1);
+
+            if (paramTypes.Length == 0)
+            {
+                // No parameters, pass null
+                generator.Emit(OpCodes.Ldnull);
+            }
+            else
+            {
+                generator.Emit(OpCodes.Ldarg_1);
+            }
+            
             generator.Emit(OpCodes.Callvirt, invokeMethod!);
             generator.Emit(OpCodes.Ret);
         }

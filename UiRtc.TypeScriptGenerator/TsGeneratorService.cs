@@ -71,7 +71,8 @@ namespace UiRtc.TypeScriptGenerator
                 sb.AppendLine($"  {hub}: {{");
                 foreach (var method in methods)
                 {
-                    sb.AppendLine($"    {method.methodName}: (callBack: (data: {method.modelType}) => void) => subscribe(\"{method.hubName}\", \"{method.methodName}\", callBack),");
+                    var callBackParam = string.IsNullOrEmpty(method.modelType) ? "" : $"data: {method.modelType}";
+                    sb.AppendLine($"    {method.methodName}: (callBack: ({callBackParam}) => void) => subscribe(\"{method.hubName}\", \"{method.methodName}\", callBack),");
                 }
                 sb.AppendLine("  },");
             }

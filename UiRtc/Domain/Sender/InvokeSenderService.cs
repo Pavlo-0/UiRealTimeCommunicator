@@ -17,7 +17,7 @@ namespace UiRtc.Domain.Sender
             HubName = hubName;
         }
 
-        public async Task Invoke(string method, object model)
+        public async Task Invoke(string method, object? model)
         {
             if (string.IsNullOrWhiteSpace(HubName)) {
                 throw new Exception("SignalR Hub name has not been set up");
@@ -36,8 +36,15 @@ namespace UiRtc.Domain.Sender
                 throw new Exception("SignalR Hub Context can't be obtained");
             }
 
-            string jsonModel = GetJSONModel(model);
-            await context.Clients.All.SendAsync(method, model);
+            if (model is null)
+            {
+                await context.Clients.All.SendAsync(method);
+            }
+            else
+            {
+                string jsonModel = GetJSONModel(model);
+                await context.Clients.All.SendAsync(method, model);
+            }
         }
 
         private string GetJSONModel(object model)

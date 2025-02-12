@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using UiRtc.Domain.HubMap.Interface;
 using UiRtc.Domain.Repository.Interface;
 using UiRtc.Domain.Repository.Records;
 using UiRtc.Typing.PublicInterface;
@@ -10,16 +9,54 @@ namespace UiRtc.Domain.Handler
 
     internal class AutoRegistrationHandlers()
     {
+        public void RegisterConnections(IServiceCollection services,
+                                        IConnectionRepository connectionRepository)
+        {
+            var assembly = Assembly.GetEntryAssembly()!;
+            var typeConnection = typeof(IUiRtcConnection<>);
+            var allConnectionImplmentationTypes = GetClassesImplementing([typeConnection], assembly);
+
+            foreach (var connectionImplmentationTypes in allConnectionImplmentationTypes)
+            {
+                var hubName = NameHelper.GetHubNameByContract(connectionImplmentationTypes);
+                var interfaceImplementation = connectionImplmentationTypes.FindInterfaces((type, criteria) => type.GetGenericTypeDefinition() == typeConnection, null).First();
+
+                var record = new ConnectionRecord(hubName, interfaceImplementation, connectionImplmentationTypes);
+
+                connectionRepository.Add(record);
+                services.AddTransient(record.ConInterfaceImplementation, record.ConImplementation);
+            }
+        }
+
         public void RegisterHandlers(IServiceCollection services, IHandlerRepository consumerRepository)
         {
             //Registering consumers
             var assembly = Assembly.GetEntryAssembly()!;
 
-            var typeModelConsumer = typeof(IUiRtcHandler<,>);
-            var typeConsumer = typeof(IUiRtcHandler<>);
+            var handlersImplmentationTypes = GetClassesImplementing(
+            [
+                typeof(IUiRtcHandler<>),
+                typeof(IUiRtcHandler<,>)
+            ],
+            assembly);
 
-            var allConsumerImplmentationTypes = GetClassesImplementing([typeModelConsumer, typeConsumer], assembly);
+            var handlersContextImplmentationTypes = GetClassesImplementing(
+            [
+                typeof(IUiRtcContextHandler<>),
+                typeof(IUiRtcContextHandler<,>)
+            ],
+            assembly);
 
+            RegisterHandlersByType(services, consumerRepository, handlersImplmentationTypes, isContextHandlers: false);
+            RegisterHandlersByType(services, consumerRepository, handlersContextImplmentationTypes, isContextHandlers: true);
+        }
+
+        private static void RegisterHandlersByType(
+            IServiceCollection services,
+            IHandlerRepository consumerRepository,
+            IEnumerable<Type> allConsumerImplmentationTypes,
+            bool isContextHandlers)
+        {
             foreach (var consumerImplmentationType in allConsumerImplmentationTypes)
             {
                 var hubName = NameHelper.GetHubNameByContract(consumerImplmentationType);
@@ -30,8 +67,9 @@ namespace UiRtc.Domain.Handler
                     consumerImplmentationType.GetInterfaces().First().GetGenericTypeDefinition(),
                     consumerImplmentationType.GetInterfaces().First(),
                     consumerImplmentationType,
+                    isContextHandlers,
                     consumerImplmentationType.GetInterfaces().First().GenericTypeArguments.Count() > 1 ?
-                    consumerImplmentationType.GetInterfaces().First().GenericTypeArguments[1] : null
+                        consumerImplmentationType.GetInterfaces().First().GenericTypeArguments[1] : null
                     );
 
                 consumerRepository.Add(record);
