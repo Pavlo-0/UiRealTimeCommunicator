@@ -8,6 +8,7 @@ import SimpleContextComponent from "./components/SimpleContextComponent";
 import SimpleEmptyComponent from "./components/SimpleEmptyComponent";
 import OnConnectionComponent from "./components/OnConnectionComponent";
 import TwoHandlersComponent from "./components/TwoHandlersComponent";
+import ConnectionIdSenderComponent from "./components/ConnectionIdSenderComponent";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <TwoContractsComponent></TwoContractsComponent>
             <OnConnectionComponent></OnConnectionComponent>
             <TwoHandlersComponent></TwoHandlersComponent>
+            <ConnectionIdSenderComponent></ConnectionIdSenderComponent>
           </tbody>
         </Table>
       </Container>
