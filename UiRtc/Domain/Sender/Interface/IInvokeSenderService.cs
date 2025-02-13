@@ -3,5 +3,6 @@
     internal interface IInvokeSenderService : IInvokeService
     {
         void ResolveHub(string hubName);
+        void ResolveConnectionId(string[] userId);
     }
 }

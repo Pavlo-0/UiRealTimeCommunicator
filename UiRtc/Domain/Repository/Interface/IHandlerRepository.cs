@@ -5,6 +5,7 @@ namespace UiRtc.Domain.Repository.Interface
     {
         void Add(HandlerRecord record);
         IEnumerable<HandlerRecord> GetList(string hubName);
+        IEnumerable<HandlerBuilderModel> GetBuilderList(string hubName);
         IEnumerable<HandlerRecord> Get(string hubName, string methodName);
     }
 }

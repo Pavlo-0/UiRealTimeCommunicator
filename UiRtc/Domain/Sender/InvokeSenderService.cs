@@ -11,15 +11,23 @@ namespace UiRtc.Domain.Sender
     internal class InvokeSenderService(IServiceProvider services, IHubRepository hubRepository) : IInvokeSenderService
     {
         private string? HubName { get; set; }
+        private string[]? ConnectionIds { get; set; }
 
         public void ResolveHub(string hubName)
         {
             HubName = hubName;
         }
 
+        public void ResolveConnectionId(string[] connectionIds)
+        {
+            ConnectionIds = connectionIds;
+        }
+
+
         public async Task Invoke(string method, object? model)
         {
-            if (string.IsNullOrWhiteSpace(HubName)) {
+            if (string.IsNullOrWhiteSpace(HubName))
+            {
                 throw new Exception("SignalR Hub name has not been set up");
             }
 
@@ -36,14 +44,18 @@ namespace UiRtc.Domain.Sender
                 throw new Exception("SignalR Hub Context can't be obtained");
             }
 
+            var clients = (ConnectionIds is { Length: > 0 })
+     ? context.Clients.Clients(ConnectionIds.ToList())
+     : context.Clients.All;
+
             if (model is null)
             {
-                await context.Clients.All.SendAsync(method);
+                await clients.SendAsync(method);
             }
             else
             {
-                string jsonModel = GetJSONModel(model);
-                await context.Clients.All.SendAsync(method, model);
+                var jsonModel = GetJSONModel(model);
+                await clients.SendAsync(method, model);
             }
         }
 

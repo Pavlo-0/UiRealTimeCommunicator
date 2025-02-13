@@ -17,11 +17,9 @@ const SimpleComponent = () => {
       }
     });
 
-    setTimeout(() => {
-      uiRtcCommunication.SimpleHub.SimpleHandler({
-        correlationId: correlationId,
-      });
-    }, 1000);
+    uiRtcCommunication.SimpleHub.SimpleHandler({
+      correlationId: correlationId,
+    });
   }, []);
 
   return (

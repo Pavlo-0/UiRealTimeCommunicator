@@ -5,20 +5,22 @@ import {
 } from "../communication/contract";
 import { Badge } from "react-bootstrap";
 
-const SimpleEmptyComponent = () => {
-  const [status, setStatus] = useState(false); // Change to true/false to test
+const ConnectionIdSenderComponent = () => {
+  const [status, setStatus] = useState(false);
 
   useEffect(() => {
-    uiRtcSubscription.SimpleEmptyHub.SimpleEmptyAnswer(() => {
-      setStatus(true);
+    uiRtcSubscription.ConnectionIdSenderHub.SendToSpecificUser((model) => {
+      if (model.connectionId) {
+        setStatus(true);
+      }
     });
 
-    uiRtcCommunication.SimpleEmptyHub.SimpleEmptyHandler();
+    uiRtcCommunication.ConnectionIdSenderHub.ConnectionIdRequest();
   }, []);
 
   return (
     <tr>
-      <td>Simple Empty Hub Test</td>
+      <td>Send to user by connection</td>
       <td className="text-center">
         <Badge bg={status ? "success" : "danger"}>
           {status ? "Success" : "Fail"}
@@ -28,4 +30,4 @@ const SimpleEmptyComponent = () => {
   );
 };
 
-export default SimpleEmptyComponent;
+export default ConnectionIdSenderComponent;

@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2025-02-12 03:40:55 UTC 
+ * Generated on: 2025-02-13 02:21:53 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -13,44 +13,55 @@ import {
   HubConnectionState
 } from "@microsoft/signalr";
 
-type uiRtcHubs = 'AttributeDeclaration' | 'OnConnectionHub' | 'SimpleContextHub' | 'SimpleEmptyHub' | 'SimpleHub' | 'TwoContractsHub';
-const allHubs: uiRtcHubs[] = ['AttributeDeclaration', 'OnConnectionHub', 'SimpleContextHub', 'SimpleEmptyHub', 'SimpleHub', 'TwoContractsHub'];
+type uiRtcHubs = 'AttributeDeclaration' | 'ConnectionIdSenderHub' | 'OnConnectionHub' | 'OnConnectionManager' | 'SimpleContextHub' | 'SimpleEmptyHub' | 'SimpleHub' | 'TwoContractMethodsHub' | 'TwoHandlers';
+const allHubs: uiRtcHubs[] = ['AttributeDeclaration', 'ConnectionIdSenderHub', 'OnConnectionHub', 'OnConnectionManager', 'SimpleContextHub', 'SimpleEmptyHub', 'SimpleHub', 'TwoContractMethodsHub', 'TwoHandlers'];
 
-type hubMethods = AttributeDeclarationMethod | OnConnectionHubMethod | SimpleContextHubMethod | SimpleEmptyHubMethod | SimpleHubMethod | TwoContractsHubMethod;
+type hubMethods = AttributeDeclarationMethod | ConnectionIdSenderHubMethod | SimpleContextHubMethod | SimpleEmptyHubMethod | SimpleHubMethod | TwoContractMethodsHubMethod | TwoHandlersMethod;
 
 type AttributeDeclarationMethod = 'AttributeDeclarationAttributeHandler';
-type OnConnectionHubMethod = 'OnConnectionHandler';
+type ConnectionIdSenderHubMethod = 'ConnectionIdRequest';
 type SimpleContextHubMethod = 'SimpleContextHandler';
 type SimpleEmptyHubMethod = 'SimpleEmptyHandler';
 type SimpleHubMethod = 'SimpleHandler';
-type TwoContractsHubMethod = 'TwoContracts';
+type TwoContractMethodsHubMethod = 'TwoContractMethods';
+type TwoHandlersMethod = 'TwoHandler';
 
-type hubSubscriptions = AttributeDeclarationSubscription | OnConnectionHubSubscription | SimpleContextHubSubscription | SimpleEmptyHubSubscription | SimpleHubSubscription | TwoContractsHubSubscription;
+type hubSubscriptions = AttributeDeclarationSubscription | ConnectionIdSenderHubSubscription | OnConnectionHubSubscription | OnConnectionManagerSubscription | SimpleContextHubSubscription | SimpleEmptyHubSubscription | SimpleHubSubscription | TwoContractMethodsHubSubscription | TwoHandlersSubscription;
 
 type AttributeDeclarationSubscription = 'AttributeDeclarationAttributeAnswer';
-type OnConnectionHubSubscription = 'OnConnectionInit' | 'OnConnectionAnswer' | 'OnDisconnectedAnswer';
+type ConnectionIdSenderHubSubscription = 'SendToSpecificUser';
+type OnConnectionHubSubscription = 'DummyMethod';
+type OnConnectionManagerSubscription = 'UpdateStatus';
 type SimpleContextHubSubscription = 'SimpleContextAnswer';
 type SimpleEmptyHubSubscription = 'SimpleEmptyAnswer';
 type SimpleHubSubscription = 'SimpleAnswer';
-type TwoContractsHubSubscription = 'TwoContractsAnswer1' | 'TwoContractsAnswer2';
+type TwoContractMethodsHubSubscription = 'TwoContractMethodsAnswer1' | 'TwoContractMethodsAnswer2';
+type TwoHandlersSubscription = 'HandlerAnswer';
 
 const connections: RConnections = {
     AttributeDeclaration: {},
+  ConnectionIdSenderHub: {},
   OnConnectionHub: {},
+  OnConnectionManager: {},
   SimpleContextHub: {},
   SimpleEmptyHub: {},
   SimpleHub: {},
-  TwoContractsHub: {},
+  TwoContractMethodsHub: {},
+  TwoHandlers: {},
 };
 
 export const uiRtcSubscription = {
     AttributeDeclaration: {
     AttributeDeclarationAttributeAnswer: (callBack: (data: AttributeDeclarationResponseMessage) => void) => subscribe("AttributeDeclaration", "AttributeDeclarationAttributeAnswer", callBack),
   },
+  ConnectionIdSenderHub: {
+    SendToSpecificUser: (callBack: (data: InfoModel) => void) => subscribe("ConnectionIdSenderHub", "SendToSpecificUser", callBack),
+  },
   OnConnectionHub: {
-    OnConnectionInit: (callBack: () => void) => subscribe("OnConnectionHub", "OnConnectionInit", callBack),
-    OnConnectionAnswer: (callBack: () => void) => subscribe("OnConnectionHub", "OnConnectionAnswer", callBack),
-    OnDisconnectedAnswer: (callBack: () => void) => subscribe("OnConnectionHub", "OnDisconnectedAnswer", callBack),
+    DummyMethod: (callBack: () => void) => subscribe("OnConnectionHub", "DummyMethod", callBack),
+  },
+  OnConnectionManager: {
+    UpdateStatus: (callBack: (data: OnConnectionStatusModel) => void) => subscribe("OnConnectionManager", "UpdateStatus", callBack),
   },
   SimpleContextHub: {
     SimpleContextAnswer: (callBack: (data: SimpleContexResponseMessage) => void) => subscribe("SimpleContextHub", "SimpleContextAnswer", callBack),
@@ -61,9 +72,12 @@ export const uiRtcSubscription = {
   SimpleHub: {
     SimpleAnswer: (callBack: (data: SimpleResponseMessage) => void) => subscribe("SimpleHub", "SimpleAnswer", callBack),
   },
-  TwoContractsHub: {
-    TwoContractsAnswer1: (callBack: (data: TwoContractsResponseMessage) => void) => subscribe("TwoContractsHub", "TwoContractsAnswer1", callBack),
-    TwoContractsAnswer2: (callBack: (data: TwoContractsResponseMessage) => void) => subscribe("TwoContractsHub", "TwoContractsAnswer2", callBack),
+  TwoContractMethodsHub: {
+    TwoContractMethodsAnswer1: (callBack: (data: TwoContractMethodsResponseMessage) => void) => subscribe("TwoContractMethodsHub", "TwoContractMethodsAnswer1", callBack),
+    TwoContractMethodsAnswer2: (callBack: (data: TwoContractMethodsResponseMessage) => void) => subscribe("TwoContractMethodsHub", "TwoContractMethodsAnswer2", callBack),
+  },
+  TwoHandlers: {
+    HandlerAnswer: (callBack: (data: TwoHandlersResponse) => void) => subscribe("TwoHandlers", "HandlerAnswer", callBack),
   },
 
 };
@@ -72,8 +86,8 @@ export const uiRtcCommunication = {
     AttributeDeclaration: {
     AttributeDeclarationAttributeHandler: (request: AttributeDeclarationRequestMessage) => send("AttributeDeclaration", "AttributeDeclarationAttributeHandler", request),
   },
-  OnConnectionHub: {
-    OnConnectionHandler: () => send("OnConnectionHub", "OnConnectionHandler"),
+  ConnectionIdSenderHub: {
+    ConnectionIdRequest: () => send("ConnectionIdSenderHub", "ConnectionIdRequest"),
   },
   SimpleContextHub: {
     SimpleContextHandler: (request: SimpleContexRequestMessage) => send("SimpleContextHub", "SimpleContextHandler", request),
@@ -84,8 +98,11 @@ export const uiRtcCommunication = {
   SimpleHub: {
     SimpleHandler: (request: SimpleRequestMessage) => send("SimpleHub", "SimpleHandler", request),
   },
-  TwoContractsHub: {
-    TwoContracts: (request: TwoContractsRequestMessage) => send("TwoContractsHub", "TwoContracts", request),
+  TwoContractMethodsHub: {
+    TwoContractMethods: (request: TwoContractMethodsRequestMessage) => send("TwoContractMethodsHub", "TwoContractMethods", request),
+  },
+  TwoHandlers: {
+    TwoHandler: () => send("TwoHandlers", "TwoHandler"),
   },
 
 };
@@ -104,6 +121,30 @@ export type AttributeDeclarationRequestMessage = {
 export type AttributeDeclarationResponseMessage = {
     /** Transpiled from string */
     correlationId: string;
+}
+
+
+
+/* THIS (.ts) FILE IS GENERATED BY Tapper */
+/* eslint-disable */
+/* tslint:disable */
+
+/** Transpiled from BE01.IntegrationTest.Scenarios.ConnectionIdSender.InfoModel */
+export type InfoModel = {
+    /** Transpiled from string? */
+    connectionId?: string;
+}
+
+
+
+/* THIS (.ts) FILE IS GENERATED BY Tapper */
+/* eslint-disable */
+/* tslint:disable */
+
+/** Transpiled from BE01.IntegrationTest.Scenarios.OnConnection.OnConnectionStatusModel */
+export type OnConnectionStatusModel = {
+    /** Transpiled from bool */
+    isConnected: boolean;
 }
 
 
@@ -150,102 +191,131 @@ export type SimpleResponseMessage = {
 /* eslint-disable */
 /* tslint:disable */
 
-/** Transpiled from BE01.IntegrationTest.Scenarios.TwoHubsTwoContracts.TwoContractsRequestMessage */
-export type TwoContractsRequestMessage = {
+/** Transpiled from BE01.IntegrationTest.Scenarios.TwoContractMethods.TwoContractMethodsRequestMessage */
+export type TwoContractMethodsRequestMessage = {
     /** Transpiled from string */
     correlationId: string;
 }
 
-/** Transpiled from BE01.IntegrationTest.Scenarios.TwoHubsTwoContracts.TwoContractsResponseMessage */
-export type TwoContractsResponseMessage = {
+/** Transpiled from BE01.IntegrationTest.Scenarios.TwoContractMethods.TwoContractMethodsResponseMessage */
+export type TwoContractMethodsResponseMessage = {
     /** Transpiled from string */
     correlationId: string;
+}
+
+
+
+/* THIS (.ts) FILE IS GENERATED BY Tapper */
+/* eslint-disable */
+/* tslint:disable */
+
+/** Transpiled from BE01.IntegrationTest.Scenarios.TwoHandlers.TwoHandlersResponse */
+export type TwoHandlersResponse = {
+    /** Transpiled from int */
+    handlerNumber: number;
 }
 
 
 
 /* Hard code */
 export interface IUiRtcConfiguration {
-  serverUrl: string;
-  activeHubs: uiRtcHubs[] | "All";
+    serverUrl: string;
+    activeHubs: uiRtcHubs[] | "All";
 }
 
 interface IHub {
-  connection?: HubConnection;
+    connection?: HubConnection;
+    config?: IUiRtcConfiguration;
 }
 
 type RConnections = Record<uiRtcHubs, IHub>;
 
 export const uiRtc = {
-  init: async (config: IUiRtcConfiguration) => {
-    const hubsToInitialize =
-      config.activeHubs === "All" ? allHubs : config.activeHubs;
-    hubsToInitialize.forEach((hub) => initHub(config.serverUrl, hub));
-  },
-  dispose: (hubs: uiRtcHubs[] | "All" | undefined) => {
-    const hubsToInitialize =
-      hubs === "All" || hubs === undefined ? allHubs : hubs;
-    hubsToInitialize.forEach((hub) => disposeHub(hub));
-  },
+    initAsync: async (config: IUiRtcConfiguration) => {
+        const hubsToInitialize =
+            config.activeHubs === "All" ? allHubs : config.activeHubs;
+        await Promise.all(hubsToInitialize.map((hub) => initHubAsync(config, hub)));
+    },
+    disposeAsync: async (hubs: uiRtcHubs[] | "All" | undefined) => {
+        const hubsToInitialize =
+            hubs === "All" || hubs === undefined ? allHubs : hubs;
+        await Promise.all(hubsToInitialize.map((hub) => disposeHubAsync(hub)));
+    },
 };
 
-const initHub = async (serverUrl: string, hubName: uiRtcHubs) => {
-  if (!!connections[hubName].connection) {
-    console.warn(hubName + " hub has been initialized already");
-    return;
-  }
+const initHubAsync = async (
+    config: IUiRtcConfiguration,
+    hubName: uiRtcHubs
+) => {
+    if (!!connections[hubName].connection) {
+        console.warn(hubName + " hub has been initialized already");
+        return;
+    }
 
-  try {
-    connections[hubName].connection = buildConnection(serverUrl + hubName);
-    await connections[hubName].connection.start();
-  } catch (err) {
-    console.error(
-      "Error while establishing connection '" + hubName + "': ",
-      err
-    );
-  }
+    connections[hubName].config = config;
+
+    try {
+        connections[hubName].connection = buildConnection(
+            config.serverUrl + hubName
+        );
+        await connections[hubName].connection.start();
+    } catch (err) {
+        console.error(
+            "Error while establishing connection '" + hubName + "': ",
+            err
+        );
+    }
 };
 
 const buildConnection = (url: string) => {
-  let builder = new HubConnectionBuilder();
-  builder.withUrl(url);
-  builder.withAutomaticReconnect();
+    let builder = new HubConnectionBuilder();
+    builder.withUrl(url);
+    builder.withAutomaticReconnect();
 
-  return builder.build();
+    return builder.build();
 };
 
-const disposeHub = (hubName: uiRtcHubs) => {
-  if (
-    !!connections[hubName].connection &&
-    (connections[hubName].connection.state === HubConnectionState.Connected ||
-      connections[hubName].connection.state === HubConnectionState.Connecting ||
-      connections[hubName].connection.state === HubConnectionState.Reconnecting)
-  ) {
-    try {
-      connections[hubName].connection.stop();
-    } catch (err) {
-      console.error(
-        "Error while establishing connection '" + hubName + "': ",
-        err
-      );
+const disposeHubAsync = async (hubName: uiRtcHubs) => {
+    if (isConnected(hubName)) {
+        try {
+            await connections[hubName].connection!.stop();
+            connections[hubName] = {};
+        } catch (err) {
+            console.error(
+                "Error while establishing connection '" + hubName + "': ",
+                err
+            );
+        }
+    } else {
+        console.warn(hubName + " hub has not been initialized");
     }
-  } else {
-    console.warn(hubName + " hub has not been initialized");
-  }
+};
+
+const isConnected = (hubName: uiRtcHubs) => {
+    if (
+        !!connections &&
+        !!connections[hubName] &&
+        !!connections[hubName].connection &&
+        (connections[hubName].connection.state === HubConnectionState.Connected ||
+            connections[hubName].connection.state === HubConnectionState.Connecting ||
+            connections[hubName].connection.state === HubConnectionState.Reconnecting)
+    )
+        return true;
+    return false;
 };
 
 const subscribe = (
-  hub: uiRtcHubs,
-  sub: hubSubscriptions,
-  callBack: (data: any) => void
+    hub: uiRtcHubs,
+    sub: hubSubscriptions,
+    callBack: (data: any) => void
 ) => {
-  connections[hub].connection?.on(sub, callBack);
+    connections[hub].connection?.on(sub, callBack);
 };
 
 const send = (hub: uiRtcHubs, method: hubMethods, request?: any) => {
-  if (!!request) {
-    connections[hub].connection?.send(method, request);
-  } else {
-    connections[hub].connection?.send(method);
-  }
+    if (!!request) {
+        connections[hub].connection?.send(method, request);
+    } else {
+        connections[hub].connection?.send(method);
+    }
 };

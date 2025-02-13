@@ -26,6 +26,7 @@ namespace UiRtc.Domain.HubMap
                         throw new Exception("Problem with calling handler for OnConnection", e);
                     }
                 }
+                else
                 {
                     throw new Exception("Connection handler has been registered in library however can't be found in DI");
                 }

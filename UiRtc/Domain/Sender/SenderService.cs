@@ -21,5 +21,13 @@ namespace UiRtc.Domain.Sender
             invokeSenderService.ResolveHub(NameHelper.GetHubNameByContract(typeof(TContract)));
             return SendMethodBuilder<TContract>.Build(invokeSenderService);
         }
+
+        public TContract Send<TContract>(params string[] userIds) where TContract : IUiRtcSenderContract<IUiRtcHub>
+        {
+            var serviceInstance = service.GetService(typeof(IInvokeSenderService));
+            invokeSenderService.ResolveHub(NameHelper.GetHubNameByContract(typeof(TContract)));
+            invokeSenderService.ResolveConnectionId(userIds);
+            return SendMethodBuilder<TContract>.Build(invokeSenderService);
+        }
     }
 }
