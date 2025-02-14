@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR;
-
-namespace UiRtc.Typing.PublicInterface
+﻿namespace UiRtc.Typing.PublicInterface
 {
     public interface IUiRtcConnection<THub> where THub : IUiRtcHub
     {
