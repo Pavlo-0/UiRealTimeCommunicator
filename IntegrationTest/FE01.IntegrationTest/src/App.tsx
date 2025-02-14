@@ -9,6 +9,7 @@ import SimpleEmptyComponent from "./components/SimpleEmptyComponent";
 import OnConnectionComponent from "./components/OnConnectionComponent";
 import TwoHandlersComponent from "./components/TwoHandlersComponent";
 import ConnectionIdSenderComponent from "./components/ConnectionIdSenderComponent";
+import SimpleEmptyContextComponent from "./components/SimpleEmptyContextComponent";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <SimpleEmptyComponent></SimpleEmptyComponent>
             <SimpleComponent></SimpleComponent>
             <SimpleContextComponent></SimpleContextComponent>
+            <SimpleEmptyContextComponent></SimpleEmptyContextComponent>
             <AttributeDeclarationComponent></AttributeDeclarationComponent>
             <TwoContractsComponent></TwoContractsComponent>
             <OnConnectionComponent></OnConnectionComponent>
