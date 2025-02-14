@@ -133,10 +133,10 @@ const subscribe = (
     connections[hub].connection?.on(sub, callBack);
 };
 
-const send = (hub: uiRtcHubs, method: hubMethods, request?: any) => {
+const send = async (hub: uiRtcHubs, method: hubMethods, request?: any) => {
     if (!!request) {
-        connections[hub].connection?.send(method, request);
+        await connections[hub].connection?.send(method, request);
     } else {
-        connections[hub].connection?.send(method);
+        await connections[hub].connection?.send(method);
     }
 };
