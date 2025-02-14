@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App-backend", "Examples\Sim
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chat", "Chat", "{D01F959D-4A18-44EB-941D-19F9E581A3AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat", "Examples\Chat\Chat.csproj", "{C44E0CBE-0E68-4827-B9D3-AF171466E5A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat", "Examples\Chat\Chat\Chat.csproj", "{C12B7AD1-C47B-49D5-A447-765E099B1EBB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,17 +21,17 @@ Global
 		{1DA3BE52-CAEC-4845-BFD1-4F6DDB7787B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DA3BE52-CAEC-4845-BFD1-4F6DDB7787B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DA3BE52-CAEC-4845-BFD1-4F6DDB7787B4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C44E0CBE-0E68-4827-B9D3-AF171466E5A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C44E0CBE-0E68-4827-B9D3-AF171466E5A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C44E0CBE-0E68-4827-B9D3-AF171466E5A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C44E0CBE-0E68-4827-B9D3-AF171466E5A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C12B7AD1-C47B-49D5-A447-765E099B1EBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C12B7AD1-C47B-49D5-A447-765E099B1EBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C12B7AD1-C47B-49D5-A447-765E099B1EBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C12B7AD1-C47B-49D5-A447-765E099B1EBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1DA3BE52-CAEC-4845-BFD1-4F6DDB7787B4} = {8C9FCCD8-1C66-4425-BE13-8A49285EF75E}
-		{C44E0CBE-0E68-4827-B9D3-AF171466E5A3} = {D01F959D-4A18-44EB-941D-19F9E581A3AD}
+		{C12B7AD1-C47B-49D5-A447-765E099B1EBB} = {D01F959D-4A18-44EB-941D-19F9E581A3AD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {58FE2E81-06A7-4D02-9CBA-E8CC331893D0}
