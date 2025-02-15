@@ -17,9 +17,12 @@ const SimpleComponent = () => {
       }
     });
 
-    uiRtcCommunication.SimpleHub.SimpleHandler({
-      correlationId: correlationId,
-    });
+    const actFun = async () => {
+      await uiRtcCommunication.SimpleHub.SimpleHandler({
+        correlationId: correlationId,
+      });
+    };
+    actFun();
   }, []);
 
   return (

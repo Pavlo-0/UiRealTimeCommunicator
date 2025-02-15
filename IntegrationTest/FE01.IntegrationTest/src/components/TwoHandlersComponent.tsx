@@ -20,7 +20,10 @@ const TwoHandlersComponent = () => {
       }
     });
 
-    uiRtcCommunication.TwoHandlers.TwoHandler();
+    const actFun = async () => {
+      uiRtcCommunication.TwoHandlers.TwoHandler();
+    };
+    actFun();
   }, []);
 
   return (

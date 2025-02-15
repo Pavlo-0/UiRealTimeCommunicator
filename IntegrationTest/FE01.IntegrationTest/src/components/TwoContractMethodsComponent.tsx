@@ -28,9 +28,12 @@ const TwoContractMethodsComponent = () => {
       }
     );
 
-    uiRtcCommunication.TwoContractMethodsHub.TwoContractMethods({
-      correlationId: correlationId,
-    });
+    const actFun = async () => {
+      uiRtcCommunication.TwoContractMethodsHub.TwoContractMethods({
+        correlationId: correlationId,
+      });
+    };
+    actFun();
   }, []);
 
   return (

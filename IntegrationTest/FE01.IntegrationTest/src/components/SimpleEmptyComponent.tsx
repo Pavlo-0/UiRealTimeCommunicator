@@ -13,7 +13,10 @@ const SimpleEmptyComponent = () => {
       setStatus(true);
     });
 
-    uiRtcCommunication.SimpleEmptyHub.SimpleEmptyHandler();
+    const actFun = async () => {
+      uiRtcCommunication.SimpleEmptyHub.SimpleEmptyHandler();
+    };
+    actFun();
   }, []);
 
   return (

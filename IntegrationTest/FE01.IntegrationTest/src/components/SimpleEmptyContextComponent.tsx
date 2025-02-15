@@ -14,7 +14,10 @@ const SimpleEmptyContextComponent = () => {
       setStatus(true);
     });
 
-    uiRtcCommunication.SimpleEmptyContextHub.SimpleEmptyContextHandler();
+    const actFun = async () => {
+      uiRtcCommunication.SimpleEmptyContextHub.SimpleEmptyContextHandler();
+    };
+    actFun();
   }, []);
 
   return (

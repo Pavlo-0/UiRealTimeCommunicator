@@ -19,9 +19,12 @@ const SimpleContextComponent = () => {
       }
     );
 
-    uiRtcCommunication.SimpleContextHub.SimpleContextHandler({
-      correlationId: correlationId,
-    });
+    const actFun = async () => {
+      await uiRtcCommunication.SimpleContextHub.SimpleContextHandler({
+        correlationId: correlationId,
+      });
+    };
+    actFun();
   }, []);
 
   return (

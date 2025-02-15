@@ -19,9 +19,12 @@ const AttributeDeclarationComponent = () => {
       }
     );
 
-    uiRtcCommunication.AttributeDeclaration.AttributeDeclarationAttributeHandler(
-      { correlationId: correlationId }
-    );
+    const actFun = async () => {
+      await uiRtcCommunication.AttributeDeclaration.AttributeDeclarationAttributeHandler(
+        { correlationId: correlationId }
+      );
+    };
+    actFun();
   }, []);
 
   return (
