@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2025-02-13 02:21:53 UTC 
+ * Generated on: 2025-02-15 00:41:50 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -13,26 +13,28 @@ import {
   HubConnectionState
 } from "@microsoft/signalr";
 
-type uiRtcHubs = 'AttributeDeclaration' | 'ConnectionIdSenderHub' | 'OnConnectionHub' | 'OnConnectionManager' | 'SimpleContextHub' | 'SimpleEmptyHub' | 'SimpleHub' | 'TwoContractMethodsHub' | 'TwoHandlers';
-const allHubs: uiRtcHubs[] = ['AttributeDeclaration', 'ConnectionIdSenderHub', 'OnConnectionHub', 'OnConnectionManager', 'SimpleContextHub', 'SimpleEmptyHub', 'SimpleHub', 'TwoContractMethodsHub', 'TwoHandlers'];
+type uiRtcHubs = 'AttributeDeclaration' | 'ConnectionIdSenderHub' | 'OnConnectionHub' | 'OnConnectionManager' | 'SimpleContextHub' | 'SimpleEmptyContextHub' | 'SimpleEmptyHub' | 'SimpleHub' | 'TwoContractMethodsHub' | 'TwoHandlers';
+const allHubs: uiRtcHubs[] = ['AttributeDeclaration', 'ConnectionIdSenderHub', 'OnConnectionHub', 'OnConnectionManager', 'SimpleContextHub', 'SimpleEmptyContextHub', 'SimpleEmptyHub', 'SimpleHub', 'TwoContractMethodsHub', 'TwoHandlers'];
 
-type hubMethods = AttributeDeclarationMethod | ConnectionIdSenderHubMethod | SimpleContextHubMethod | SimpleEmptyHubMethod | SimpleHubMethod | TwoContractMethodsHubMethod | TwoHandlersMethod;
+type hubMethods = AttributeDeclarationMethod | ConnectionIdSenderHubMethod | SimpleContextHubMethod | SimpleEmptyContextHubMethod | SimpleEmptyHubMethod | SimpleHubMethod | TwoContractMethodsHubMethod | TwoHandlersMethod;
 
 type AttributeDeclarationMethod = 'AttributeDeclarationAttributeHandler';
 type ConnectionIdSenderHubMethod = 'ConnectionIdRequest';
 type SimpleContextHubMethod = 'SimpleContextHandler';
+type SimpleEmptyContextHubMethod = 'SimpleEmptyContextHandler';
 type SimpleEmptyHubMethod = 'SimpleEmptyHandler';
 type SimpleHubMethod = 'SimpleHandler';
 type TwoContractMethodsHubMethod = 'TwoContractMethods';
 type TwoHandlersMethod = 'TwoHandler';
 
-type hubSubscriptions = AttributeDeclarationSubscription | ConnectionIdSenderHubSubscription | OnConnectionHubSubscription | OnConnectionManagerSubscription | SimpleContextHubSubscription | SimpleEmptyHubSubscription | SimpleHubSubscription | TwoContractMethodsHubSubscription | TwoHandlersSubscription;
+type hubSubscriptions = AttributeDeclarationSubscription | ConnectionIdSenderHubSubscription | OnConnectionHubSubscription | OnConnectionManagerSubscription | SimpleContextHubSubscription | SimpleEmptyContextHubSubscription | SimpleEmptyHubSubscription | SimpleHubSubscription | TwoContractMethodsHubSubscription | TwoHandlersSubscription;
 
 type AttributeDeclarationSubscription = 'AttributeDeclarationAttributeAnswer';
 type ConnectionIdSenderHubSubscription = 'SendToSpecificUser';
 type OnConnectionHubSubscription = 'DummyMethod';
 type OnConnectionManagerSubscription = 'UpdateStatus';
 type SimpleContextHubSubscription = 'SimpleContextAnswer';
+type SimpleEmptyContextHubSubscription = 'SimpleEmptyContextAnswer';
 type SimpleEmptyHubSubscription = 'SimpleEmptyAnswer';
 type SimpleHubSubscription = 'SimpleAnswer';
 type TwoContractMethodsHubSubscription = 'TwoContractMethodsAnswer1' | 'TwoContractMethodsAnswer2';
@@ -44,6 +46,7 @@ const connections: RConnections = {
   OnConnectionHub: {},
   OnConnectionManager: {},
   SimpleContextHub: {},
+  SimpleEmptyContextHub: {},
   SimpleEmptyHub: {},
   SimpleHub: {},
   TwoContractMethodsHub: {},
@@ -65,6 +68,9 @@ export const uiRtcSubscription = {
   },
   SimpleContextHub: {
     SimpleContextAnswer: (callBack: (data: SimpleContexResponseMessage) => void) => subscribe("SimpleContextHub", "SimpleContextAnswer", callBack),
+  },
+  SimpleEmptyContextHub: {
+    SimpleEmptyContextAnswer: (callBack: () => void) => subscribe("SimpleEmptyContextHub", "SimpleEmptyContextAnswer", callBack),
   },
   SimpleEmptyHub: {
     SimpleEmptyAnswer: (callBack: () => void) => subscribe("SimpleEmptyHub", "SimpleEmptyAnswer", callBack),
@@ -91,6 +97,9 @@ export const uiRtcCommunication = {
   },
   SimpleContextHub: {
     SimpleContextHandler: (request: SimpleContexRequestMessage) => send("SimpleContextHub", "SimpleContextHandler", request),
+  },
+  SimpleEmptyContextHub: {
+    SimpleEmptyContextHandler: () => send("SimpleEmptyContextHub", "SimpleEmptyContextHandler"),
   },
   SimpleEmptyHub: {
     SimpleEmptyHandler: () => send("SimpleEmptyHub", "SimpleEmptyHandler"),
@@ -312,10 +321,10 @@ const subscribe = (
     connections[hub].connection?.on(sub, callBack);
 };
 
-const send = (hub: uiRtcHubs, method: hubMethods, request?: any) => {
+const send = async (hub: uiRtcHubs, method: hubMethods, request?: any) => {
     if (!!request) {
-        connections[hub].connection?.send(method, request);
+        await connections[hub].connection?.send(method, request);
     } else {
-        connections[hub].connection?.send(method);
+        await connections[hub].connection?.send(method);
     }
 };
