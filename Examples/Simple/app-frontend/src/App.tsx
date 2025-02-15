@@ -6,22 +6,20 @@ import { WeatherComponent } from "./components/WeatherComponent/WeatherComponent
 
 function App() {
   return (
-    <>
-      <Container>
-        <Row>
-          <Col md={{ span: 6, offset: 3 }}>
-            <Tabs>
-              <Tab eventKey="randomNumberTab" title="Random Number">
-                <RandomNumberComponent></RandomNumberComponent>
-              </Tab>
-              <Tab eventKey="WeatherTab" title="Weather">
-                <WeatherComponent></WeatherComponent>
-              </Tab>
-            </Tabs>
-          </Col>
-        </Row>
-      </Container>
-    </>
+    <Container>
+      <Row>
+        <Col md={{ span: 6, offset: 3 }}>
+          <Tabs>
+            <Tab eventKey="randomNumberTab" title="Random Number">
+              <RandomNumberComponent></RandomNumberComponent>
+            </Tab>
+            <Tab eventKey="WeatherTab" title="Weather">
+              <WeatherComponent></WeatherComponent>
+            </Tab>
+          </Tabs>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
