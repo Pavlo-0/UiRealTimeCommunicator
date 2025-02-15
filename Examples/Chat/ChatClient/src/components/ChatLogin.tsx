@@ -9,8 +9,6 @@ interface ChatLoginProps {
 const ChatLogin: React.FC<ChatLoginProps> = ({ onJoin }) => {
   const [username, setUsername] = useState("");
 
-  useEffect(() => {}, []);
-
   const handleJoin = async () => {
     if (username.trim()) {
       await uiRtcCommunication.Chat.Join({ name: username.trim() });

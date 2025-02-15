@@ -1,9 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Container, Row } from "react-bootstrap";
-import ChatComponent from "./components/chatComponent";
 import ChatLogin from "./components/ChatLogin";
 import { useState } from "react";
+import ChatComponent from "./components/ChatComponent";
 
 function App() {
   const [isJoin, setIsJoin] = useState(false);

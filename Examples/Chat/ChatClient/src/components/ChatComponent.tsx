@@ -8,12 +8,16 @@ const ChatComponent = () => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    uiRtcCommunication.Chat.RefreshHandler();
+    const refresh = async () => {
+      await uiRtcCommunication.Chat.RefreshHandler();
+    };
+
+    refresh();
   }, []);
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (message.trim() !== "") {
-      uiRtcCommunication.Chat.Message({
+      await uiRtcCommunication.Chat.Message({
         message: message,
         recipientId: undefined,
       });
