@@ -16,7 +16,7 @@ namespace App_backend.Communication.WeatherChannel.Consumer
         public async Task ConsumeAsync(WeatherForecastRequestModel model)
         {
             logger.LogInformation($"Get Weather request for city: {model.City}");
-            await senderService.Send<WeatherChannelSenderContract>().SendWeatherForecast(new WeatherForecastResponseModel
+            await senderService.Send<WeatherChannelSenderContract>().SendWeatherForecastAsync(new WeatherForecastModel
             {
                 City = model.City,
                 WeatherForecast = Enumerable.Range(1, 5).Select(index => new WeatherForecastDetail

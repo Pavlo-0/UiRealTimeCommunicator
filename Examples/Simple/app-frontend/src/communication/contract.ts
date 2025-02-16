@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2025-02-15 21:38:12 UTC 
+ * Generated on: 2025-02-16 01:59:19 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -36,7 +36,7 @@ export const uiRtcSubscription = {
     RandomNumber: (callBack: (data: RandomValueResponseModel) => void) => subscribe("RandomNumberHub", "RandomNumber", callBack),
   },
   Weather: {
-    WeatherForecast: (callBack: (data: WeatherForecastResponseModel) => void) => subscribe("Weather", "WeatherForecast", callBack),
+    WeatherForecast: (callBack: (data: WeatherForecastModel) => void) => subscribe("Weather", "WeatherForecast", callBack),
   },
 
 };
@@ -94,8 +94,8 @@ export type WeatherForecastRequestModel = {
     city: string;
 }
 
-/** Transpiled from App_backend.Communication.WeatherChannel.Models.WeatherForecastResponseModel */
-export type WeatherForecastResponseModel = {
+/** Transpiled from App_backend.Communication.WeatherChannel.Models.WeatherForecastModel */
+export type WeatherForecastModel = {
     /** Transpiled from System.Collections.Generic.IEnumerable<App_backend.Communication.WeatherChannel.Models.WeatherForecastDetail> */
     weatherForecast: WeatherForecastDetail[];
     /** Transpiled from string */

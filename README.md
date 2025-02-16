@@ -61,7 +61,7 @@ public interface WeatherChannelSenderContract: IUiRtcSenderContract<WeatherHub>
 {
     // Declare method and data for sending message to frontend
     [UiRtcMethod("WeatherForecast")]
-    Task SendWeatherForecast(WeatherForecastModel forecast);
+    Task SendWeatherForecastAsync(WeatherForecastModel forecast);
 }
 ```
 
@@ -73,7 +73,7 @@ public class WeatherService(IUiRtcSenderService senderService)
     public async Task WeatherServiceMethod(WeatherForecastModel model)
     {
         // Send message to frontend with strongly-typed contract
-        await senderService.Send<WeatherChannelSenderContract>().SendWeatherForecast(model);
+        await senderService.Send<WeatherChannelSenderContract>().SendWeatherForecastAsync(model);
     }
 }
 ```
@@ -119,7 +119,7 @@ Use the CLI tool to generate TypeScript models and contracts from your C# projec
 ```sh
 # -p Path to the project file (Xxx.csproj)
 # -o Output directory and file
-dotnet-uirtc -p ".\App-backend\App-backend.csproj" -o ".\app-frontend\src\communication\contract.ts"
+dotnet-uirtc -p ".\Examples\Simple\App-backend\App-backend.csproj" -o ".\Examples\Simple\app-frontend\src\communication\contract.ts"
 ```
 
 #### Client-Side (TypeScript)
@@ -139,7 +139,7 @@ In the TypeScript client, initialize the **SignalR connection**:
 ```typescript
 import { uiRtc } from "./communication/contract.ts";
 
-await uiRtc.init({
+await uiRtc.initAsync({
   serverUrl: "http://localhost:5064/", // Your server URL
   activeHubs: "All", // Specify which hubs to subscribe to
 });
@@ -164,12 +164,12 @@ Subscribe to a message and handle the response:
 ```typescript
 import {
   uiRtcSubscription,
-  WeatherForecastResponseModel,
+  WeatherForecastModel,
 } from "../../communication/contract";
 
 // Listen for messages from the backend
 uiRtcSubscription.Weather.WeatherForecast(
-  (data: WeatherForecastResponseModel) => {
+  (data: WeatherForecastModel) => {
     // Handle received data
     console.log("Weather data received: ", data);
   }

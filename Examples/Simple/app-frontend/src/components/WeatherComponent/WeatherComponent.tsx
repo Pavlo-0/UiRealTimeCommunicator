@@ -6,7 +6,6 @@ import {
   WeatherForecastRequestModel,
   uiRtcSubscription,
   WeatherForecastDetail,
-  WeatherForecastResponseModel,
 } from "../../communication/contract";
 
 export const WeatherComponent = () => {
