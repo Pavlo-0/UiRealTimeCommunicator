@@ -64,6 +64,9 @@ export const uiRtc = {
       hubs === "All" || hubs === undefined ? allHubs : hubs;
     await Promise.all(hubsToInitialize.map((hub) => disposeHubAsync(hub)));
   },
+  getConnection: (hub: uiRtcHubs) => {
+    return connections[hub].connection;
+  },
 };
 
 const initHubAsync = async (
@@ -90,7 +93,7 @@ const initHubAsync = async (
   }
 };
 
-const buildConnection = (url: string) => {
+const buildConnection = (url: string): HubConnection => {
   let builder = new HubConnectionBuilder();
   builder.withUrl(url);
   builder.withAutomaticReconnect();
