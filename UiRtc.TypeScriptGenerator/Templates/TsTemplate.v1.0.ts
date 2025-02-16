@@ -132,6 +132,7 @@ const subscribe = (
   sub: hubSubscriptions,
   callBack: (data: any) => void
 ) => {
+  checkConnection(hub);
   connections[hub].connection?.on(sub, callBack);
   return {
     hub,
@@ -144,9 +145,20 @@ const subscribe = (
 };
 
 const send = async (hub: uiRtcHubs, method: hubMethods, request?: any) => {
+  checkConnection(hub);
   if (!!request) {
     await connections[hub].connection?.send(method, request);
   } else {
     await connections[hub].connection?.send(method);
+  }
+};
+
+const checkConnection = (hub: uiRtcHubs) => {
+  if (!connections[hub]?.connection) {
+    throw new Error(
+      "Connection to " +
+      hub +
+      " hasn't been established. Ensure you call await uiRtc.initAsync({ serverUrl: SERVER_URL, activeHubs: 'All' }) before using the hub."
+    );
   }
 };
