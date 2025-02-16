@@ -6,17 +6,16 @@ import {
   WeatherForecastRequestModel,
   uiRtcSubscription,
   WeatherForecastDetail,
+  WeatherForecastModel,
 } from "../../communication/contract";
 
 export const WeatherComponent = () => {
   const [weather, setWeather] = useState<WeatherForecastDetail[]>([]);
 
   useEffect(() => {
-    uiRtcSubscription.Weather.WeatherForecast(
-      (data: WeatherForecastResponseModel) => {
-        setWeather(data.weatherForecast);
-      }
-    );
+    uiRtcSubscription.Weather.WeatherForecast((data: WeatherForecastModel) => {
+      setWeather(data.weatherForecast);
+    });
   }, []);
 
   const getForecast = async () => {
