@@ -15,13 +15,15 @@
 
 #### Server-Side (C# .NET 8)
 
-Install the **UiRealTimeCommunicator** library via NuGet:
+Install the **UiRealTimeCommunicator** library via NuGet:   
+[![NuGet](https://img.shields.io/nuget/v/UiRealTimeCommunicator.svg)](https://www.nuget.org/packages/UiRealTimeCommunicator/)
 
 ```sh
 dotnet add package UiRealTimeCommunicator
 ```
 
-Additionally, install the **CLI tool** for generating TypeScript code:
+Additionally, install the **CLI tool** for generating TypeScript code:   
+[![NuGet](https://img.shields.io/nuget/v/UiRealTimeCommunicator.TypeScriptGenerator.svg)](https://www.nuget.org/packages/UiRealTimeCommunicator.TypeScriptGenerator/)  
 
 ```sh
 dotnet tool install --global UiRealTimeCommunicator.TypeScriptGenerator
@@ -154,7 +156,7 @@ import {
 } from "../../communication/contract";
 
 // Call a backend method and send a strongly-typed model
-uiRtcCommunication.Weather.GetWeatherForecast({
+await uiRtcCommunication.Weather.GetWeatherForecast({
   city: "Kharkiv",
 } as WeatherForecastRequestModel); // Strongly typed
 ```
