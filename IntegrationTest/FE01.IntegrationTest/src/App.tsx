@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { Col, Container, Row, Tab, Table, Tabs } from "react-bootstrap";
+import { Button, Col, Container, Row, Tab, Table, Tabs } from "react-bootstrap";
 import SimpleComponent from "./components/SimpleComponent";
 import AttributeDeclarationComponent from "./components/AttributeDeclaration";
 import TwoContractsComponent from "./components/TwoContractMethodsComponent";
@@ -12,15 +12,17 @@ import ConnectionIdSenderComponent from "./components/ConnectionIdSenderComponen
 import SimpleEmptyContextComponent from "./components/SimpleEmptyContextComponent";
 import TwoSubscriptionComponent from "./components/TwoSubscriptionComponent";
 import UnsubscribeSimple from "./components/UnsibscribeSimpleComponent";
+import { useState } from "react";
 
 function App() {
+  const [key, setKey] = useState(0);
   return (
     <>
       <Container className="mt-3">
-        <Table striped bordered hover>
+        <Table key={key} striped bordered hover>
           <thead>
             <tr>
-              <th>Tests</th>
+              <th>Tests ({key}) </th>
               <th className="text-center">Status</th>
             </tr>
           </thead>
@@ -38,6 +40,7 @@ function App() {
             <UnsubscribeSimple></UnsubscribeSimple>
           </tbody>
         </Table>
+        <Button onClick={() => setKey(key + 1)}>Refresh</Button>
       </Container>
     </>
   );
