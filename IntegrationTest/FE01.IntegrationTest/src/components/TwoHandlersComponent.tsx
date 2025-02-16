@@ -6,8 +6,8 @@ import {
 import { Badge } from "react-bootstrap";
 
 const TwoHandlersComponent = () => {
-  const [status1, setStatus1] = useState(false); // Change to true/false to test
-  const [status2, setStatus2] = useState(false); // Change to true/false to test
+  const [status1, setStatus1] = useState(false);
+  const [status2, setStatus2] = useState(false);
 
   useEffect(() => {
     uiRtcSubscription.TwoHandlers.HandlerAnswer((model) => {

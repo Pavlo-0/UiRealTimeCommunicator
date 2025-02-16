@@ -7,7 +7,7 @@ import {
 import { Badge } from "react-bootstrap";
 
 const AttributeDeclarationComponent = () => {
-  const [status, setStatus] = useState(false); // Change to true/false to test
+  const [status, setStatus] = useState(false);
 
   useEffect(() => {
     var correlationId = "AttributeDeclarationId";
