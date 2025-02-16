@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2025-02-14 23:53:14 UTC 
+ * Generated on: 2025-02-15 19:42:39 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -199,10 +199,10 @@ const subscribe = (
     connections[hub].connection?.on(sub, callBack);
 };
 
-const send = (hub: uiRtcHubs, method: hubMethods, request?: any) => {
+const send = async (hub: uiRtcHubs, method: hubMethods, request?: any) => {
     if (!!request) {
-        connections[hub].connection?.send(method, request);
+        await connections[hub].connection?.send(method, request);
     } else {
-        connections[hub].connection?.send(method);
+        await connections[hub].connection?.send(method);
     }
 };

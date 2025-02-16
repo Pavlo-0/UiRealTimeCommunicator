@@ -41,9 +41,9 @@ const UsersComponent = () => {
     setMessage("");
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (selectedUser && message.trim()) {
-      uiRtcCommunication.Chat.Message({
+      await uiRtcCommunication.Chat.Message({
         message: message.trim(),
         recipientId: selectedUser.id,
       });

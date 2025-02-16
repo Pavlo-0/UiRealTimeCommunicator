@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from "react";
 import {
   SimpleResponseMessage,
+  TwoSubscriptionResponseMessage,
   uiRtcCommunication,
   uiRtcSubscription,
 } from "../communication/contract";
 import { Badge } from "react-bootstrap";
 
-const TwoContractMethodsComponent = () => {
+const TwoSubscriptionComponent = () => {
   const [status1, setStatus1] = useState(false);
   const [status2, setStatus2] = useState(false);
 
   useEffect(() => {
     var correlationId = "SimpleId";
-    uiRtcSubscription.TwoContractMethodsHub.TwoContractMethodsAnswer1(
-      (model: SimpleResponseMessage) => {
+    uiRtcSubscription.TwoSubscriptionHub.TwoSubscriptionAnswer(
+      (model: TwoSubscriptionResponseMessage) => {
         if (model.correlationId == correlationId) {
           setStatus1(true);
         }
       }
     );
 
-    uiRtcSubscription.TwoContractMethodsHub.TwoContractMethodsAnswer2(
-      (model: SimpleResponseMessage) => {
+    uiRtcSubscription.TwoSubscriptionHub.TwoSubscriptionAnswer(
+      (model: TwoSubscriptionResponseMessage) => {
         if (model.correlationId == correlationId) {
           setStatus2(true);
         }
@@ -29,7 +30,7 @@ const TwoContractMethodsComponent = () => {
     );
 
     const actFun = async () => {
-      uiRtcCommunication.TwoContractMethodsHub.TwoContractMethods({
+      await uiRtcCommunication.TwoSubscriptionHub.TwoSubscriptionHandler({
         correlationId: correlationId,
       });
     };
@@ -38,7 +39,7 @@ const TwoContractMethodsComponent = () => {
 
   return (
     <tr>
-      <td>Two contract method hub Test</td>
+      <td>Two subscription Test</td>
       <td className="text-center">
         <Badge bg={status1 && status2 ? "success" : "danger"}>
           {status1 && status2 ? "Success" : "Fail"}
@@ -48,4 +49,4 @@ const TwoContractMethodsComponent = () => {
   );
 };
 
-export default TwoContractMethodsComponent;
+export default TwoSubscriptionComponent;

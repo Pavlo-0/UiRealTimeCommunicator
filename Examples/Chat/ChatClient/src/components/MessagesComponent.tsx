@@ -44,11 +44,9 @@ const MessagesComponent = () => {
           style={{ backgroundColor: getBackBackGroundColor(msg) }}
         >
           {msg.isPrivate ? (
-            <>
-              <strong>
-                {msg.authorName} to {msg.recipientName}:{" "}
-              </strong>
-            </>
+            <strong>
+              {msg.authorName} to {msg.recipientName}:
+            </strong>
           ) : (
             <strong>{msg.authorName}: </strong>
           )}

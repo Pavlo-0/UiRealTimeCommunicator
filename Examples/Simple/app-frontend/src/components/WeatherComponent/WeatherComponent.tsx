@@ -6,22 +6,20 @@ import {
   WeatherForecastRequestModel,
   uiRtcSubscription,
   WeatherForecastDetail,
-  WeatherForecastResponseModel,
+  WeatherForecastModel,
 } from "../../communication/contract";
 
 export const WeatherComponent = () => {
   const [weather, setWeather] = useState<WeatherForecastDetail[]>([]);
 
   useEffect(() => {
-    uiRtcSubscription.Weather.WeatherForecast(
-      (data: WeatherForecastResponseModel) => {
-        setWeather(data.weatherForecast);
-      }
-    );
+    uiRtcSubscription.Weather.WeatherForecast((data: WeatherForecastModel) => {
+      setWeather(data.weatherForecast);
+    });
   }, []);
 
-  const getForecast = () => {
-    uiRtcCommunication.Weather.GetWeatherForecast({
+  const getForecast = async () => {
+    await uiRtcCommunication.Weather.GetWeatherForecast({
       city: "Kharkiv",
     } as WeatherForecastRequestModel); //Strong typed!!!
   };

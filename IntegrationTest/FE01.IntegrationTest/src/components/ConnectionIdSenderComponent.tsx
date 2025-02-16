@@ -15,7 +15,10 @@ const ConnectionIdSenderComponent = () => {
       }
     });
 
-    uiRtcCommunication.ConnectionIdSenderHub.ConnectionIdRequest();
+    const actFun = async () => {
+      await uiRtcCommunication.ConnectionIdSenderHub.ConnectionIdRequest();
+    };
+    actFun();
   }, []);
 
   return (

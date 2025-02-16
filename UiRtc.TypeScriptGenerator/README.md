@@ -32,6 +32,3 @@ $ dotnet tsrts help
 
 # update
 $ dotnet tool update --global UiRealTimeCommunicator.TypeScriptGenerator
-
-
-dotnet-uirtc -p ".\App-backend\App-backend.csproj" -o ".\app-frontend\src\communication\contract.ts"

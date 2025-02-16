@@ -7,7 +7,7 @@ import {
 import { Badge } from "react-bootstrap";
 
 const SimpleComponent = () => {
-  const [status, setStatus] = useState(false); // Change to true/false to test
+  const [status, setStatus] = useState(false);
 
   useEffect(() => {
     var correlationId = "SimpleId";
@@ -17,9 +17,12 @@ const SimpleComponent = () => {
       }
     });
 
-    uiRtcCommunication.SimpleHub.SimpleHandler({
-      correlationId: correlationId,
-    });
+    const actFun = async () => {
+      await uiRtcCommunication.SimpleHub.SimpleHandler({
+        correlationId: correlationId,
+      });
+    };
+    actFun();
   }, []);
 
   return (

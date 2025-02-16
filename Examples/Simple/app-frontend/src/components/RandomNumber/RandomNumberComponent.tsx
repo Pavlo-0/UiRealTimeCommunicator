@@ -20,13 +20,13 @@ const RandomNumberComponent = () => {
     );
   }, []);
 
-  const generateNewNumber = () => {
-    uiRtcCommunication.RandomNumberHub.RequestNewNumber();
+  const generateNewNumber = async () => {
+    await uiRtcCommunication.RandomNumberHub.RequestNewNumber();
   };
 
-  const generateNewRangeNumber = () => {
+  const generateNewRangeNumber = async () => {
     if (minValue < maxValue) {
-      uiRtcCommunication.RandomNumberHub.RequestNewRangeNumber({
+      await uiRtcCommunication.RandomNumberHub.RequestNewRangeNumber({
         minValue,
         maxValue,
       });
