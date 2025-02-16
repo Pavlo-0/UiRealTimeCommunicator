@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2025-02-15 21:43:36 UTC 
+ * Generated on: 2025-02-16 00:02:59 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -13,10 +13,10 @@ import {
   HubConnectionState
 } from "@microsoft/signalr";
 
-type uiRtcHubs = 'AttributeDeclaration' | 'ConnectionIdSenderHub' | 'OnConnectionHub' | 'OnConnectionManager' | 'SimpleContextHub' | 'SimpleEmptyContextHub' | 'SimpleEmptyHub' | 'SimpleHub' | 'TwoContractMethodsHub' | 'TwoHandlers';
-const allHubs: uiRtcHubs[] = ['AttributeDeclaration', 'ConnectionIdSenderHub', 'OnConnectionHub', 'OnConnectionManager', 'SimpleContextHub', 'SimpleEmptyContextHub', 'SimpleEmptyHub', 'SimpleHub', 'TwoContractMethodsHub', 'TwoHandlers'];
+type uiRtcHubs = 'AttributeDeclaration' | 'ConnectionIdSenderHub' | 'OnConnectionHub' | 'OnConnectionManager' | 'SimpleContextHub' | 'SimpleEmptyContextHub' | 'SimpleEmptyHub' | 'SimpleHub' | 'TwoContractMethodsHub' | 'TwoHandlers' | 'TwoSubscriptionHub' | 'UnsubscribeSimpleHub';
+const allHubs: uiRtcHubs[] = ['AttributeDeclaration', 'ConnectionIdSenderHub', 'OnConnectionHub', 'OnConnectionManager', 'SimpleContextHub', 'SimpleEmptyContextHub', 'SimpleEmptyHub', 'SimpleHub', 'TwoContractMethodsHub', 'TwoHandlers', 'TwoSubscriptionHub', 'UnsubscribeSimpleHub'];
 
-type hubMethods = AttributeDeclarationMethod | ConnectionIdSenderHubMethod | SimpleContextHubMethod | SimpleEmptyContextHubMethod | SimpleEmptyHubMethod | SimpleHubMethod | TwoContractMethodsHubMethod | TwoHandlersMethod;
+type hubMethods = AttributeDeclarationMethod | ConnectionIdSenderHubMethod | SimpleContextHubMethod | SimpleEmptyContextHubMethod | SimpleEmptyHubMethod | SimpleHubMethod | TwoContractMethodsHubMethod | TwoHandlersMethod | TwoSubscriptionHubMethod | UnsubscribeSimpleHubMethod;
 
 type AttributeDeclarationMethod = 'AttributeDeclarationAttributeHandler';
 type ConnectionIdSenderHubMethod = 'ConnectionIdRequest';
@@ -26,8 +26,10 @@ type SimpleEmptyHubMethod = 'SimpleEmptyHandler';
 type SimpleHubMethod = 'SimpleHandler';
 type TwoContractMethodsHubMethod = 'TwoContractMethods';
 type TwoHandlersMethod = 'TwoHandler';
+type TwoSubscriptionHubMethod = 'TwoSubscriptionHandler';
+type UnsubscribeSimpleHubMethod = 'UnsubscribeSimpleHandler';
 
-type hubSubscriptions = AttributeDeclarationSubscription | ConnectionIdSenderHubSubscription | OnConnectionHubSubscription | OnConnectionManagerSubscription | SimpleContextHubSubscription | SimpleEmptyContextHubSubscription | SimpleEmptyHubSubscription | SimpleHubSubscription | TwoContractMethodsHubSubscription | TwoHandlersSubscription;
+type hubSubscriptions = AttributeDeclarationSubscription | ConnectionIdSenderHubSubscription | OnConnectionHubSubscription | OnConnectionManagerSubscription | SimpleContextHubSubscription | SimpleEmptyContextHubSubscription | SimpleEmptyHubSubscription | SimpleHubSubscription | TwoContractMethodsHubSubscription | TwoHandlersSubscription | TwoSubscriptionHubSubscription | UnsubscribeSimpleHubSubscription;
 
 type AttributeDeclarationSubscription = 'AttributeDeclarationAttributeAnswer';
 type ConnectionIdSenderHubSubscription = 'SendToSpecificUser';
@@ -39,6 +41,8 @@ type SimpleEmptyHubSubscription = 'SimpleEmptyAnswer';
 type SimpleHubSubscription = 'SimpleAnswer';
 type TwoContractMethodsHubSubscription = 'TwoContractMethodsAnswer1' | 'TwoContractMethodsAnswer2';
 type TwoHandlersSubscription = 'HandlerAnswer';
+type TwoSubscriptionHubSubscription = 'TwoSubscriptionAnswer';
+type UnsubscribeSimpleHubSubscription = 'UnsubscribeSimpleAnswer';
 
 const connections: RConnections = {
     AttributeDeclaration: {},
@@ -51,6 +55,8 @@ const connections: RConnections = {
   SimpleHub: {},
   TwoContractMethodsHub: {},
   TwoHandlers: {},
+  TwoSubscriptionHub: {},
+  UnsubscribeSimpleHub: {},
 };
 
 export const uiRtcSubscription = {
@@ -85,6 +91,12 @@ export const uiRtcSubscription = {
   TwoHandlers: {
     HandlerAnswer: (callBack: (data: TwoHandlersResponse) => void) => subscribe("TwoHandlers", "HandlerAnswer", callBack),
   },
+  TwoSubscriptionHub: {
+    TwoSubscriptionAnswer: (callBack: (data: TwoSubscriptionResponseMessage) => void) => subscribe("TwoSubscriptionHub", "TwoSubscriptionAnswer", callBack),
+  },
+  UnsubscribeSimpleHub: {
+    UnsubscribeSimpleAnswer: (callBack: () => void) => subscribe("UnsubscribeSimpleHub", "UnsubscribeSimpleAnswer", callBack),
+  },
 
 };
 
@@ -112,6 +124,12 @@ export const uiRtcCommunication = {
   },
   TwoHandlers: {
     TwoHandler: () => send("TwoHandlers", "TwoHandler"),
+  },
+  TwoSubscriptionHub: {
+    TwoSubscriptionHandler: (request: TwoSubscriptionRequestMessage) => send("TwoSubscriptionHub", "TwoSubscriptionHandler", request),
+  },
+  UnsubscribeSimpleHub: {
+    UnsubscribeSimpleHandler: () => send("UnsubscribeSimpleHub", "UnsubscribeSimpleHandler"),
   },
 
 };
@@ -226,6 +244,24 @@ export type TwoHandlersResponse = {
 
 
 
+/* THIS (.ts) FILE IS GENERATED BY Tapper */
+/* eslint-disable */
+/* tslint:disable */
+
+/** Transpiled from BE01.IntegrationTest.Scenarios.TwoSubscription.TwoSubscriptionRequestMessage */
+export type TwoSubscriptionRequestMessage = {
+    /** Transpiled from string */
+    correlationId: string;
+}
+
+/** Transpiled from BE01.IntegrationTest.Scenarios.TwoSubscription.TwoSubscriptionResponseMessage */
+export type TwoSubscriptionResponseMessage = {
+    /** Transpiled from string */
+    correlationId: string;
+}
+
+
+
 /* Hard code */
 export interface IUiRtcConfiguration {
     serverUrl: string;
@@ -319,6 +355,14 @@ const subscribe = (
     callBack: (data: any) => void
 ) => {
     connections[hub].connection?.on(sub, callBack);
+    return {
+        hub,
+        sub,
+        handler: callBack,
+        unsubscribe: () => {
+            connections[hub].connection?.off(sub, callBack);
+        },
+    };
 };
 
 const send = async (hub: uiRtcHubs, method: hubMethods, request?: any) => {

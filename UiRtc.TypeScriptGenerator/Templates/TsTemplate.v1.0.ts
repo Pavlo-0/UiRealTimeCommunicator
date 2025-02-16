@@ -131,6 +131,14 @@ const subscribe = (
     callBack: (data: any) => void
 ) => {
     connections[hub].connection?.on(sub, callBack);
+    return {
+        hub,
+        sub,
+        handler: callBack,
+        unsubscribe: () => {
+            connections[hub].connection?.off(sub, callBack);
+        },
+    };
 };
 
 const send = async (hub: uiRtcHubs, method: hubMethods, request?: any) => {

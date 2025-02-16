@@ -11,6 +11,7 @@ import TwoHandlersComponent from "./components/TwoHandlersComponent";
 import ConnectionIdSenderComponent from "./components/ConnectionIdSenderComponent";
 import SimpleEmptyContextComponent from "./components/SimpleEmptyContextComponent";
 import TwoSubscriptionComponent from "./components/TwoSubscriptionComponent";
+import UnsubscribeSimple from "./components/UnsibscribeSimpleComponent";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             <TwoHandlersComponent></TwoHandlersComponent>
             <TwoSubscriptionComponent></TwoSubscriptionComponent>
             <ConnectionIdSenderComponent></ConnectionIdSenderComponent>
+            <UnsubscribeSimple></UnsubscribeSimple>
           </tbody>
         </Table>
       </Container>
