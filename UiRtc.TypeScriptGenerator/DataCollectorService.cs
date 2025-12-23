@@ -120,8 +120,9 @@ namespace UiRtc.TypeScriptGenerator
 
                     //If this is handler with parameter
                     var modelType = concreateInterface.TypeArguments.Length > 1 ? concreateInterface.TypeArguments.Skip(1).First().Name : null;
+                    var modelNamespace = concreateInterface.TypeArguments.Length > 1 ? concreateInterface.TypeArguments.Skip(1).First().ContainingNamespace?.ToString() : null;
 
-                    var record = new HandlerDataRecord(hubName, handlerMethodName, modelType);
+                    var record = new HandlerDataRecord(hubName, handlerMethodName, modelType, modelNamespace);
                     _logger.Log(LogLevel.Information, $"For hub {hubName} has been found handler: {handlerMethodName}");
 
                     AddToHandlerDataRecords(handlersCollection, record);
@@ -158,11 +159,13 @@ namespace UiRtc.TypeScriptGenerator
                     var sendorMethods = interfaceSymbol.GetMembers().OfType<IMethodSymbol>().ToList();
                     foreach (IMethodSymbol? sendorMethod in sendorMethods)
                     {
-                        var modelTypeName = sendorMethod.Parameters.FirstOrDefault()?.Type.Name;
+                        var modelType = sendorMethod.Parameters.FirstOrDefault()?.Type;
+                        var modelTypeName = modelType?.Name;
+                        var modelNamespace = modelType?.ContainingNamespace?.ToString();
 
                         var senderMethodName = GetMethodName(sendorMethod);
 
-                        var record = new SenderDataRecord(hubName, senderMethodName, modelTypeName);
+                        var record = new SenderDataRecord(hubName, senderMethodName, modelTypeName, modelNamespace);
                         _logger.Log(LogLevel.Information, $"For sender {hubName} has been found sendor methods: {senderMethodName}");
 
                         AddToSenderDataRecords(senderDataRecords, record);

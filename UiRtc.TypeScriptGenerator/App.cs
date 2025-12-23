@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using UiRtc.TypeScriptGenerator;
+using Tapper;
 
 public class App : CoconaConsoleAppBase
 {
@@ -33,9 +34,31 @@ public class App : CoconaConsoleAppBase
             var (senderCollection, handlerCollection) = await dataCollectionService.ExtractHubsContracts(project, this.Context.CancellationToken);
 
             var contractGenerator = new TsGeneratorService(_logger);
-            var tsContract = contractGenerator.GenerateService(senderCollection, handlerCollection, tsModels.Select(m => m.Content).ToArray());
 
-            WriteToFile(Path.GetFullPath(output), tsContract);
+            // Determine output paths
+            var outputFullPath = Path.GetFullPath(output);
+            string outputDirectory;
+            if (Path.HasExtension(outputFullPath))
+            {
+                outputDirectory = Path.GetDirectoryName(outputFullPath) ?? outputFullPath;
+            }
+            else
+            {
+                outputDirectory = outputFullPath;
+            }
+
+            if (!string.IsNullOrEmpty(outputDirectory) && !Directory.Exists(outputDirectory))
+            {
+                Directory.CreateDirectory(outputDirectory);
+            }
+
+            // Generate main contract using models collection; TsGeneratorService will save models files to outputDirectory
+            var tsContract = contractGenerator.GenerateService(senderCollection, handlerCollection, tsModels, outputDirectory);
+
+            // Write main contract file (if output was a directory, create default file name)
+            var contractFilePath = Path.HasExtension(outputFullPath) ? outputFullPath : Path.Combine(outputDirectory, "contract.ts");
+
+            WriteToFile(contractFilePath, tsContract);
 
             _logger.Log(LogLevel.Information, "Generating done");
         }
