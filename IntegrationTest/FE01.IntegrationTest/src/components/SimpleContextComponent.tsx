@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
-  SimpleContexResponseMessage,
   uiRtcCommunication,
   uiRtcSubscription,
 } from "../communication/contract";
 import { Badge } from "react-bootstrap";
+import { SimpleContextResponseMessage } from "../communication/BE01.IntegrationTest.Scenarios.SimpleContext";
 
 const SimpleContextComponent = () => {
   const [status, setStatus] = useState(false);
@@ -12,7 +12,7 @@ const SimpleContextComponent = () => {
   useEffect(() => {
     var correlationId = "SimpleContextId";
     uiRtcSubscription.SimpleContextHub.SimpleContextAnswer(
-      (model: SimpleContexResponseMessage) => {
+      (model: SimpleContextResponseMessage) => {
         if (model.correlationId == correlationId) {
           setStatus(true);
         }

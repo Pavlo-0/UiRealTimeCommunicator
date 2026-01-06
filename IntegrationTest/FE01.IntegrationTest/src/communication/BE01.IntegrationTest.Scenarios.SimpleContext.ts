@@ -2,14 +2,14 @@
 /* eslint-disable */
 /* tslint:disable */
 
-/** Transpiled from BE01.IntegrationTest.Scenarios.SimpleContext.SimpleContexRequestMessage */
-export type SimpleContexRequestMessage = {
+/** Transpiled from BE01.IntegrationTest.Scenarios.SimpleContext.SimpleContextRequestMessage */
+export type SimpleContextRequestMessage = {
     /** Transpiled from string */
     correlationId: string;
 }
 
-/** Transpiled from BE01.IntegrationTest.Scenarios.SimpleContext.SimpleContexResponseMessage */
-export type SimpleContexResponseMessage = {
+/** Transpiled from BE01.IntegrationTest.Scenarios.SimpleContext.SimpleContextResponseMessage */
+export type SimpleContextResponseMessage = {
     /** Transpiled from string */
     correlationId: string;
     /** Transpiled from string */

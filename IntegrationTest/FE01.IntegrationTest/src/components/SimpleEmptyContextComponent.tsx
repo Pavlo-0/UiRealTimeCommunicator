@@ -9,7 +9,6 @@ const SimpleEmptyContextComponent = () => {
   const [status, setStatus] = useState(false);
 
   useEffect(() => {
-    var correlationId = "SimpleContextId";
     uiRtcSubscription.SimpleEmptyContextHub.SimpleEmptyContextAnswer(() => {
       setStatus(true);
     });

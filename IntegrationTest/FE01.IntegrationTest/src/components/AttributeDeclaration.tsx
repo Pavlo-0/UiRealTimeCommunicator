@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
-  SimpleResponseMessage,
   uiRtcCommunication,
   uiRtcSubscription,
 } from "../communication/contract";
 import { Badge } from "react-bootstrap";
+import { SimpleResponseMessage } from "../communication/BE01.IntegrationTest.Scenarios.Simple";
 
 const AttributeDeclarationComponent = () => {
   const [status, setStatus] = useState(false);

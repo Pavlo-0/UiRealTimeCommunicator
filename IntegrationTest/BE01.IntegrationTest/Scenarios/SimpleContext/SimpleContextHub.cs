@@ -10,15 +10,15 @@ namespace BE01.IntegrationTest.Scenarios.SimpleContext
 
     public interface SimpleContextSender : IUiRtcSenderContract<SimpleContextHub>
     {
-        Task SimpleContextAnswer(SimpleContexResponseMessage message);
+        Task SimpleContextAnswer(SimpleContextResponseMessage message);
     }
 
-    public class SimpleContextHandler(IUiRtcSenderService senderService) : IUiRtcContextHandler<SimpleContextHub, SimpleContexRequestMessage>
+    public class SimpleContextHandler(IUiRtcSenderService senderService) : IUiRtcContextHandler<SimpleContextHub, SimpleContextRequestMessage>
     {
-        public async Task ConsumeAsync(SimpleContexRequestMessage Model, IUiRtcProxyContext context)
+        public async Task ConsumeAsync(SimpleContextRequestMessage Model, IUiRtcProxyContext context)
         {
             await senderService.Send<SimpleContextSender>()
-                .SimpleContextAnswer(new SimpleContexResponseMessage
+                .SimpleContextAnswer(new SimpleContextResponseMessage
                 {
                     CorrelationId = Model.CorrelationId,
                     ConnectionId = context.ConnectionId
@@ -27,13 +27,13 @@ namespace BE01.IntegrationTest.Scenarios.SimpleContext
     }
 
     [TranspilationSource]
-    public class SimpleContexRequestMessage
+    public class SimpleContextRequestMessage
     {
         public required string CorrelationId { get; set; }
     }
 
     [TranspilationSource]
-    public class SimpleContexResponseMessage
+    public class SimpleContextResponseMessage
     {
         public required string CorrelationId { get; set; }
         public required string ConnectionId { get; set; }

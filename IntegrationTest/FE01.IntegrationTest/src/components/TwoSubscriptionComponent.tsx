@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
-  SimpleResponseMessage,
-  TwoSubscriptionResponseMessage,
   uiRtcCommunication,
   uiRtcSubscription,
 } from "../communication/contract";
 import { Badge } from "react-bootstrap";
+import { TwoSubscriptionResponseMessage } from "../communication/BE01.IntegrationTest.Scenarios.TwoSubscription";
 
 const TwoSubscriptionComponent = () => {
   const [status1, setStatus1] = useState(false);

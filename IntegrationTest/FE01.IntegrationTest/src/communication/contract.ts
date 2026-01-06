@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2025-12-23 22:32:15 UTC 
+ * Generated on: 2026-01-06 23:01:20 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -138,7 +138,7 @@ export const uiRtcSubscription = {
       subscribe("OnConnectionManager", "UpdateStatus", callBack),
   },
   SimpleContextHub: {
-    SimpleContextAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_SimpleContext.SimpleContexResponseMessage) => void) =>
+    SimpleContextAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_SimpleContext.SimpleContextResponseMessage) => void) =>
       subscribe("SimpleContextHub", "SimpleContextAnswer", callBack),
   },
   SimpleDateTimeHub: {
@@ -188,7 +188,7 @@ export const uiRtcCommunication = {
       send("ConnectionIdSenderHub", "ConnectionIdRequest"),
   },
   SimpleContextHub: {
-    SimpleContextHandler: (request: BE01_IntegrationTest_Scenarios_SimpleContext.SimpleContexRequestMessage) =>
+    SimpleContextHandler: (request: BE01_IntegrationTest_Scenarios_SimpleContext.SimpleContextRequestMessage) =>
       send("SimpleContextHub", "SimpleContextHandler", request),
   },
   SimpleDateTimeHub: {
