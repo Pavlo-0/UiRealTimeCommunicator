@@ -13,6 +13,8 @@ import {
   HubConnectionState
 } from "@microsoft/signalr";
 
+{{MODEL_IMPORTS}}
+
 type uiRtcHubs = {{HUBS}};
 const allHubs: uiRtcHubs[] = [
   {{ALL_HUBS}}
@@ -37,8 +39,6 @@ export const uiRtcSubscription = {
 export const uiRtcCommunication = {
   {{UI_RTC_COMMUNICATION}}
 };
-
-{{MODELS}}
 
 /* Hard code */
 export interface IUiRtcConfiguration {

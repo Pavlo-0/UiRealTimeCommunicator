@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2025-02-16 01:52:35 UTC 
+ * Generated on: 2026-01-06 23:01:20 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -13,11 +13,22 @@ import {
   HubConnectionState
 } from "@microsoft/signalr";
 
+import * as BE01_IntegrationTest_Scenarios_AttributeDeclaration from "./BE01.IntegrationTest.Scenarios.AttributeDeclaration";
+import * as BE01_IntegrationTest_Scenarios_ConnectionIdSender from "./BE01.IntegrationTest.Scenarios.ConnectionIdSender";
+import * as BE01_IntegrationTest_Scenarios_OnConnection from "./BE01.IntegrationTest.Scenarios.OnConnection";
+import * as BE01_IntegrationTest_Scenarios_SimpleContext from "./BE01.IntegrationTest.Scenarios.SimpleContext";
+import * as BE01_IntegrationTest_Scenarios_SimpleDateTimeField from "./BE01.IntegrationTest.Scenarios.SimpleDateTimeField";
+import * as BE01_IntegrationTest_Scenarios_Simple from "./BE01.IntegrationTest.Scenarios.Simple";
+import * as BE01_IntegrationTest_Scenarios_TwoContractMethods from "./BE01.IntegrationTest.Scenarios.TwoContractMethods";
+import * as BE01_IntegrationTest_Scenarios_TwoHandlers from "./BE01.IntegrationTest.Scenarios.TwoHandlers";
+import * as BE01_IntegrationTest_Scenarios_TwoSubscription from "./BE01.IntegrationTest.Scenarios.TwoSubscription";
+
 type uiRtcHubs = "AttributeDeclaration"
   | "ConnectionIdSenderHub"
   | "OnConnectionHub"
   | "OnConnectionManager"
   | "SimpleContextHub"
+  | "SimpleDateTimeHub"
   | "SimpleEmptyContextHub"
   | "SimpleEmptyHub"
   | "SimpleHub"
@@ -31,6 +42,7 @@ const allHubs: uiRtcHubs[] = [
   "OnConnectionHub",
   "OnConnectionManager",
   "SimpleContextHub",
+  "SimpleDateTimeHub",
   "SimpleEmptyContextHub",
   "SimpleEmptyHub",
   "SimpleHub",
@@ -43,6 +55,7 @@ const allHubs: uiRtcHubs[] = [
 type hubMethods = AttributeDeclarationMethod
   | ConnectionIdSenderHubMethod
   | SimpleContextHubMethod
+  | SimpleDateTimeHubMethod
   | SimpleEmptyContextHubMethod
   | SimpleEmptyHubMethod
   | SimpleHubMethod
@@ -54,6 +67,7 @@ type hubMethods = AttributeDeclarationMethod
 type AttributeDeclarationMethod = "AttributeDeclarationAttributeHandler";
 type ConnectionIdSenderHubMethod = "ConnectionIdRequest";
 type SimpleContextHubMethod = "SimpleContextHandler";
+type SimpleDateTimeHubMethod = "SimpleDateTimeHandler";
 type SimpleEmptyContextHubMethod = "SimpleEmptyContextHandler";
 type SimpleEmptyHubMethod = "SimpleEmptyHandler";
 type SimpleHubMethod = "SimpleHandler";
@@ -67,6 +81,7 @@ type hubSubscriptions = AttributeDeclarationSubscription
   | OnConnectionHubSubscription
   | OnConnectionManagerSubscription
   | SimpleContextHubSubscription
+  | SimpleDateTimeHubSubscription
   | SimpleEmptyContextHubSubscription
   | SimpleEmptyHubSubscription
   | SimpleHubSubscription
@@ -80,6 +95,7 @@ type ConnectionIdSenderHubSubscription = "SendToSpecificUser";
 type OnConnectionHubSubscription = "DummyMethod";
 type OnConnectionManagerSubscription = "UpdateStatus";
 type SimpleContextHubSubscription = "SimpleContextAnswer";
+type SimpleDateTimeHubSubscription = "SimpleAnswer";
 type SimpleEmptyContextHubSubscription = "SimpleEmptyContextAnswer";
 type SimpleEmptyHubSubscription = "SimpleEmptyAnswer";
 type SimpleHubSubscription = "SimpleAnswer";
@@ -89,27 +105,28 @@ type TwoSubscriptionHubSubscription = "TwoSubscriptionAnswer";
 type UnsubscribeSimpleHubSubscription = "UnsubscribeSimpleAnswer";
 
 const connections: RConnections = {
-    AttributeDeclaration: {},
-  ConnectionIdSenderHub: {},
-  OnConnectionHub: {},
-  OnConnectionManager: {},
-  SimpleContextHub: {},
-  SimpleEmptyContextHub: {},
-  SimpleEmptyHub: {},
-  SimpleHub: {},
-  TwoContractMethodsHub: {},
-  TwoHandlers: {},
-  TwoSubscriptionHub: {},
-  UnsubscribeSimpleHub: {},
+    AttributeDeclaration: { },
+  ConnectionIdSenderHub: { },
+  OnConnectionHub: { },
+  OnConnectionManager: { },
+  SimpleContextHub: { },
+  SimpleDateTimeHub: { },
+  SimpleEmptyContextHub: { },
+  SimpleEmptyHub: { },
+  SimpleHub: { },
+  TwoContractMethodsHub: { },
+  TwoHandlers: { },
+  TwoSubscriptionHub: { },
+  UnsubscribeSimpleHub: { },
 };
 
 export const uiRtcSubscription = {
     AttributeDeclaration: {
-    AttributeDeclarationAttributeAnswer: (callBack: (data: AttributeDeclarationResponseMessage) => void) =>
+    AttributeDeclarationAttributeAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_AttributeDeclaration.AttributeDeclarationResponseMessage) => void) =>
       subscribe("AttributeDeclaration", "AttributeDeclarationAttributeAnswer", callBack),
   },
   ConnectionIdSenderHub: {
-    SendToSpecificUser: (callBack: (data: InfoModel) => void) =>
+    SendToSpecificUser: (callBack: (data: BE01_IntegrationTest_Scenarios_ConnectionIdSender.InfoModel) => void) =>
       subscribe("ConnectionIdSenderHub", "SendToSpecificUser", callBack),
   },
   OnConnectionHub: {
@@ -117,12 +134,16 @@ export const uiRtcSubscription = {
       subscribe("OnConnectionHub", "DummyMethod", callBack),
   },
   OnConnectionManager: {
-    UpdateStatus: (callBack: (data: OnConnectionStatusModel) => void) =>
+    UpdateStatus: (callBack: (data: BE01_IntegrationTest_Scenarios_OnConnection.OnConnectionStatusModel) => void) =>
       subscribe("OnConnectionManager", "UpdateStatus", callBack),
   },
   SimpleContextHub: {
-    SimpleContextAnswer: (callBack: (data: SimpleContexResponseMessage) => void) =>
+    SimpleContextAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_SimpleContext.SimpleContextResponseMessage) => void) =>
       subscribe("SimpleContextHub", "SimpleContextAnswer", callBack),
+  },
+  SimpleDateTimeHub: {
+    SimpleAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_SimpleDateTimeField.SimpleDateTimeResponseMessage) => void) =>
+      subscribe("SimpleDateTimeHub", "SimpleAnswer", callBack),
   },
   SimpleEmptyContextHub: {
     SimpleEmptyContextAnswer: (callBack: () => void) =>
@@ -133,21 +154,21 @@ export const uiRtcSubscription = {
       subscribe("SimpleEmptyHub", "SimpleEmptyAnswer", callBack),
   },
   SimpleHub: {
-    SimpleAnswer: (callBack: (data: SimpleResponseMessage) => void) =>
+    SimpleAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_Simple.SimpleResponseMessage) => void) =>
       subscribe("SimpleHub", "SimpleAnswer", callBack),
   },
   TwoContractMethodsHub: {
-    TwoContractMethodsAnswer1: (callBack: (data: TwoContractMethodsResponseMessage) => void) =>
+    TwoContractMethodsAnswer1: (callBack: (data: BE01_IntegrationTest_Scenarios_TwoContractMethods.TwoContractMethodsResponseMessage) => void) =>
       subscribe("TwoContractMethodsHub", "TwoContractMethodsAnswer1", callBack),
-    TwoContractMethodsAnswer2: (callBack: (data: TwoContractMethodsResponseMessage) => void) =>
+    TwoContractMethodsAnswer2: (callBack: (data: BE01_IntegrationTest_Scenarios_TwoContractMethods.TwoContractMethodsResponseMessage) => void) =>
       subscribe("TwoContractMethodsHub", "TwoContractMethodsAnswer2", callBack),
   },
   TwoHandlers: {
-    HandlerAnswer: (callBack: (data: TwoHandlersResponse) => void) =>
+    HandlerAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_TwoHandlers.TwoHandlersResponse) => void) =>
       subscribe("TwoHandlers", "HandlerAnswer", callBack),
   },
   TwoSubscriptionHub: {
-    TwoSubscriptionAnswer: (callBack: (data: TwoSubscriptionResponseMessage) => void) =>
+    TwoSubscriptionAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_TwoSubscription.TwoSubscriptionResponseMessage) => void) =>
       subscribe("TwoSubscriptionHub", "TwoSubscriptionAnswer", callBack),
   },
   UnsubscribeSimpleHub: {
@@ -159,7 +180,7 @@ export const uiRtcSubscription = {
 
 export const uiRtcCommunication = {
     AttributeDeclaration: {
-    AttributeDeclarationAttributeHandler: (request: AttributeDeclarationRequestMessage) =>
+    AttributeDeclarationAttributeHandler: (request: BE01_IntegrationTest_Scenarios_AttributeDeclaration.AttributeDeclarationRequestMessage) =>
       send("AttributeDeclaration", "AttributeDeclarationAttributeHandler", request),
   },
   ConnectionIdSenderHub: {
@@ -167,8 +188,12 @@ export const uiRtcCommunication = {
       send("ConnectionIdSenderHub", "ConnectionIdRequest"),
   },
   SimpleContextHub: {
-    SimpleContextHandler: (request: SimpleContexRequestMessage) =>
+    SimpleContextHandler: (request: BE01_IntegrationTest_Scenarios_SimpleContext.SimpleContextRequestMessage) =>
       send("SimpleContextHub", "SimpleContextHandler", request),
+  },
+  SimpleDateTimeHub: {
+    SimpleDateTimeHandler: (request: BE01_IntegrationTest_Scenarios_SimpleDateTimeField.SimpleDateTimeRequestMessage) =>
+      send("SimpleDateTimeHub", "SimpleDateTimeHandler", request),
   },
   SimpleEmptyContextHub: {
     SimpleEmptyContextHandler: () =>
@@ -179,11 +204,11 @@ export const uiRtcCommunication = {
       send("SimpleEmptyHub", "SimpleEmptyHandler"),
   },
   SimpleHub: {
-    SimpleHandler: (request: SimpleRequestMessage) =>
+    SimpleHandler: (request: BE01_IntegrationTest_Scenarios_Simple.SimpleRequestMessage) =>
       send("SimpleHub", "SimpleHandler", request),
   },
   TwoContractMethodsHub: {
-    TwoContractMethods: (request: TwoContractMethodsRequestMessage) =>
+    TwoContractMethods: (request: BE01_IntegrationTest_Scenarios_TwoContractMethods.TwoContractMethodsRequestMessage) =>
       send("TwoContractMethodsHub", "TwoContractMethods", request),
   },
   TwoHandlers: {
@@ -191,7 +216,7 @@ export const uiRtcCommunication = {
       send("TwoHandlers", "TwoHandler"),
   },
   TwoSubscriptionHub: {
-    TwoSubscriptionHandler: (request: TwoSubscriptionRequestMessage) =>
+    TwoSubscriptionHandler: (request: BE01_IntegrationTest_Scenarios_TwoSubscription.TwoSubscriptionRequestMessage) =>
       send("TwoSubscriptionHub", "TwoSubscriptionHandler", request),
   },
   UnsubscribeSimpleHub: {
@@ -200,134 +225,6 @@ export const uiRtcCommunication = {
   },
 
 };
-
-/* THIS (.ts) FILE IS GENERATED BY Tapper */
-/* eslint-disable */
-/* tslint:disable */
-
-/** Transpiled from BE01.IntegrationTest.Scenarios.AttributeDeclaration.AttributeDeclarationRequestMessage */
-export type AttributeDeclarationRequestMessage = {
-    /** Transpiled from string */
-    correlationId: string;
-}
-
-/** Transpiled from BE01.IntegrationTest.Scenarios.AttributeDeclaration.AttributeDeclarationResponseMessage */
-export type AttributeDeclarationResponseMessage = {
-    /** Transpiled from string */
-    correlationId: string;
-}
-
-
-
-/* THIS (.ts) FILE IS GENERATED BY Tapper */
-/* eslint-disable */
-/* tslint:disable */
-
-/** Transpiled from BE01.IntegrationTest.Scenarios.ConnectionIdSender.InfoModel */
-export type InfoModel = {
-    /** Transpiled from string? */
-    connectionId?: string;
-}
-
-
-
-/* THIS (.ts) FILE IS GENERATED BY Tapper */
-/* eslint-disable */
-/* tslint:disable */
-
-/** Transpiled from BE01.IntegrationTest.Scenarios.OnConnection.OnConnectionStatusModel */
-export type OnConnectionStatusModel = {
-    /** Transpiled from bool */
-    isConnected: boolean;
-}
-
-
-
-/* THIS (.ts) FILE IS GENERATED BY Tapper */
-/* eslint-disable */
-/* tslint:disable */
-
-/** Transpiled from BE01.IntegrationTest.Scenarios.SimpleContext.SimpleContexRequestMessage */
-export type SimpleContexRequestMessage = {
-    /** Transpiled from string */
-    correlationId: string;
-}
-
-/** Transpiled from BE01.IntegrationTest.Scenarios.SimpleContext.SimpleContexResponseMessage */
-export type SimpleContexResponseMessage = {
-    /** Transpiled from string */
-    correlationId: string;
-    /** Transpiled from string */
-    connectionId: string;
-}
-
-
-
-/* THIS (.ts) FILE IS GENERATED BY Tapper */
-/* eslint-disable */
-/* tslint:disable */
-
-/** Transpiled from BE01.IntegrationTest.Scenarios.Simple.SimpleRequestMessage */
-export type SimpleRequestMessage = {
-    /** Transpiled from string */
-    correlationId: string;
-}
-
-/** Transpiled from BE01.IntegrationTest.Scenarios.Simple.SimpleResponseMessage */
-export type SimpleResponseMessage = {
-    /** Transpiled from string */
-    correlationId: string;
-}
-
-
-
-/* THIS (.ts) FILE IS GENERATED BY Tapper */
-/* eslint-disable */
-/* tslint:disable */
-
-/** Transpiled from BE01.IntegrationTest.Scenarios.TwoContractMethods.TwoContractMethodsRequestMessage */
-export type TwoContractMethodsRequestMessage = {
-    /** Transpiled from string */
-    correlationId: string;
-}
-
-/** Transpiled from BE01.IntegrationTest.Scenarios.TwoContractMethods.TwoContractMethodsResponseMessage */
-export type TwoContractMethodsResponseMessage = {
-    /** Transpiled from string */
-    correlationId: string;
-}
-
-
-
-/* THIS (.ts) FILE IS GENERATED BY Tapper */
-/* eslint-disable */
-/* tslint:disable */
-
-/** Transpiled from BE01.IntegrationTest.Scenarios.TwoHandlers.TwoHandlersResponse */
-export type TwoHandlersResponse = {
-    /** Transpiled from int */
-    handlerNumber: number;
-}
-
-
-
-/* THIS (.ts) FILE IS GENERATED BY Tapper */
-/* eslint-disable */
-/* tslint:disable */
-
-/** Transpiled from BE01.IntegrationTest.Scenarios.TwoSubscription.TwoSubscriptionRequestMessage */
-export type TwoSubscriptionRequestMessage = {
-    /** Transpiled from string */
-    correlationId: string;
-}
-
-/** Transpiled from BE01.IntegrationTest.Scenarios.TwoSubscription.TwoSubscriptionResponseMessage */
-export type TwoSubscriptionResponseMessage = {
-    /** Transpiled from string */
-    correlationId: string;
-}
-
-
 
 /* Hard code */
 export interface IUiRtcConfiguration {
