@@ -13,6 +13,7 @@ import SimpleEmptyContextComponent from "./components/SimpleEmptyContextComponen
 import TwoSubscriptionComponent from "./components/TwoSubscriptionComponent";
 import UnsubscribeSimple from "./components/UnsibscribeSimpleComponent";
 import { useState } from "react";
+import SimpleDateTimeComponent from "./components/SimpleDateTimeComponent";
 
 function App() {
   const [key, setKey] = useState(0);
@@ -38,6 +39,7 @@ function App() {
             <TwoSubscriptionComponent></TwoSubscriptionComponent>
             <ConnectionIdSenderComponent></ConnectionIdSenderComponent>
             <UnsubscribeSimple></UnsubscribeSimple>
+            <SimpleDateTimeComponent></SimpleDateTimeComponent>
           </tbody>
         </Table>
         <Button onClick={() => setKey(key + 1)}>Refresh</Button>

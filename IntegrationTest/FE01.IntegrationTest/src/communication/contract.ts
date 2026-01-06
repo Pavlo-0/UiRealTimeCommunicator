@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2025-12-18 20:09:21 UTC 
+ * Generated on: 2025-12-23 22:32:15 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -17,6 +17,7 @@ import * as BE01_IntegrationTest_Scenarios_AttributeDeclaration from "./BE01.Int
 import * as BE01_IntegrationTest_Scenarios_ConnectionIdSender from "./BE01.IntegrationTest.Scenarios.ConnectionIdSender";
 import * as BE01_IntegrationTest_Scenarios_OnConnection from "./BE01.IntegrationTest.Scenarios.OnConnection";
 import * as BE01_IntegrationTest_Scenarios_SimpleContext from "./BE01.IntegrationTest.Scenarios.SimpleContext";
+import * as BE01_IntegrationTest_Scenarios_SimpleDateTimeField from "./BE01.IntegrationTest.Scenarios.SimpleDateTimeField";
 import * as BE01_IntegrationTest_Scenarios_Simple from "./BE01.IntegrationTest.Scenarios.Simple";
 import * as BE01_IntegrationTest_Scenarios_TwoContractMethods from "./BE01.IntegrationTest.Scenarios.TwoContractMethods";
 import * as BE01_IntegrationTest_Scenarios_TwoHandlers from "./BE01.IntegrationTest.Scenarios.TwoHandlers";
@@ -27,6 +28,7 @@ type uiRtcHubs = "AttributeDeclaration"
   | "OnConnectionHub"
   | "OnConnectionManager"
   | "SimpleContextHub"
+  | "SimpleDateTimeHub"
   | "SimpleEmptyContextHub"
   | "SimpleEmptyHub"
   | "SimpleHub"
@@ -40,6 +42,7 @@ const allHubs: uiRtcHubs[] = [
   "OnConnectionHub",
   "OnConnectionManager",
   "SimpleContextHub",
+  "SimpleDateTimeHub",
   "SimpleEmptyContextHub",
   "SimpleEmptyHub",
   "SimpleHub",
@@ -52,6 +55,7 @@ const allHubs: uiRtcHubs[] = [
 type hubMethods = AttributeDeclarationMethod
   | ConnectionIdSenderHubMethod
   | SimpleContextHubMethod
+  | SimpleDateTimeHubMethod
   | SimpleEmptyContextHubMethod
   | SimpleEmptyHubMethod
   | SimpleHubMethod
@@ -63,6 +67,7 @@ type hubMethods = AttributeDeclarationMethod
 type AttributeDeclarationMethod = "AttributeDeclarationAttributeHandler";
 type ConnectionIdSenderHubMethod = "ConnectionIdRequest";
 type SimpleContextHubMethod = "SimpleContextHandler";
+type SimpleDateTimeHubMethod = "SimpleDateTimeHandler";
 type SimpleEmptyContextHubMethod = "SimpleEmptyContextHandler";
 type SimpleEmptyHubMethod = "SimpleEmptyHandler";
 type SimpleHubMethod = "SimpleHandler";
@@ -76,6 +81,7 @@ type hubSubscriptions = AttributeDeclarationSubscription
   | OnConnectionHubSubscription
   | OnConnectionManagerSubscription
   | SimpleContextHubSubscription
+  | SimpleDateTimeHubSubscription
   | SimpleEmptyContextHubSubscription
   | SimpleEmptyHubSubscription
   | SimpleHubSubscription
@@ -89,6 +95,7 @@ type ConnectionIdSenderHubSubscription = "SendToSpecificUser";
 type OnConnectionHubSubscription = "DummyMethod";
 type OnConnectionManagerSubscription = "UpdateStatus";
 type SimpleContextHubSubscription = "SimpleContextAnswer";
+type SimpleDateTimeHubSubscription = "SimpleAnswer";
 type SimpleEmptyContextHubSubscription = "SimpleEmptyContextAnswer";
 type SimpleEmptyHubSubscription = "SimpleEmptyAnswer";
 type SimpleHubSubscription = "SimpleAnswer";
@@ -103,6 +110,7 @@ const connections: RConnections = {
   OnConnectionHub: { },
   OnConnectionManager: { },
   SimpleContextHub: { },
+  SimpleDateTimeHub: { },
   SimpleEmptyContextHub: { },
   SimpleEmptyHub: { },
   SimpleHub: { },
@@ -132,6 +140,10 @@ export const uiRtcSubscription = {
   SimpleContextHub: {
     SimpleContextAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_SimpleContext.SimpleContexResponseMessage) => void) =>
       subscribe("SimpleContextHub", "SimpleContextAnswer", callBack),
+  },
+  SimpleDateTimeHub: {
+    SimpleAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_SimpleDateTimeField.SimpleDateTimeResponseMessage) => void) =>
+      subscribe("SimpleDateTimeHub", "SimpleAnswer", callBack),
   },
   SimpleEmptyContextHub: {
     SimpleEmptyContextAnswer: (callBack: () => void) =>
@@ -178,6 +190,10 @@ export const uiRtcCommunication = {
   SimpleContextHub: {
     SimpleContextHandler: (request: BE01_IntegrationTest_Scenarios_SimpleContext.SimpleContexRequestMessage) =>
       send("SimpleContextHub", "SimpleContextHandler", request),
+  },
+  SimpleDateTimeHub: {
+    SimpleDateTimeHandler: (request: BE01_IntegrationTest_Scenarios_SimpleDateTimeField.SimpleDateTimeRequestMessage) =>
+      send("SimpleDateTimeHub", "SimpleDateTimeHandler", request),
   },
   SimpleEmptyContextHub: {
     SimpleEmptyContextHandler: () =>
