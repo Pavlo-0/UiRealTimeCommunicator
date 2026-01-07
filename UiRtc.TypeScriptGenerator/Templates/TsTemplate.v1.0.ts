@@ -84,7 +84,7 @@ const initHubAsync = async (
     connections[hubName].connection = buildConnection(
       config.serverUrl + hubName
     );
-    await connections[hubName].connection.start();
+    await connections[hubName].connection!.start();
   } catch (err) {
     console.error(
       "Error while establishing connection '" + hubName + "': ",
@@ -122,9 +122,9 @@ const isConnected = (hubName: uiRtcHubs) => {
     !!connections &&
     !!connections[hubName] &&
     !!connections[hubName].connection &&
-    (connections[hubName].connection.state === HubConnectionState.Connected ||
-      connections[hubName].connection.state === HubConnectionState.Connecting ||
-      connections[hubName].connection.state === HubConnectionState.Reconnecting)
+    (connections[hubName].connection!.state === HubConnectionState.Connected ||
+      connections[hubName].connection!.state === HubConnectionState.Connecting ||
+      connections[hubName].connection!.state === HubConnectionState.Reconnecting)
   )
     return true;
   return false;
