@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2026-01-06 23:01:20 UTC 
+ * Generated on: 2026-02-01 00:17:28 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -270,7 +270,7 @@ const initHubAsync = async (
     connections[hubName].connection = buildConnection(
       config.serverUrl + hubName
     );
-    await connections[hubName].connection.start();
+    await connections[hubName].connection!.start();
   } catch (err) {
     console.error(
       "Error while establishing connection '" + hubName + "': ",
@@ -308,9 +308,9 @@ const isConnected = (hubName: uiRtcHubs) => {
     !!connections &&
     !!connections[hubName] &&
     !!connections[hubName].connection &&
-    (connections[hubName].connection.state === HubConnectionState.Connected ||
-      connections[hubName].connection.state === HubConnectionState.Connecting ||
-      connections[hubName].connection.state === HubConnectionState.Reconnecting)
+    (connections[hubName].connection!.state === HubConnectionState.Connected ||
+      connections[hubName].connection!.state === HubConnectionState.Connecting ||
+      connections[hubName].connection!.state === HubConnectionState.Reconnecting)
   )
     return true;
   return false;

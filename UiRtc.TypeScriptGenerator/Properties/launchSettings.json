@@ -4,6 +4,11 @@
       "commandName": "Project",
       "commandLineArgs": "-p ..\\IntegrationTest\\BE01.IntegrationTest\\BE01.IntegrationTest.csproj -o ..\\IntegrationTest\\FE01.IntegrationTest\\src\\communication\\contract.ts",
       "workingDirectory": "D:\\Projects\\UiRealTimeCommunicator\\UiRtc.TypeScriptGenerator"
+    },
+    "For Retro": {
+      "commandName": "Project",
+      "commandLineArgs": "-p \"D:\\Projects\\Retrospective\\retroBack\\Retro\\Retro.csproj\" -o \"D:\\Projects\\Retrospective\\retroFrontAngular\\src\\communicationContract\\contract.ts\"",
+      "workingDirectory": "D:\\Projects\\UiRealTimeCommunicator\\UiRtc.TypeScriptGenerator"
     }
   }
 }
