@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.11.35327.3
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11415.280 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiRtc.TypeScriptGenerator", "UiRtc.TypeScriptGenerator\UiRtc.TypeScriptGenerator.csproj", "{B7A379F8-1EED-4E01-8B7B-089B71DAC497}"
 EndProject
@@ -26,6 +26,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat", "Examples\Chat\ChatServer\Chat.csproj", "{EC588187-28E0-4F3C-9415-D392D0757122}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App-backend", "Examples\Simple\app-backend\App-backend.csproj", "{3D17D5F6-0A86-4176-932C-8B973FB39529}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0F7E2B22-F3EF-43E4-A3D0-045FAC9151B3}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines-develop.yml = azure-pipelines-develop.yml
+		azure-pipelines.yml = azure-pipelines.yml
+		CODEOWNERS = CODEOWNERS
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
