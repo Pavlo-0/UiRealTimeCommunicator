@@ -1,4 +1,4 @@
-# TypeScript Generator Documentation
+﻿# TypeScript Generator Documentation
 
 > **Update this file when:** Modifying CLI commands, changing template placeholders, or updating the code analysis logic.
 
@@ -25,8 +25,8 @@ dotnet-uirtc -p "path/to/project.csproj" -o "path/to/output/contract.ts"
 ### Options
 | Option | Description |
 |--------|-------------|
-| `-p`, `--project` | Path to the C# project file (`.csproj`) |
-| `-o`, `--output` | Output path for generated TypeScript file |
+| `-p`, `--project`    | Path to the C# project file (`.csproj`) |
+| `-o`, `--output`     | Output path for generated TypeScript file |
 
 ### Examples
 ```bash
@@ -41,23 +41,23 @@ dotnet-uirtc -p "./Backend/Backend.csproj" -o "./frontend/src/api/"
 
 ### Flow Diagram
 ```
-???????????????????     ?????????????????????     ????????????????????
-?  App.cs         ???????DataCollectorService???????TsGeneratorService?
-?  (CLI Handler)  ?     ?  (Roslyn Analysis) ?     ?  (Code Output)   ?
-???????????????????     ?????????????????????     ????????????????????
-         ?                       ?                         ?
-         ?                       ?                         ?
-         ?              ???????????????????       ??????????????????
-         ?              ? Tapper Library  ?       ? TsTemplate     ?
-         ?              ? (Model Gen)     ?       ? v1.0.ts        ?
-         ?              ???????????????????       ??????????????????
-         ?                       ?                         ?
-         ?                       ?                         ?
-???????????????????????????????????????????????????????????????????
-?                     Output Files                                 ?
-?  - contract.ts (main contracts)                                  ?
-?  - *.ts (individual model files from Tapper)                     ?
-???????????????????????????????????????????????????????????????????
+┌─────────────────┐     ┌────────────────────┐     ┌──────────────────┐
+│  App.cs         │────▶│DataCollectorService│────▶│TsGeneratorService│
+│  (CLI Handler)  │     │  (Roslyn Analysis) │     │  (Code Output)   │
+└─────────────────┘     └────────────────────┘     └──────────────────┘
+         │                       │                         │
+         │                       ▼                         ▼
+         │              ┌─────────────────┐       ┌────────────────┐
+         │              │ Tapper Library  │       │ TsTemplate     │
+         │              │ (Model Gen)     │       │ v1.0.ts        │
+         │              └─────────────────┘       └────────────────┘
+         │                       │                         │
+         ▼                       ▼                         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                     Output Files                                │
+│  - contract.ts (main contracts)                                 │
+│  - *.ts (individual model files from Tapper)                    │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ### Step 1: Model Generation (Tapper)
@@ -171,12 +171,12 @@ Uses same logic as runtime `NameHelper`:
 ```csharp
 // Hub name resolution
 string GetHubNameFromAttributes(ITypeSymbol hubType):
-  1. Check for [UiRtcHub("Name")] ? return attribute value
+  1. Check for [UiRtcHub("Name")] → return attribute value
   2. Return type name
 
 // Method name resolution
 string GetMethodName(INamedTypeSymbol classSymbol):
-  1. Check for [UiRtcMethod("Name")] ? return attribute value
+  1. Check for [UiRtcMethod("Name")] → return attribute value
   2. Return class name
 ```
 
@@ -199,7 +199,7 @@ await uiRtc.initAsync({
 });
 ```
 
-### Sending Messages (Client ? Server)
+### Sending Messages (Client → Server)
 ```typescript
 import { uiRtcCommunication, RequestModel } from './contract';
 
@@ -210,7 +210,7 @@ await uiRtcCommunication.Weather.GetForecast({ city: 'London' } as RequestModel)
 await uiRtcCommunication.Weather.Refresh();
 ```
 
-### Subscribing to Messages (Server ? Client)
+### Subscribing to Messages (Server → Client)
 ```typescript
 import { uiRtcSubscription, ForecastModel } from './contract';
 
