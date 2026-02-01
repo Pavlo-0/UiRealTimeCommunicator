@@ -37,32 +37,33 @@ Once you have generated the TypeScript code, you will be able to use the contrac
 
 ### 💻 Usage Example:
 
+For a full walkthrough and more scenarios, see the [Full Usage Guide](docs/usage-guide.md).
+
 #### Server-Side (C#)
 
-In your `Program.cs`, configure and add the **UiRealTimeCommunicator** to your services:
+In your `Program.cs`, register the services and middleware:
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddUiRealTimeCommunicator(); // Add the service to DI container
-...
+builder.Services.AddUiRealTimeCommunicator();
+
 var app = builder.Build();
-app.UseUiRealTimeCommunicator(); // Enable real-time communication in the app pipeline
+app.UseUiRealTimeCommunicator();
 ```
 
 Define a SignalR **Hub** for communication:
 
 ```csharp
-[UiRtcHub("Weather")] // Declare a SignalR Hub with a specific name (Weather)
+[UiRtcHub("Weather")] // Optional custom hub name
 public class WeatherHub : IUiRtcHub { }
 ```
 
 Define the **sender contract** for sending messages to the frontend:
 
 ```csharp
-public interface WeatherChannelSenderContract: IUiRtcSenderContract<WeatherHub>
+public interface WeatherChannelSenderContract : IUiRtcSenderContract<WeatherHub>
 {
-    // Declare method and data for sending message to frontend
-    [UiRtcMethod("WeatherForecast")]
+    [UiRtcMethod("WeatherForecast")] // Optional custom method name
     Task SendWeatherForecastAsync(WeatherForecastModel forecast);
 }
 ```
@@ -74,7 +75,6 @@ public class WeatherService(IUiRtcSenderService senderService)
 {
     public async Task WeatherServiceMethod(WeatherForecastModel model)
     {
-        // Send message to frontend with strongly-typed contract
         await senderService.Send<WeatherChannelSenderContract>().SendWeatherForecastAsync(model);
     }
 }
@@ -83,13 +83,11 @@ public class WeatherService(IUiRtcSenderService senderService)
 Define the **handler contract** to receive messages from the frontend:
 
 ```csharp
-[UiRtcMethod("GetWeatherForecast")]
 public class GetWeatherForecastHandler() : IUiRtcHandler<WeatherHub, WeatherForecastRequestModel>
 {
     public async Task ConsumeAsync(WeatherForecastRequestModel model)
     {
         // Handle message from frontend
-        // Process the incoming request
     }
 }
 ```
@@ -142,8 +140,8 @@ In the TypeScript client, initialize the **SignalR connection**:
 import { uiRtc } from "./communication/contract.ts";
 
 await uiRtc.initAsync({
-  serverUrl: "http://localhost:5064/", // Your server URL
-  activeHubs: "All", // Specify which hubs to subscribe to
+  serverUrl: "http://localhost:5064/", // Base URL of the server
+  activeHubs: "All", // "All" or a list of hub names
 });
 ```
 
@@ -155,7 +153,7 @@ import {
   WeatherForecastRequestModel,
 } from "../../communication/contract";
 
-// Call a backend method and send a strongly-typed model
+// Call a backend method with a strongly-typed model
 await uiRtcCommunication.Weather.GetWeatherForecast({
   city: "Kharkiv",
 } as WeatherForecastRequestModel); // Strongly typed
