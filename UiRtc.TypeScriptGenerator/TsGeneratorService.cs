@@ -133,11 +133,11 @@ namespace UiRtc.TypeScriptGenerator
 
         private static string GenerateHubMethodDefinitions(IDictionary<string, IEnumerable<HandlerDataRecord>> consumers) =>
             string.Join("\r\n", consumers.Select(c =>
-                $"type {c.Key}Method = {string.Join(" | ", c.Value.Select(m => $"\"{m.methodName}\""))};"));
+                $"type {c.Key}Method = {string.Join(" | ", c.Value.Select(m => $"\"{m.MethodName}\""))};"));
 
         private static string GenerateHubSubscriptionDefinitions(IDictionary<string, IEnumerable<SenderDataRecord>> senders) =>
             string.Join("\r\n", senders.Select(s =>
-                $"type {s.Key}Subscription = {string.Join(" | ", s.Value.Select(m => $"\"{m.methodName}\""))};"));
+                $"type {s.Key}Subscription = {string.Join(" | ", s.Value.Select(m => $"\"{m.MethodName}\""))};"));
 
         private static string GenerateConnections(string[] hubsName) =>
             string.Join("\r\n", hubsName.Select(h => $"  {h}: {{ }},"));
@@ -150,8 +150,8 @@ namespace UiRtc.TypeScriptGenerator
                 sb.AppendLine($"  {hub}: {{");
                 foreach (var method in methods)
                 {
-                    var callBackParam = string.IsNullOrWhiteSpace(method.modelType) || string.IsNullOrWhiteSpace(method.modelNamespace) ? "" : $"data: {SanitizeIdentifier(method.modelNamespace)}.{method.modelType}";
-                    sb.AppendLine($"    {method.methodName}: (callBack: ({callBackParam}) => void) =>\r\n      subscribe(\"{method.hubName}\", \"{method.methodName}\", callBack),");
+                    var callBackParam = string.IsNullOrWhiteSpace(method.ModelType) || string.IsNullOrWhiteSpace(method.ModelNamespace) ? "" : $"data: {SanitizeIdentifier(method.ModelNamespace)}.{method.ModelType}";
+                    sb.AppendLine($"    {method.MethodName}: (callBack: ({callBackParam}) => void) =>\r\n      subscribe(\"{method.HubName}\", \"{method.MethodName}\", callBack),");
                 }
                 sb.AppendLine("  },");
             }
@@ -166,9 +166,9 @@ namespace UiRtc.TypeScriptGenerator
                 sb.AppendLine($"  {hub}: {{");
                 foreach (var method in methods)
                 {
-                    sb.AppendLine(string.IsNullOrWhiteSpace(method.modelType) || string.IsNullOrWhiteSpace(method.modelNamespace)
-                        ? $"    {method.methodName}: () =>\r\n      send(\"{method.hubName}\", \"{method.methodName}\"),"
-                        : $"    {method.methodName}: (request: {SanitizeIdentifier(method.modelNamespace)}.{method.modelType}) =>\r\n      send(\"{method.hubName}\", \"{method.methodName}\", request),"
+                    sb.AppendLine(string.IsNullOrWhiteSpace(method.ModelType) || string.IsNullOrWhiteSpace(method.ModelNamespace)
+                        ? $"    {method.MethodName}: () =>\r\n      send(\"{method.HubName}\", \"{method.MethodName}\"),"
+                        : $"    {method.MethodName}: (request: {SanitizeIdentifier(method.ModelNamespace)}.{method.ModelType}) =>\r\n      send(\"{method.HubName}\", \"{method.MethodName}\", request),"
                     );
                 }
                 sb.AppendLine("  },");

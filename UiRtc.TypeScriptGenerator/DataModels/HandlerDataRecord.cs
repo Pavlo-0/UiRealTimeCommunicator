@@ -1,4 +1,4 @@
 ﻿namespace UiRtc.TypeScriptGenerator.DataModels
 {
-    public record HandlerDataRecord(string hubName, string methodName, string? modelType, string? modelNamespace);
+    public record HandlerDataRecord(string HubName, string MethodName, string? ModelType, string? ModelNamespace);
 }

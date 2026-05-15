@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.CodeAnalysis.MSBuild;
 using Tapper;
 using UiRtc.TypeScriptGenerator.DataModels;
-using UiRtc.TypeScriptGenerator.CustomExceptions;
 using UiRtc.Typing.PublicInterface.Attributes;
 using UiRtc.Typing.PublicInterface;
 
@@ -14,15 +13,12 @@ namespace UiRtc.TypeScriptGenerator
     {
         private Compilation? _compilation;
 
-        public async Task<IReadOnlyList<GeneratedSourceCode>> TsModelGenerator(string projectPath, CancellationToken cancelationToken)
+        public async Task<IReadOnlyList<GeneratedSourceCode>> TsModelGenerator(string projectPath, CancellationToken cancellationToken)
         {
             _logger.Log(LogLevel.Information, "Transpiling projects models {path}...", Path.GetFullPath(projectPath));
 
-            var compilation = await CreateCompilationAsync(projectPath, cancelationToken);
-
+            var compilation = await CreateCompilationAsync(projectPath, cancellationToken);
             var typeMapperProvider = new DefaultTypeMapperProvider(compilation, false);
-
-            _logger.Log(LogLevel.Information, "Mappers added");
 
             //TODO: Most of options could be setup from command line
             var options = new TranspilationOptions(
@@ -37,10 +33,8 @@ namespace UiRtc.TypeScriptGenerator
                 true);
 
             var transpiler = new Transpiler(compilation, options, _logger);
-
-            _logger.Log(LogLevel.Information, "Ready for Transpile");
-
             var transpile = transpiler.Transpile();
+
             _logger.Log(LogLevel.Information, "typeScript models has been generated: Count: {Count}", transpile.Count);
 
             return transpile;
@@ -64,21 +58,18 @@ namespace UiRtc.TypeScriptGenerator
                 compilation.GetTypeByMetadataName(typeof(IUiRtcContextHandler<DummyHub, object >).GetGenericTypeDefinition().FullName!)
             }.Where(symbol => symbol != null).ToArray(); // Filter out nulls
 
-            _logger.Log(LogLevel.Information, "Finding handlers implementation");
-
             var handlerRecords = compilation.SyntaxTrees.SelectMany(tree =>
             {
                 var semanticModel = compilation.GetSemanticModel(tree);
                 return handlerSymbols.SelectMany(symbol => GetHandlerData(tree, semanticModel, symbol));
-            }); var handlerRecordsByHub = handlerRecords.GroupBy(g => g.hubName).ToDictionary(k => k.Key, g => g.AsEnumerable());
+            }); var handlerRecordsByHub = handlerRecords.GroupBy(g => g.HubName).ToDictionary(k => k.Key, g => g.AsEnumerable());
 
-            _logger.Log(LogLevel.Information, "Finding senders contract");
             var senderRecords = compilation.SyntaxTrees.SelectMany(tree =>
             {
                 return GetSenderData(tree, compilation.GetSemanticModel(tree), senderSymbol);
             });
 
-            var senderRecordsByHub = senderRecords.GroupBy(g => g.hubName).ToDictionary(k => k.Key, g => g.AsEnumerable());
+            var senderRecordsByHub = senderRecords.GroupBy(g => g.HubName).ToDictionary(k => k.Key, g => g.AsEnumerable());
 
             _logger.Log(LogLevel.Information, "Found senders hubs: Count: {Count}", senderRecordsByHub.Count);
             _logger.Log(LogLevel.Information, "Found senders methods (Total): Count: {Count}", senderRecordsByHub.Sum(hub => hub.Value.Count()));
@@ -166,7 +157,7 @@ namespace UiRtc.TypeScriptGenerator
                         var senderMethodName = GetMethodName(sendorMethod);
 
                         var record = new SenderDataRecord(hubName, senderMethodName, modelTypeName, modelNamespace);
-                        _logger.Log(LogLevel.Information, $"For sender {hubName} has been found sendor methods: {senderMethodName}");
+                        _logger.Log(LogLevel.Information, $"For sender {hubName} has been found sender methods: {senderMethodName}");
 
                         AddToSenderDataRecords(senderDataRecords, record);
                     }
@@ -177,19 +168,19 @@ namespace UiRtc.TypeScriptGenerator
 
         private void AddToHandlerDataRecords(List<HandlerDataRecord> records, HandlerDataRecord record)
         {
-            if (records.Where(r => r.hubName == record.hubName
-                && r.methodName == record.methodName
-                && r.modelType == record.modelType).Any())
+            if (records.Where(r => r.HubName == record.HubName
+                && r.MethodName == record.MethodName
+                && r.ModelType == record.ModelType).Any())
             {
                 return;
             }
 
-            if (records.Where(r => r.hubName == record.hubName
-                && r.methodName == record.methodName).Any())
+            if (records.Where(r => r.HubName == record.HubName
+                && r.MethodName == record.MethodName).Any())
             {
                 _logger.LogError("Hub {Hub} allowed to has the same sender {Handler} name only if this handlers has identical parameters.",
-                                 record.hubName,
-                                 record.methodName);
+                                 record.HubName,
+                                 record.MethodName);
                 throw new Exception("\"Hub allowed to has the same handler name only if this handlers has identical parameters.\"");
             }
 
@@ -198,19 +189,19 @@ namespace UiRtc.TypeScriptGenerator
 
         private void AddToSenderDataRecords(List<SenderDataRecord> records, SenderDataRecord record)
         {
-            if (records.Where(r=> r.hubName == record.hubName
-                && r.methodName == record.methodName
-                && r.modelType == record.modelType).Any())
+            if (records.Where(r=> r.HubName == record.HubName
+                && r.MethodName == record.MethodName
+                && r.ModelType == record.ModelType).Any())
             {
                 return;
             }
 
-            if (records.Where(r => r.hubName == record.hubName
-                && r.methodName == record.methodName).Any())
+            if (records.Where(r => r.HubName == record.HubName
+                && r.MethodName == record.MethodName).Any())
             {
                 _logger.LogError("Hub {Hub} allowed to has the same sender {Handler} name only if this sender has identical parameters.",
-                                 record.hubName,
-                                 record.methodName);
+                                 record.HubName,
+                                 record.MethodName);
                 throw new Exception("\"Hub allowed to has the same sender name only if this sender has identical parameters.\"");
             }
 
