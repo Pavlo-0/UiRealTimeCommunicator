@@ -1,7 +1,7 @@
-﻿/* 
+/* 
  * Auto-generated TypeScript File by UiRtc
- * Version: {{VERSION}}
- * Generated on: {{TIMESTAMP}} 
+ * Version: 1.0
+ * Generated on: example
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -14,31 +14,37 @@ import {
   IHttpConnectionOptions
 } from "@microsoft/signalr";
 
-{{MODEL_IMPORTS}}
+import * as AuthenticatedAccessTokenFactoryExample_Backend_Communication_Models from "./AuthenticatedAccessTokenFactoryExample.Backend.Communication.Models";
 
-type uiRtcHubs = {{HUBS}};
+type uiRtcHubs = "Chat";
 const allHubs: uiRtcHubs[] = [
-  {{ALL_HUBS}}
+  "Chat"
 ];
 
-type hubMethods = {{HUB_METHODS}};
+type hubMethods = ChatMethod;
 
-{{HUB_METHOD_DEFINITIONS}}
+type ChatMethod = "SendAuthenticatedMessage";
 
-type hubSubscriptions = {{HUB_SUBSCRIPTIONS}};
+type hubSubscriptions = ChatSubscription;
 
-{{HUB_SUBSCRIPTION_DEFINITIONS}}
+type ChatSubscription = "AuthenticatedMessage";
 
 const connections: RConnections = {
-  {{CONNECTIONS}}
+  Chat: { },
 };
 
 export const uiRtcSubscription = {
-  {{UI_RTC_SUBSCRIPTION}}
+  Chat: {
+    AuthenticatedMessage: (callBack: (data: AuthenticatedAccessTokenFactoryExample_Backend_Communication_Models.ChatMessageResponse) => void) =>
+      subscribe("Chat", "AuthenticatedMessage", callBack),
+  },
 };
 
 export const uiRtcCommunication = {
-  {{UI_RTC_COMMUNICATION}}
+  Chat: {
+    SendAuthenticatedMessage: (request: AuthenticatedAccessTokenFactoryExample_Backend_Communication_Models.ChatMessageRequest) =>
+      send("Chat", "SendAuthenticatedMessage", request),
+  },
 };
 
 /* Hard code */

@@ -13,6 +13,7 @@ This guide provides detailed, end-to-end examples for using UiRealTimeCommunicat
 - [Sending to Specific Connections](#sending-to-specific-connections)
 - [Model Generation](#model-generation)
 - [TypeScript Client Usage](#typescript-client-usage)
+- [JWT / Bearer Authentication](#jwt--bearer-authentication)
 - [Multiple Hubs](#multiple-hubs)
 - [Custom Hub and Method Names](#custom-hub-and-method-names)
 - [Troubleshooting](#troubleshooting)
@@ -220,6 +221,66 @@ const subscription = uiRtcSubscription.Weather.WeatherForecast(
 // Unsubscribe when needed
 subscription.unsubscribe();
 ```
+
+## JWT / Bearer Authentication
+
+Generated clients support SignalR's `accessTokenFactory` when hubs require authenticated users.
+
+Basic JWT example:
+
+```typescript
+await uiRtc.initAsync({
+  serverUrl: "https://localhost:5001/",
+  activeHubs: "All",
+  accessTokenFactory: () => authService.getAccessToken(),
+});
+```
+
+Async token refresh example:
+
+```typescript
+await uiRtc.initAsync({
+  serverUrl: "https://localhost:5001/",
+  activeHubs: "All",
+  accessTokenFactory: async () => {
+    return await authService.getValidAccessToken();
+  },
+});
+```
+
+Advanced SignalR options example:
+
+```typescript
+await uiRtc.initAsync({
+  serverUrl: "https://localhost:5001/",
+  activeHubs: "All",
+  connectionOptions: {
+    accessTokenFactory: () => authService.getAccessToken(),
+    withCredentials: false,
+  },
+});
+```
+
+Per-hub options example:
+
+```typescript
+await uiRtc.initAsync({
+  serverUrl: "https://localhost:5001/",
+  activeHubs: ["Chat", "Weather"],
+  hubConnectionOptions: {
+    Chat: {
+      accessTokenFactory: () => chatTokenService.getToken(),
+    },
+    Weather: {
+      accessTokenFactory: () => weatherTokenService.getToken(),
+    },
+  },
+});
+```
+
+If both `connectionOptions.accessTokenFactory` and top-level `accessTokenFactory` are provided, `connectionOptions.accessTokenFactory` is used. If `hubConnectionOptions` are provided, they override global `connectionOptions` for that hub.
+
+Server-side JWT Bearer authentication still has to be configured in ASP.NET Core. For WebSockets and Server-Sent Events, SignalR may transmit the token via the `access_token` query string. Configure `JwtBearerEvents.OnMessageReceived` for UiRtc hub paths so ASP.NET Core can authenticate the SignalR connection before handlers read `IUiRtcProxyContext.UserIdentifier` or `IUiRtcProxyContext.User`.
 
 ## Multiple Hubs
 
