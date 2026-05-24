@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2026-02-01 02:05:56 UTC 
+ * Generated on: 2026-05-24 01:20:41 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -10,7 +10,8 @@
 import {
   HubConnection,
   HubConnectionBuilder,
-  HubConnectionState
+  HubConnectionState,
+  IHttpConnectionOptions
 } from "@microsoft/signalr";
 
 import * as BE01_IntegrationTest_Scenarios_AttributeDeclaration from "./BE01.IntegrationTest.Scenarios.AttributeDeclaration";
@@ -230,6 +231,9 @@ export const uiRtcCommunication = {
 export interface IUiRtcConfiguration {
   serverUrl: string;
   activeHubs: uiRtcHubs[] | "All";
+  accessTokenFactory?: () => string | Promise<string>;
+  connectionOptions?: IHttpConnectionOptions;
+  hubConnectionOptions?: Partial<Record<uiRtcHubs, IHttpConnectionOptions>>;
 }
 
 interface IHub {
@@ -267,9 +271,7 @@ const initHubAsync = async (
   connections[hubName].config = config;
 
   try {
-    connections[hubName].connection = buildConnection(
-      config.serverUrl + hubName
-    );
+    connections[hubName].connection = buildConnection(config, hubName);
     await connections[hubName].connection!.start();
   } catch (err) {
     console.error(
@@ -279,12 +281,48 @@ const initHubAsync = async (
   }
 };
 
-const buildConnection = (url: string): HubConnection => {
-  let builder = new HubConnectionBuilder();
-  builder.withUrl(url);
+const buildConnection = (
+  config: IUiRtcConfiguration,
+  hubName: uiRtcHubs
+): HubConnection => {
+  const builder = new HubConnectionBuilder();
+  const url = buildHubUrl(config.serverUrl, hubName);
+  const options = buildConnectionOptions(config, hubName);
+
+  if (options) {
+    builder.withUrl(url, options);
+  } else {
+    builder.withUrl(url);
+  }
+
   builder.withAutomaticReconnect();
 
   return builder.build();
+};
+
+const buildHubUrl = (serverUrl: string, hubName: uiRtcHubs): string => {
+  return serverUrl.endsWith("/")
+    ? serverUrl + hubName
+    : serverUrl + "/" + hubName;
+};
+
+const buildConnectionOptions = (
+  config: IUiRtcConfiguration,
+  hubName: uiRtcHubs
+): IHttpConnectionOptions | undefined => {
+  const globalOptions = config.connectionOptions ?? {};
+  const hubOptions = config.hubConnectionOptions?.[hubName] ?? {};
+
+  const result: IHttpConnectionOptions = {
+    ...globalOptions,
+    ...hubOptions,
+  };
+
+  if (config.accessTokenFactory && !result.accessTokenFactory) {
+    result.accessTokenFactory = config.accessTokenFactory;
+  }
+
+  return Object.keys(result).length > 0 ? result : undefined;
 };
 
 const disposeHubAsync = async (hubName: uiRtcHubs) => {

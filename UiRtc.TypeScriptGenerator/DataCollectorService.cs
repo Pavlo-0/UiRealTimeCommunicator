@@ -226,10 +226,10 @@ namespace UiRtc.TypeScriptGenerator
             {
                 _logger.Log(LogLevel.Information, "Detail Diagnostic is On");
 
-                workspace.WorkspaceFailed += (sender, args) =>
+                workspace.RegisterWorkspaceFailedHandler(args =>
                 {
-                    _logger.Log(LogLevel.Warning, $"Workspace failed: {args.Diagnostic.Message} ");
-                };
+                    _logger.Log(LogLevel.Warning, "Workspace failed: {Message}", args.Diagnostic.Message);
+                });
             }
 
             var msBuildProject = await workspace.OpenProjectAsync(projectPath, cancellationToken: cancelationToken);
