@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using UiRtc.TypeScriptGenerator.DataModels;
@@ -38,12 +39,12 @@ namespace UiRtc.TypeScriptGenerator
                 .Replace("{{VERSION}}", version)
                 .Replace("{{TIMESTAMP}}", timestamp)
                 .Replace("{{MODEL_IMPORTS}}", modelImportsBlock)
-                .Replace("{{HUBS}}", string.Join("\r\n  | ", hubNames.Select(h => $"\"{h}\"")))
-                .Replace("{{ALL_HUBS}}", string.Join(",\r\n  ", hubNames.Select(h => $"\"{h}\"")))
-                .Replace("{{HUB_METHODS}}", !consumers.Keys.Any() ? "\"undefined\"" : string.Join("\r\n  | ", consumers.Keys.Select(h => $"{h}Method")))
-                .Replace("{{HUB_METHOD_DEFINITIONS}}", GenerateHubMethodDefinitions(consumers))
-                .Replace("{{HUB_SUBSCRIPTIONS}}", string.Join("\r\n  | ", senders.Keys.Select(h => $"{h}Subscription")))
-                .Replace("{{HUB_SUBSCRIPTION_DEFINITIONS}}", GenerateHubSubscriptionDefinitions(senders))
+                .Replace("{{HUBS}}", GenerateTypeUnion(hubNames))
+                .Replace("{{ALL_HUBS}}", GenerateArrayItems(hubNames))
+                .Replace("{{HUB_METHODS}}", GenerateTypeUnion(consumers.Values.SelectMany(methods => methods.Select(m => m.MethodName))))
+                .Replace("{{HUB_METHOD_DEFINITIONS}}", string.Empty)
+                .Replace("{{HUB_SUBSCRIPTIONS}}", GenerateTypeUnion(senders.Values.SelectMany(methods => methods.Select(m => m.MethodName))))
+                .Replace("{{HUB_SUBSCRIPTION_DEFINITIONS}}", string.Empty)
                 .Replace("{{CONNECTIONS}}", GenerateConnections(hubNames))
                 .Replace("{{UI_RTC_SUBSCRIPTION}}", GenerateUiRtcSubscription(senders))
                 .Replace("{{UI_RTC_COMMUNICATION}}", GenerateUiRtcCommunication(consumers));
@@ -133,27 +134,31 @@ namespace UiRtc.TypeScriptGenerator
             return match.Success ? match.Groups[1].Value : "undeterminate";
         }
 
-        private static string GenerateHubMethodDefinitions(IDictionary<string, IEnumerable<HandlerDataRecord>> consumers) =>
-            string.Join("\r\n", consumers.Select(c =>
-                $"type {c.Key}Method = {string.Join(" | ", c.Value.Select(m => $"\"{m.MethodName}\""))};"));
+        private static string GenerateTypeUnion(IEnumerable<string> values)
+        {
+            var literals = values.Select(TsStringLiteral).Distinct().ToArray();
 
-        private static string GenerateHubSubscriptionDefinitions(IDictionary<string, IEnumerable<SenderDataRecord>> senders) =>
-            string.Join("\r\n", senders.Select(s =>
-                $"type {s.Key}Subscription = {string.Join(" | ", s.Value.Select(m => $"\"{m.MethodName}\""))};"));
+            return literals.Length == 0
+                ? "never"
+                : string.Join("\r\n  | ", literals);
+        }
+
+        private static string GenerateArrayItems(IEnumerable<string> values) =>
+            string.Join(",\r\n  ", values.Select(TsStringLiteral).Distinct());
 
         private static string GenerateConnections(string[] hubsName) =>
-            string.Join("\r\n", hubsName.Select(h => $"  {h}: {{ }},"));
+            string.Join("\r\n", hubsName.Select(h => $"  [{TsStringLiteral(h)}]: {{ }},"));
 
         private static string GenerateUiRtcSubscription(IDictionary<string, IEnumerable<SenderDataRecord>> senders)
         {
             var sb = new StringBuilder();
             foreach (var (hub, methods) in senders)
             {
-                sb.AppendLine($"  {hub}: {{");
+                sb.AppendLine($"  [{TsStringLiteral(hub)}]: {{");
                 foreach (var method in methods)
                 {
                     var callBackParam = string.IsNullOrWhiteSpace(method.ModelType) || string.IsNullOrWhiteSpace(method.ModelNamespace) ? "" : $"data: {SanitizeIdentifier(method.ModelNamespace)}.{method.ModelType}";
-                    sb.AppendLine($"    {method.MethodName}: (callBack: ({callBackParam}) => void) =>\r\n      subscribe(\"{method.HubName}\", \"{method.MethodName}\", callBack),");
+                    sb.AppendLine($"    [{TsStringLiteral(method.MethodName)}]: (callBack: ({callBackParam}) => void) =>\r\n      subscribe({TsStringLiteral(method.HubName)}, {TsStringLiteral(method.MethodName)}, callBack),");
                 }
                 sb.AppendLine("  },");
             }
@@ -165,17 +170,19 @@ namespace UiRtc.TypeScriptGenerator
             var sb = new StringBuilder();
             foreach (var (hub, methods) in consumers)
             {
-                sb.AppendLine($"  {hub}: {{");
+                sb.AppendLine($"  [{TsStringLiteral(hub)}]: {{");
                 foreach (var method in methods)
                 {
                     sb.AppendLine(string.IsNullOrWhiteSpace(method.ModelType) || string.IsNullOrWhiteSpace(method.ModelNamespace)
-                        ? $"    {method.MethodName}: () =>\r\n      send(\"{method.HubName}\", \"{method.MethodName}\"),"
-                        : $"    {method.MethodName}: (request: {SanitizeIdentifier(method.ModelNamespace)}.{method.ModelType}) =>\r\n      send(\"{method.HubName}\", \"{method.MethodName}\", request),"
+                        ? $"    [{TsStringLiteral(method.MethodName)}]: () =>\r\n      send({TsStringLiteral(method.HubName)}, {TsStringLiteral(method.MethodName)}),"
+                        : $"    [{TsStringLiteral(method.MethodName)}]: (request: {SanitizeIdentifier(method.ModelNamespace)}.{method.ModelType}) =>\r\n      send({TsStringLiteral(method.HubName)}, {TsStringLiteral(method.MethodName)}, request),"
                     );
                 }
                 sb.AppendLine("  },");
             }
             return sb.ToString();
         }
+
+        private static string TsStringLiteral(string value) => JsonSerializer.Serialize(value);
     }
 }

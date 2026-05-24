@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.Extensions.Logging.Abstractions;
 using Tapper;
 using UiRtc.TypeScriptGenerator;
@@ -91,6 +92,128 @@ namespace UiRtc.TypeScriptGenerator.UnitTests
             }
         }
 
+        [TestMethod]
+        public void GenerateService_WithCustomNamesUsesEscapedStringLiteralKeys()
+        {
+            var contract = GenerateContract(
+                new Dictionary<string, IEnumerable<SenderDataRecord>>
+                {
+                    ["chat-room"] = new[]
+                    {
+                        new SenderDataRecord("chat-room", "receive update\"\\", null, null)
+                    }
+                },
+                new Dictionary<string, IEnumerable<HandlerDataRecord>>
+                {
+                    ["client hub"] = new[]
+                    {
+                        new HandlerDataRecord("client hub", "send-message", null, null)
+                    }
+                });
+
+            StringAssert.Contains(contract, "type uiRtcHubs = \"chat-room\"\r\n  | \"client hub\";");
+            StringAssert.Contains(contract, "type hubMethods = \"send-message\";");
+            StringAssert.Contains(contract, "type hubSubscriptions = \"receive update\\u0022\\\\\";");
+            StringAssert.Contains(contract, "[\"chat-room\"]: {");
+            StringAssert.Contains(contract, "[\"receive update\\u0022\\\\\"]: (callBack:");
+            StringAssert.Contains(contract, "subscribe(\"chat-room\", \"receive update\\u0022\\\\\", callBack)");
+            StringAssert.Contains(contract, "[\"client hub\"]: {");
+            StringAssert.Contains(contract, "[\"send-message\"]: () =>");
+            Assert.IsFalse(contract.Contains("chat-roomSubscription"));
+            Assert.IsFalse(contract.Contains("client hubMethod"));
+        }
+
+        [TestMethod]
+        public void GenerateService_WithEmptyContractsUsesNeverUnions()
+        {
+            var contract = GenerateContract(
+                new Dictionary<string, IEnumerable<SenderDataRecord>>(),
+                new Dictionary<string, IEnumerable<HandlerDataRecord>>());
+
+            StringAssert.Contains(contract, "type uiRtcHubs = never;");
+            StringAssert.Contains(contract, "type hubMethods = never;");
+            StringAssert.Contains(contract, "type hubSubscriptions = never;");
+            Assert.IsFalse(contract.Contains("type hubMethods = \"undefined\";"));
+        }
+
+        [TestMethod]
+        public void GenerateService_WithOneSidedContractsUsesNeverForMissingSide()
+        {
+            var senderOnlyContract = GenerateContract(
+                new Dictionary<string, IEnumerable<SenderDataRecord>>
+                {
+                    ["notifications"] = new[] { new SenderDataRecord("notifications", "received", null, null) }
+                },
+                new Dictionary<string, IEnumerable<HandlerDataRecord>>());
+
+            StringAssert.Contains(senderOnlyContract, "type uiRtcHubs = \"notifications\";");
+            StringAssert.Contains(senderOnlyContract, "type hubMethods = never;");
+            StringAssert.Contains(senderOnlyContract, "type hubSubscriptions = \"received\";");
+
+            var handlerOnlyContract = GenerateContract(
+                new Dictionary<string, IEnumerable<SenderDataRecord>>(),
+                new Dictionary<string, IEnumerable<HandlerDataRecord>>
+                {
+                    ["commands"] = new[] { new HandlerDataRecord("commands", "send", null, null) }
+                });
+
+            StringAssert.Contains(handlerOnlyContract, "type uiRtcHubs = \"commands\";");
+            StringAssert.Contains(handlerOnlyContract, "type hubMethods = \"send\";");
+            StringAssert.Contains(handlerOnlyContract, "type hubSubscriptions = never;");
+        }
+
+        [TestMethod]
+        public void GeneratedContracts_CompileWithTypeScriptWhenCompilerIsAvailable()
+        {
+            var tscPath = FindTypeScriptCompilerPath();
+            if (tscPath is null)
+            {
+                return;
+            }
+
+            CompileGeneratedTypeScript(
+                tscPath,
+                GenerateContract(
+                    new Dictionary<string, IEnumerable<SenderDataRecord>>
+                    {
+                        ["chat-room"] = new[]
+                        {
+                            new SenderDataRecord("chat-room", "receive update\"\\", null, null)
+                        }
+                    },
+                    new Dictionary<string, IEnumerable<HandlerDataRecord>>
+                    {
+                        ["client hub"] = new[]
+                        {
+                            new HandlerDataRecord("client hub", "send-message", null, null)
+                        }
+                    }));
+
+            CompileGeneratedTypeScript(
+                tscPath,
+                GenerateContract(
+                    new Dictionary<string, IEnumerable<SenderDataRecord>>(),
+                    new Dictionary<string, IEnumerable<HandlerDataRecord>>()));
+
+            CompileGeneratedTypeScript(
+                tscPath,
+                GenerateContract(
+                    new Dictionary<string, IEnumerable<SenderDataRecord>>
+                    {
+                        ["notifications"] = new[] { new SenderDataRecord("notifications", "received", null, null) }
+                    },
+                    new Dictionary<string, IEnumerable<HandlerDataRecord>>()));
+
+            CompileGeneratedTypeScript(
+                tscPath,
+                GenerateContract(
+                    new Dictionary<string, IEnumerable<SenderDataRecord>>(),
+                    new Dictionary<string, IEnumerable<HandlerDataRecord>>
+                    {
+                        ["commands"] = new[] { new HandlerDataRecord("commands", "send", null, null) }
+                    }));
+        }
+
         private static string BuildGeneratedContract()
         {
             var template = File.ReadAllText(FindTemplatePath());
@@ -110,6 +233,141 @@ namespace UiRtc.TypeScriptGenerator.UnitTests
                 .Replace("{{UI_RTC_COMMUNICATION}}", "Chat: {\n    SendMessage: (request: any) =>\n      send(\"Chat\", \"SendMessage\", request),\n  },");
 
             return contract.Replace("\r\n", "\n");
+        }
+
+        private static string GenerateContract(
+            IDictionary<string, IEnumerable<SenderDataRecord>> senders,
+            IDictionary<string, IEnumerable<HandlerDataRecord>> consumers)
+        {
+            var directory = Directory.CreateTempSubdirectory("uirtc-ts-generator-");
+
+            try
+            {
+                var generator = new TsGeneratorService(NullLogger<App>.Instance);
+                return generator.GenerateService(senders, consumers, Array.Empty<GeneratedSourceCode>(), directory.FullName);
+            }
+            finally
+            {
+                directory.Delete(true);
+            }
+        }
+
+        private static void CompileGeneratedTypeScript(string tscPath, string contract)
+        {
+            var directory = Directory.CreateTempSubdirectory("uirtc-ts-compile-");
+
+            try
+            {
+                var signalRDirectory = Path.Combine(directory.FullName, "node_modules", "@microsoft", "signalr");
+                Directory.CreateDirectory(signalRDirectory);
+                File.WriteAllText(Path.Combine(directory.FullName, "contract.ts"), contract);
+                File.WriteAllText(
+                    Path.Combine(directory.FullName, "tsconfig.json"),
+                    """
+                    {
+                      "compilerOptions": {
+                        "target": "ES2020",
+                        "lib": ["ES2020", "DOM", "DOM.Iterable"],
+                        "module": "ESNext",
+                        "moduleResolution": "node",
+                        "strict": true,
+                        "noEmit": true,
+                        "skipLibCheck": true
+                      },
+                      "files": ["contract.ts"]
+                    }
+                    """);
+                File.WriteAllText(
+                    Path.Combine(signalRDirectory, "package.json"),
+                    "{\"name\":\"@microsoft/signalr\",\"version\":\"0.0.0\",\"types\":\"index.d.ts\"}");
+                File.WriteAllText(
+                    Path.Combine(signalRDirectory, "index.d.ts"),
+                    """
+                    export interface IHttpConnectionOptions {
+                      accessTokenFactory?: () => string | Promise<string>;
+                    }
+
+                    export enum HubConnectionState {
+                      Connected = "Connected",
+                      Connecting = "Connecting",
+                      Reconnecting = "Reconnecting"
+                    }
+
+                    export class HubConnection {
+                      state: HubConnectionState;
+                      start(): Promise<void>;
+                      stop(): Promise<void>;
+                      on(methodName: string, newMethod: (...args: any[]) => void): void;
+                      off(methodName: string, method?: (...args: any[]) => void): void;
+                      send(methodName: string, ...args: any[]): Promise<void>;
+                    }
+
+                    export class HubConnectionBuilder {
+                      withUrl(url: string, options?: IHttpConnectionOptions): this;
+                      withAutomaticReconnect(): this;
+                      build(): HubConnection;
+                    }
+                    """);
+
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = "node",
+                    Arguments = $"\"{tscPath}\" --project \"{Path.Combine(directory.FullName, "tsconfig.json")}\" --pretty false",
+                    WorkingDirectory = directory.FullName,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false
+                };
+
+                using var process = Process.Start(startInfo);
+                if (process is null)
+                {
+                    return;
+                }
+
+                var completed = process.WaitForExit(30000);
+                if (!completed)
+                {
+                    process.Kill();
+                    Assert.Fail("TypeScript compiler timed out.");
+                }
+
+                var output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
+                Assert.AreEqual(0, process.ExitCode, output);
+            }
+            catch (System.ComponentModel.Win32Exception)
+            {
+            }
+            finally
+            {
+                directory.Delete(true);
+            }
+        }
+
+        private static string? FindTypeScriptCompilerPath()
+        {
+            var directory = new DirectoryInfo(AppContext.BaseDirectory);
+
+            while (directory is not null)
+            {
+                var candidate = Path.Combine(
+                    directory.FullName,
+                    "IntegrationTest",
+                    "FE01.IntegrationTest",
+                    "node_modules",
+                    "typescript",
+                    "bin",
+                    "tsc");
+
+                if (File.Exists(candidate))
+                {
+                    return candidate;
+                }
+
+                directory = directory.Parent;
+            }
+
+            return null;
         }
 
         private static string FindTemplatePath()

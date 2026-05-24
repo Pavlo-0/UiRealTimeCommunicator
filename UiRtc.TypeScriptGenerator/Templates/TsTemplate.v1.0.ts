@@ -55,7 +55,7 @@ interface IHub {
   config?: IUiRtcConfiguration;
 }
 
-type RConnections = Record<uiRtcHubs, IHub>;
+type RConnections = Record<uiRtcHubs, IHub> & Record<string, IHub>;
 
 export const uiRtc = {
   initAsync: async (config: IUiRtcConfiguration) => {
