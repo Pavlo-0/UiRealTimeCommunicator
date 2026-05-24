@@ -66,6 +66,16 @@ namespace UiRtc.TypeScriptGenerator.UnitTests
         }
 
         [TestMethod]
+        public void GeneratedContract_SendsFalsyPayloads()
+        {
+            var contract = BuildGeneratedContract();
+
+            StringAssert.Contains(contract, "if (request !== undefined) {");
+            StringAssert.Contains(contract, "await connections[hub].connection?.send(method, request);");
+            Assert.IsFalse(contract.Contains("if (!!request)"));
+        }
+
+        [TestMethod]
         public void GeneratedContract_KeepsLegacyConfigurationShapeValid()
         {
             var contract = BuildGeneratedContract();

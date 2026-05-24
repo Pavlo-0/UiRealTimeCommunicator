@@ -2,6 +2,5 @@
 {
     public interface IUiRtcConfiguration
     {
-        public string HostUrl { get; set; }
     }
 }

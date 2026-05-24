@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2026-05-24 07:25:51 UTC 
+ * Generated on: 2026-05-24 07:38:13 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -347,7 +347,7 @@ const subscribe = (
 
 const send = async (hub: uiRtcHubs, method: hubMethods, request?: any) => {
   checkConnection(hub);
-  if (!!request) {
+  if (request !== undefined) {
     await connections[hub].connection?.send(method, request);
   } else {
     await connections[hub].connection?.send(method);

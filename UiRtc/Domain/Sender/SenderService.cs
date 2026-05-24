@@ -23,11 +23,11 @@ namespace UiRtc.Domain.Sender
             return SendMethodBuilder<TContract>.Build(invokeSenderService);
         }
 
-        public TContract Send<TContract>(params string[] connectionsIds) where TContract : IUiRtcSenderContract<IUiRtcHub>
+        public TContract Send<TContract>(params string[] connectionIds) where TContract : IUiRtcSenderContract<IUiRtcHub>
         {
             var serviceInstance = service.GetService(typeof(IInvokeSenderService));
             invokeSenderService.ResolveHub(NameHelper.GetHubNameByContract(typeof(TContract)));
-            invokeSenderService.ResolveConnectionId(connectionsIds);
+            invokeSenderService.ResolveConnectionId(connectionIds);
             return SendMethodBuilder<TContract>.Build(invokeSenderService);
         }
     }

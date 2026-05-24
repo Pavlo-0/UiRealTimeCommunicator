@@ -28,7 +28,7 @@ dotnet run -- Generator -p  ..\Examples\BroadcastStream\BroadcastStream.csproj  
 
 # install
 $ dotnet tool install --global UiRealTimeCommunicator.TypeScriptGenerator
-$ dotnet tsrts help
+$ dotnet-uirtc help
 
 # update
 $ dotnet tool update --global UiRealTimeCommunicator.TypeScriptGenerator

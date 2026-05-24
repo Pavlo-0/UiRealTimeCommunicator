@@ -183,7 +183,7 @@ const subscribe = (
 
 const send = async (hub: uiRtcHubs, method: hubMethods, request?: any) => {
   checkConnection(hub);
-  if (!!request) {
+  if (request !== undefined) {
     await connections[hub].connection?.send(method, request);
   } else {
     await connections[hub].connection?.send(method);
