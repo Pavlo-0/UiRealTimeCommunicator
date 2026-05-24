@@ -33,10 +33,36 @@ namespace UiRtc.TypeScriptGenerator.UnitTests
         {
             var contract = BuildGeneratedContract();
 
-            StringAssert.Contains(contract, "connections[hubName].connection = buildConnection(config, hubName);");
+            StringAssert.Contains(contract, "const connection = buildConnection(config, hubName);");
+            StringAssert.Contains(contract, "await connection.start();");
+            StringAssert.Contains(contract, "connections[hubName].connection = connection;");
+            Assert.IsFalse(contract.Contains("connections[hubName].connection = buildConnection(config, hubName);"));
             StringAssert.Contains(contract, "const buildConnection = (\n  config: IUiRtcConfiguration,\n  hubName: uiRtcHubs\n): HubConnection =>");
             StringAssert.Contains(contract, "builder.withUrl(url, options);");
             StringAssert.Contains(contract, "const options = buildConnectionOptions(config, hubName);");
+        }
+
+        [TestMethod]
+        public void GeneratedContract_ClearsStaleConnectionState()
+        {
+            var contract = BuildGeneratedContract();
+
+            StringAssert.Contains(contract, "connections[hubName] = {};\n    console.error(");
+            StringAssert.Contains(contract, "const connection = connections[hubName].connection;");
+            StringAssert.Contains(contract, "await connection.stop();");
+            StringAssert.Contains(contract, "} finally {\n      connections[hubName] = {};");
+        }
+
+        [TestMethod]
+        public void GeneratedContract_ChecksConnectedStateBeforeSendOrSubscribe()
+        {
+            var contract = BuildGeneratedContract();
+
+            StringAssert.Contains(contract, "const isConnected = (hubName: uiRtcHubs) => {\n  return connections[hubName]?.connection?.state === HubConnectionState.Connected;\n};");
+            StringAssert.Contains(contract, "const checkConnection = (hub: uiRtcHubs) => {\n  if (!isConnected(hub)) {");
+            Assert.IsFalse(contract.Contains("if (!connections[hub]?.connection)"));
+            Assert.IsFalse(contract.Contains("HubConnectionState.Connecting ||"));
+            Assert.IsFalse(contract.Contains("HubConnectionState.Reconnecting"));
         }
 
         [TestMethod]

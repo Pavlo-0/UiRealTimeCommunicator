@@ -77,7 +77,7 @@ const initHubAsync = async (
   config: IUiRtcConfiguration,
   hubName: uiRtcHubs
 ) => {
-  if (!!connections[hubName].connection) {
+  if (isConnected(hubName)) {
     console.warn(hubName + " hub has been initialized already");
     return;
   }
@@ -85,9 +85,11 @@ const initHubAsync = async (
   connections[hubName].config = config;
 
   try {
-    connections[hubName].connection = buildConnection(config, hubName);
-    await connections[hubName].connection!.start();
+    const connection = buildConnection(config, hubName);
+    await connection.start();
+    connections[hubName].connection = connection;
   } catch (err) {
+    connections[hubName] = {};
     console.error(
       "Error while establishing connection '" + hubName + "': ",
       err
@@ -140,15 +142,18 @@ const buildConnectionOptions = (
 };
 
 const disposeHubAsync = async (hubName: uiRtcHubs) => {
-  if (isConnected(hubName)) {
+  const connection = connections[hubName].connection;
+
+  if (!!connection) {
     try {
-      await connections[hubName].connection!.stop();
-      connections[hubName] = {};
+      await connection.stop();
     } catch (err) {
       console.error(
-        "Error while establishing connection '" + hubName + "': ",
+        "Error while disposing connection '" + hubName + "': ",
         err
       );
+    } finally {
+      connections[hubName] = {};
     }
   } else {
     console.warn(hubName + " hub has not been initialized");
@@ -156,16 +161,7 @@ const disposeHubAsync = async (hubName: uiRtcHubs) => {
 };
 
 const isConnected = (hubName: uiRtcHubs) => {
-  if (
-    !!connections &&
-    !!connections[hubName] &&
-    !!connections[hubName].connection &&
-    (connections[hubName].connection!.state === HubConnectionState.Connected ||
-      connections[hubName].connection!.state === HubConnectionState.Connecting ||
-      connections[hubName].connection!.state === HubConnectionState.Reconnecting)
-  )
-    return true;
-  return false;
+  return connections[hubName]?.connection?.state === HubConnectionState.Connected;
 };
 
 const subscribe = (
@@ -195,7 +191,7 @@ const send = async (hub: uiRtcHubs, method: hubMethods, request?: any) => {
 };
 
 const checkConnection = (hub: uiRtcHubs) => {
-  if (!connections[hub]?.connection) {
+  if (!isConnected(hub)) {
     throw new Error(
       "Connection to " +
       hub +

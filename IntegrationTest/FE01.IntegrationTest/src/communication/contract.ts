@@ -1,7 +1,7 @@
 /* 
  * Auto-generated TypeScript File by UiRtc
  * Version: 1.0.
- * Generated on: 2026-05-24 01:20:41 UTC 
+ * Generated on: 2026-05-24 07:25:51 UTC 
  * Do not modify this file manually.
  */
 /* eslint-disable */
@@ -53,175 +53,153 @@ const allHubs: uiRtcHubs[] = [
   "UnsubscribeSimpleHub"
 ];
 
-type hubMethods = AttributeDeclarationMethod
-  | ConnectionIdSenderHubMethod
-  | SimpleContextHubMethod
-  | SimpleDateTimeHubMethod
-  | SimpleEmptyContextHubMethod
-  | SimpleEmptyHubMethod
-  | SimpleHubMethod
-  | TwoContractMethodsHubMethod
-  | TwoHandlersMethod
-  | TwoSubscriptionHubMethod
-  | UnsubscribeSimpleHubMethod;
+type hubMethods = "AttributeDeclarationAttributeHandler"
+  | "ConnectionIdRequest"
+  | "SimpleContextHandler"
+  | "SimpleDateTimeHandler"
+  | "SimpleEmptyContextHandler"
+  | "SimpleEmptyHandler"
+  | "SimpleHandler"
+  | "TwoContractMethods"
+  | "TwoHandler"
+  | "TwoSubscriptionHandler"
+  | "UnsubscribeSimpleHandler";
 
-type AttributeDeclarationMethod = "AttributeDeclarationAttributeHandler";
-type ConnectionIdSenderHubMethod = "ConnectionIdRequest";
-type SimpleContextHubMethod = "SimpleContextHandler";
-type SimpleDateTimeHubMethod = "SimpleDateTimeHandler";
-type SimpleEmptyContextHubMethod = "SimpleEmptyContextHandler";
-type SimpleEmptyHubMethod = "SimpleEmptyHandler";
-type SimpleHubMethod = "SimpleHandler";
-type TwoContractMethodsHubMethod = "TwoContractMethods";
-type TwoHandlersMethod = "TwoHandler";
-type TwoSubscriptionHubMethod = "TwoSubscriptionHandler";
-type UnsubscribeSimpleHubMethod = "UnsubscribeSimpleHandler";
 
-type hubSubscriptions = AttributeDeclarationSubscription
-  | ConnectionIdSenderHubSubscription
-  | OnConnectionHubSubscription
-  | OnConnectionManagerSubscription
-  | SimpleContextHubSubscription
-  | SimpleDateTimeHubSubscription
-  | SimpleEmptyContextHubSubscription
-  | SimpleEmptyHubSubscription
-  | SimpleHubSubscription
-  | TwoContractMethodsHubSubscription
-  | TwoHandlersSubscription
-  | TwoSubscriptionHubSubscription
-  | UnsubscribeSimpleHubSubscription;
 
-type AttributeDeclarationSubscription = "AttributeDeclarationAttributeAnswer";
-type ConnectionIdSenderHubSubscription = "SendToSpecificUser";
-type OnConnectionHubSubscription = "DummyMethod";
-type OnConnectionManagerSubscription = "UpdateStatus";
-type SimpleContextHubSubscription = "SimpleContextAnswer";
-type SimpleDateTimeHubSubscription = "SimpleAnswer";
-type SimpleEmptyContextHubSubscription = "SimpleEmptyContextAnswer";
-type SimpleEmptyHubSubscription = "SimpleEmptyAnswer";
-type SimpleHubSubscription = "SimpleAnswer";
-type TwoContractMethodsHubSubscription = "TwoContractMethodsAnswer1" | "TwoContractMethodsAnswer2";
-type TwoHandlersSubscription = "HandlerAnswer";
-type TwoSubscriptionHubSubscription = "TwoSubscriptionAnswer";
-type UnsubscribeSimpleHubSubscription = "UnsubscribeSimpleAnswer";
+type hubSubscriptions = "AttributeDeclarationAttributeAnswer"
+  | "SendToSpecificUser"
+  | "DummyMethod"
+  | "UpdateStatus"
+  | "SimpleContextAnswer"
+  | "SimpleAnswer"
+  | "SimpleEmptyContextAnswer"
+  | "SimpleEmptyAnswer"
+  | "TwoContractMethodsAnswer1"
+  | "TwoContractMethodsAnswer2"
+  | "HandlerAnswer"
+  | "TwoSubscriptionAnswer"
+  | "UnsubscribeSimpleAnswer";
+
+
 
 const connections: RConnections = {
-    AttributeDeclaration: { },
-  ConnectionIdSenderHub: { },
-  OnConnectionHub: { },
-  OnConnectionManager: { },
-  SimpleContextHub: { },
-  SimpleDateTimeHub: { },
-  SimpleEmptyContextHub: { },
-  SimpleEmptyHub: { },
-  SimpleHub: { },
-  TwoContractMethodsHub: { },
-  TwoHandlers: { },
-  TwoSubscriptionHub: { },
-  UnsubscribeSimpleHub: { },
+    ["AttributeDeclaration"]: { },
+  ["ConnectionIdSenderHub"]: { },
+  ["OnConnectionHub"]: { },
+  ["OnConnectionManager"]: { },
+  ["SimpleContextHub"]: { },
+  ["SimpleDateTimeHub"]: { },
+  ["SimpleEmptyContextHub"]: { },
+  ["SimpleEmptyHub"]: { },
+  ["SimpleHub"]: { },
+  ["TwoContractMethodsHub"]: { },
+  ["TwoHandlers"]: { },
+  ["TwoSubscriptionHub"]: { },
+  ["UnsubscribeSimpleHub"]: { },
 };
 
 export const uiRtcSubscription = {
-    AttributeDeclaration: {
-    AttributeDeclarationAttributeAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_AttributeDeclaration.AttributeDeclarationResponseMessage) => void) =>
+    ["AttributeDeclaration"]: {
+    ["AttributeDeclarationAttributeAnswer"]: (callBack: (data: BE01_IntegrationTest_Scenarios_AttributeDeclaration.AttributeDeclarationResponseMessage) => void) =>
       subscribe("AttributeDeclaration", "AttributeDeclarationAttributeAnswer", callBack),
   },
-  ConnectionIdSenderHub: {
-    SendToSpecificUser: (callBack: (data: BE01_IntegrationTest_Scenarios_ConnectionIdSender.InfoModel) => void) =>
+  ["ConnectionIdSenderHub"]: {
+    ["SendToSpecificUser"]: (callBack: (data: BE01_IntegrationTest_Scenarios_ConnectionIdSender.InfoModel) => void) =>
       subscribe("ConnectionIdSenderHub", "SendToSpecificUser", callBack),
   },
-  OnConnectionHub: {
-    DummyMethod: (callBack: () => void) =>
+  ["OnConnectionHub"]: {
+    ["DummyMethod"]: (callBack: () => void) =>
       subscribe("OnConnectionHub", "DummyMethod", callBack),
   },
-  OnConnectionManager: {
-    UpdateStatus: (callBack: (data: BE01_IntegrationTest_Scenarios_OnConnection.OnConnectionStatusModel) => void) =>
+  ["OnConnectionManager"]: {
+    ["UpdateStatus"]: (callBack: (data: BE01_IntegrationTest_Scenarios_OnConnection.OnConnectionStatusModel) => void) =>
       subscribe("OnConnectionManager", "UpdateStatus", callBack),
   },
-  SimpleContextHub: {
-    SimpleContextAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_SimpleContext.SimpleContextResponseMessage) => void) =>
+  ["SimpleContextHub"]: {
+    ["SimpleContextAnswer"]: (callBack: (data: BE01_IntegrationTest_Scenarios_SimpleContext.SimpleContextResponseMessage) => void) =>
       subscribe("SimpleContextHub", "SimpleContextAnswer", callBack),
   },
-  SimpleDateTimeHub: {
-    SimpleAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_SimpleDateTimeField.SimpleDateTimeResponseMessage) => void) =>
+  ["SimpleDateTimeHub"]: {
+    ["SimpleAnswer"]: (callBack: (data: BE01_IntegrationTest_Scenarios_SimpleDateTimeField.SimpleDateTimeResponseMessage) => void) =>
       subscribe("SimpleDateTimeHub", "SimpleAnswer", callBack),
   },
-  SimpleEmptyContextHub: {
-    SimpleEmptyContextAnswer: (callBack: () => void) =>
+  ["SimpleEmptyContextHub"]: {
+    ["SimpleEmptyContextAnswer"]: (callBack: () => void) =>
       subscribe("SimpleEmptyContextHub", "SimpleEmptyContextAnswer", callBack),
   },
-  SimpleEmptyHub: {
-    SimpleEmptyAnswer: (callBack: () => void) =>
+  ["SimpleEmptyHub"]: {
+    ["SimpleEmptyAnswer"]: (callBack: () => void) =>
       subscribe("SimpleEmptyHub", "SimpleEmptyAnswer", callBack),
   },
-  SimpleHub: {
-    SimpleAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_Simple.SimpleResponseMessage) => void) =>
+  ["SimpleHub"]: {
+    ["SimpleAnswer"]: (callBack: (data: BE01_IntegrationTest_Scenarios_Simple.SimpleResponseMessage) => void) =>
       subscribe("SimpleHub", "SimpleAnswer", callBack),
   },
-  TwoContractMethodsHub: {
-    TwoContractMethodsAnswer1: (callBack: (data: BE01_IntegrationTest_Scenarios_TwoContractMethods.TwoContractMethodsResponseMessage) => void) =>
+  ["TwoContractMethodsHub"]: {
+    ["TwoContractMethodsAnswer1"]: (callBack: (data: BE01_IntegrationTest_Scenarios_TwoContractMethods.TwoContractMethodsResponseMessage) => void) =>
       subscribe("TwoContractMethodsHub", "TwoContractMethodsAnswer1", callBack),
-    TwoContractMethodsAnswer2: (callBack: (data: BE01_IntegrationTest_Scenarios_TwoContractMethods.TwoContractMethodsResponseMessage) => void) =>
+    ["TwoContractMethodsAnswer2"]: (callBack: (data: BE01_IntegrationTest_Scenarios_TwoContractMethods.TwoContractMethodsResponseMessage) => void) =>
       subscribe("TwoContractMethodsHub", "TwoContractMethodsAnswer2", callBack),
   },
-  TwoHandlers: {
-    HandlerAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_TwoHandlers.TwoHandlersResponse) => void) =>
+  ["TwoHandlers"]: {
+    ["HandlerAnswer"]: (callBack: (data: BE01_IntegrationTest_Scenarios_TwoHandlers.TwoHandlersResponse) => void) =>
       subscribe("TwoHandlers", "HandlerAnswer", callBack),
   },
-  TwoSubscriptionHub: {
-    TwoSubscriptionAnswer: (callBack: (data: BE01_IntegrationTest_Scenarios_TwoSubscription.TwoSubscriptionResponseMessage) => void) =>
+  ["TwoSubscriptionHub"]: {
+    ["TwoSubscriptionAnswer"]: (callBack: (data: BE01_IntegrationTest_Scenarios_TwoSubscription.TwoSubscriptionResponseMessage) => void) =>
       subscribe("TwoSubscriptionHub", "TwoSubscriptionAnswer", callBack),
   },
-  UnsubscribeSimpleHub: {
-    UnsubscribeSimpleAnswer: (callBack: () => void) =>
+  ["UnsubscribeSimpleHub"]: {
+    ["UnsubscribeSimpleAnswer"]: (callBack: () => void) =>
       subscribe("UnsubscribeSimpleHub", "UnsubscribeSimpleAnswer", callBack),
   },
 
 };
 
 export const uiRtcCommunication = {
-    AttributeDeclaration: {
-    AttributeDeclarationAttributeHandler: (request: BE01_IntegrationTest_Scenarios_AttributeDeclaration.AttributeDeclarationRequestMessage) =>
+    ["AttributeDeclaration"]: {
+    ["AttributeDeclarationAttributeHandler"]: (request: BE01_IntegrationTest_Scenarios_AttributeDeclaration.AttributeDeclarationRequestMessage) =>
       send("AttributeDeclaration", "AttributeDeclarationAttributeHandler", request),
   },
-  ConnectionIdSenderHub: {
-    ConnectionIdRequest: () =>
+  ["ConnectionIdSenderHub"]: {
+    ["ConnectionIdRequest"]: () =>
       send("ConnectionIdSenderHub", "ConnectionIdRequest"),
   },
-  SimpleContextHub: {
-    SimpleContextHandler: (request: BE01_IntegrationTest_Scenarios_SimpleContext.SimpleContextRequestMessage) =>
+  ["SimpleContextHub"]: {
+    ["SimpleContextHandler"]: (request: BE01_IntegrationTest_Scenarios_SimpleContext.SimpleContextRequestMessage) =>
       send("SimpleContextHub", "SimpleContextHandler", request),
   },
-  SimpleDateTimeHub: {
-    SimpleDateTimeHandler: (request: BE01_IntegrationTest_Scenarios_SimpleDateTimeField.SimpleDateTimeRequestMessage) =>
+  ["SimpleDateTimeHub"]: {
+    ["SimpleDateTimeHandler"]: (request: BE01_IntegrationTest_Scenarios_SimpleDateTimeField.SimpleDateTimeRequestMessage) =>
       send("SimpleDateTimeHub", "SimpleDateTimeHandler", request),
   },
-  SimpleEmptyContextHub: {
-    SimpleEmptyContextHandler: () =>
+  ["SimpleEmptyContextHub"]: {
+    ["SimpleEmptyContextHandler"]: () =>
       send("SimpleEmptyContextHub", "SimpleEmptyContextHandler"),
   },
-  SimpleEmptyHub: {
-    SimpleEmptyHandler: () =>
+  ["SimpleEmptyHub"]: {
+    ["SimpleEmptyHandler"]: () =>
       send("SimpleEmptyHub", "SimpleEmptyHandler"),
   },
-  SimpleHub: {
-    SimpleHandler: (request: BE01_IntegrationTest_Scenarios_Simple.SimpleRequestMessage) =>
+  ["SimpleHub"]: {
+    ["SimpleHandler"]: (request: BE01_IntegrationTest_Scenarios_Simple.SimpleRequestMessage) =>
       send("SimpleHub", "SimpleHandler", request),
   },
-  TwoContractMethodsHub: {
-    TwoContractMethods: (request: BE01_IntegrationTest_Scenarios_TwoContractMethods.TwoContractMethodsRequestMessage) =>
+  ["TwoContractMethodsHub"]: {
+    ["TwoContractMethods"]: (request: BE01_IntegrationTest_Scenarios_TwoContractMethods.TwoContractMethodsRequestMessage) =>
       send("TwoContractMethodsHub", "TwoContractMethods", request),
   },
-  TwoHandlers: {
-    TwoHandler: () =>
+  ["TwoHandlers"]: {
+    ["TwoHandler"]: () =>
       send("TwoHandlers", "TwoHandler"),
   },
-  TwoSubscriptionHub: {
-    TwoSubscriptionHandler: (request: BE01_IntegrationTest_Scenarios_TwoSubscription.TwoSubscriptionRequestMessage) =>
+  ["TwoSubscriptionHub"]: {
+    ["TwoSubscriptionHandler"]: (request: BE01_IntegrationTest_Scenarios_TwoSubscription.TwoSubscriptionRequestMessage) =>
       send("TwoSubscriptionHub", "TwoSubscriptionHandler", request),
   },
-  UnsubscribeSimpleHub: {
-    UnsubscribeSimpleHandler: () =>
+  ["UnsubscribeSimpleHub"]: {
+    ["UnsubscribeSimpleHandler"]: () =>
       send("UnsubscribeSimpleHub", "UnsubscribeSimpleHandler"),
   },
 
@@ -241,7 +219,7 @@ interface IHub {
   config?: IUiRtcConfiguration;
 }
 
-type RConnections = Record<uiRtcHubs, IHub>;
+type RConnections = Record<uiRtcHubs, IHub> & Record<string, IHub>;
 
 export const uiRtc = {
   initAsync: async (config: IUiRtcConfiguration) => {
@@ -263,7 +241,7 @@ const initHubAsync = async (
   config: IUiRtcConfiguration,
   hubName: uiRtcHubs
 ) => {
-  if (!!connections[hubName].connection) {
+  if (isConnected(hubName)) {
     console.warn(hubName + " hub has been initialized already");
     return;
   }
@@ -271,9 +249,11 @@ const initHubAsync = async (
   connections[hubName].config = config;
 
   try {
-    connections[hubName].connection = buildConnection(config, hubName);
-    await connections[hubName].connection!.start();
+    const connection = buildConnection(config, hubName);
+    await connection.start();
+    connections[hubName].connection = connection;
   } catch (err) {
+    connections[hubName] = {};
     console.error(
       "Error while establishing connection '" + hubName + "': ",
       err
@@ -326,15 +306,18 @@ const buildConnectionOptions = (
 };
 
 const disposeHubAsync = async (hubName: uiRtcHubs) => {
-  if (isConnected(hubName)) {
+  const connection = connections[hubName].connection;
+
+  if (!!connection) {
     try {
-      await connections[hubName].connection!.stop();
-      connections[hubName] = {};
+      await connection.stop();
     } catch (err) {
       console.error(
-        "Error while establishing connection '" + hubName + "': ",
+        "Error while disposing connection '" + hubName + "': ",
         err
       );
+    } finally {
+      connections[hubName] = {};
     }
   } else {
     console.warn(hubName + " hub has not been initialized");
@@ -342,16 +325,7 @@ const disposeHubAsync = async (hubName: uiRtcHubs) => {
 };
 
 const isConnected = (hubName: uiRtcHubs) => {
-  if (
-    !!connections &&
-    !!connections[hubName] &&
-    !!connections[hubName].connection &&
-    (connections[hubName].connection!.state === HubConnectionState.Connected ||
-      connections[hubName].connection!.state === HubConnectionState.Connecting ||
-      connections[hubName].connection!.state === HubConnectionState.Reconnecting)
-  )
-    return true;
-  return false;
+  return connections[hubName]?.connection?.state === HubConnectionState.Connected;
 };
 
 const subscribe = (
@@ -381,7 +355,7 @@ const send = async (hub: uiRtcHubs, method: hubMethods, request?: any) => {
 };
 
 const checkConnection = (hub: uiRtcHubs) => {
-  if (!connections[hub]?.connection) {
+  if (!isConnected(hub)) {
     throw new Error(
       "Connection to " +
       hub +
