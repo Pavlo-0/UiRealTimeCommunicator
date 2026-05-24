@@ -19,6 +19,7 @@ namespace UiRtc.Domain.Sender
         {
             var serviceInstance = service.GetService(typeof(IInvokeSenderService));
             invokeSenderService.ResolveHub(NameHelper.GetHubNameByContract(typeof(TContract)));
+            invokeSenderService.ResolveConnectionId(Array.Empty<string>());
             return SendMethodBuilder<TContract>.Build(invokeSenderService);
         }
 

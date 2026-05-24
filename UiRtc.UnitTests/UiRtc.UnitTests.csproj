@@ -12,4 +12,9 @@
     <TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UiRtc\UiRtc.csproj" />
+    <ProjectReference Include="..\UiRtc.Typing\UiRtc.Typing.csproj" />
+  </ItemGroup>
+
 </Project>
