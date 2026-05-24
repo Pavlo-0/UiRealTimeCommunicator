@@ -170,7 +170,8 @@ namespace UiRtc.TypeScriptGenerator
         {
             if (records.Where(r => r.HubName == record.HubName
                 && r.MethodName == record.MethodName
-                && r.ModelType == record.ModelType).Any())
+                && r.ModelType == record.ModelType
+                && r.ModelNamespace == record.ModelNamespace).Any())
             {
                 return;
             }
