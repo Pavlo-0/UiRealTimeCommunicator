@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="UiRealTimeCommunicator" Version="1.0.202" />
+    <ProjectReference Include="..\..\..\UiRtc\UiRtc.csproj" />
+    <ProjectReference Include="..\..\..\UiRtc.Typing\UiRtc.Typing.csproj" />
   </ItemGroup>
 
 </Project>

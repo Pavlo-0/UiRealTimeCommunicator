@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using UiRtc.Domain.Repository.Interface;
 using UiRtc.Domain.Sender.Interface;
 
@@ -54,22 +51,8 @@ namespace UiRtc.Domain.Sender
             }
             else
             {
-                var jsonModel = GetJSONModel(model);
                 await clients.SendAsync(method, model);
             }
-        }
-
-        private string GetJSONModel(object model)
-        {
-            var settings = new JsonSerializerSettings
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy()
-                }
-            };
-
-            return JsonConvert.SerializeObject(model, settings);
         }
     }
 }
