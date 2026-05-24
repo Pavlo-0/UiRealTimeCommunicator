@@ -1,3 +1,8 @@
+using Microsoft.Extensions.Logging.Abstractions;
+using Tapper;
+using UiRtc.TypeScriptGenerator;
+using UiRtc.TypeScriptGenerator.DataModels;
+
 namespace UiRtc.TypeScriptGenerator.UnitTests
 {
     [TestClass]
@@ -42,6 +47,48 @@ namespace UiRtc.TypeScriptGenerator.UnitTests
             StringAssert.Contains(contract, "activeHubs: uiRtcHubs[] | \"All\";");
             StringAssert.Contains(contract, "accessTokenFactory?:");
             StringAssert.Contains(contract, "await uiRtc.initAsync({ serverUrl: SERVER_URL, activeHubs: 'All' })");
+        }
+
+        [TestMethod]
+        public async Task Generator_WithMissingProjectThrows()
+        {
+            var app = new App(NullLogger<App>.Instance);
+            var missingProject = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"), "missing.csproj");
+
+            try
+            {
+                await app.Generator(missingProject, Path.GetTempPath());
+                Assert.Fail("Expected missing project to throw.");
+            }
+            catch (FileNotFoundException)
+            {
+            }
+        }
+
+        [TestMethod]
+        public void GenerateService_WhenModelOutputDirectoryCannotBeCreatedThrows()
+        {
+            var generator = new TsGeneratorService(NullLogger<App>.Instance);
+            var outputFile = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid():N}.tmp");
+            File.WriteAllText(outputFile, string.Empty);
+
+            try
+            {
+                generator.GenerateService(
+                    new Dictionary<string, IEnumerable<SenderDataRecord>>(),
+                    new Dictionary<string, IEnumerable<HandlerDataRecord>>(),
+                    Array.Empty<GeneratedSourceCode>(),
+                    outputFile);
+
+                Assert.Fail("Expected model output failure to throw.");
+            }
+            catch (IOException)
+            {
+            }
+            finally
+            {
+                File.Delete(outputFile);
+            }
         }
 
         private static string BuildGeneratedContract()

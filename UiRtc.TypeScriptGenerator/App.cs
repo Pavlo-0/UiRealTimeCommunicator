@@ -21,8 +21,8 @@ public class App : CoconaConsoleAppBase
         {
             if (!File.Exists(project))
             {
-                _logger.Log(LogLevel.Error, "The project file {path} does not exist.", Path.GetFullPath(project));
-                return;
+                var projectFullPath = Path.GetFullPath(project);
+                throw new FileNotFoundException($"The project file {projectFullPath} does not exist.", projectFullPath);
             }
             var dataCollectionService = new DataCollectorService(_logger);
 
@@ -63,6 +63,7 @@ public class App : CoconaConsoleAppBase
         catch (Exception ex)
         {
             _logger.Log(LogLevel.Error, ex, $"An error occurred during generating typeScript file. Message: {ex.Message}");
+            throw;
         }
     }
 

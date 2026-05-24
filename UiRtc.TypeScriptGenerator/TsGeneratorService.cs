@@ -88,12 +88,14 @@ namespace UiRtc.TypeScriptGenerator
                     catch (Exception ex)
                     {
                         _logger.LogError(ex, "Failed to save model file {SourceName}", model.SourceName);
+                        throw;
                     }
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to save models to directory {OutputDirectory}", outputDirectory);
+                throw;
             }
 
             return savedBaseNames;

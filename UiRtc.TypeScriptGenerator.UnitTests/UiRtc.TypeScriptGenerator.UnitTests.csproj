@@ -12,4 +12,8 @@
     <TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UiRtc.TypeScriptGenerator\UiRtc.TypeScriptGenerator.csproj" />
+  </ItemGroup>
+
 </Project>
